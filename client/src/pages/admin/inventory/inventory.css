@@ -1,0 +1,126 @@
+.inventory-maincon {
+    padding: 20px;
+}
+
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between; /* Aligns items on the ends */
+    align-items: center; /* Vertically centers items */
+    margin-bottom: 20px;
+}
+
+.inventory-actions {
+    display: flex;
+    align-items: center; /* Aligns search bar and button vertically */
+}
+
+.search-bar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 10px; /* Space between search bar and button */
+    width: 20rem; /* Fixed width for search bar */
+}
+
+.add-product-btn {
+    padding: 10px 15px; /* Button padding */
+    background-color: #007bff; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.add-product-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+.inven-cards {
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Adjust column size based on screen size */
+    grid-gap: 20px; /* Space between grid items */
+    gap: 15px; /* Space between cards */
+}
+
+.inven-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.inven-card:hover {
+    transform: scale(1.01); /* Slight zoom effect on hover */
+}
+
+.ic-img {
+    margin-right: 15px; /* Space between image and text */
+}
+
+.ic-img img {
+    width: 50px; /* Set a fixed width */
+    height: 50px; /* Set a fixed height */
+    border-radius: 8px; /* Rounded corners */
+    object-fit: cover; /* Ensure image covers the area */
+}
+
+.ic-deets {
+    flex-grow: 1; /* Take available space */
+}
+
+.ic-deets p {
+    margin: 0; /* Remove default margins */
+}
+
+.ic-price {
+    color: #777; /* Lighter color for price and stock */
+}
+
+.ic-actions {
+    display: flex;
+    gap: 20px; /* Space between action icons */
+}
+
+.ic-action-icon {
+    cursor: pointer; /* Change cursor on hover */
+    color: #007bff; /* Action icon color */
+    transition: color 0.3s;
+}
+
+.ic-action-icon:hover {
+    color: #0056b3; /* Darker shade on hover */
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.modal-actions {
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    margin: 0 10px;
+}

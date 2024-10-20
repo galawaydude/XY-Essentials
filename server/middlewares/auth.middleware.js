@@ -2,30 +2,22 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model.js');
 const asyncHandler = require('express-async-handler');
 
-// Protect routes (only for authenticated users)
 const protect = asyncHandler(async (req, res, next) => {
-  let token;
+  console.log('Cookies:', req.cookies);
+  const token = req.cookies.token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (token) {
     try {
-      token = req.headers.authorization.split(' ')[1];
-
-      // Decode the token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded._id);
 
-      // Get the user from the token
-      req.user = await User.findById(decoded.id).select('-password');
-      next();
+      console.log(req.user);
     } catch (error) {
       console.error(error);
-      res.status(401);
-      throw new Error('Not authorized, token failed');
+      return res.redirect('/'); // Redirect on token verification failure
     }
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, no token');
+  } else {
+    return res.redirect('/'); // Redirect if no token found
   }
 });
 

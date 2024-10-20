@@ -4,9 +4,6 @@ const { getUserAddresses, createAddress, updateAddress, deleteAddress } = requir
 const { protect } = require('../middlewares/auth.middleware.js');
 
 // Protected Routes
-router.get('/', protect, getUserAddresses);
-router.post('/', protect, createAddress);
-router.put('/:id', protect, updateAddress);
-router.delete('/:id', protect, deleteAddress);
+
 
 module.exports = router;

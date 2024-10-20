@@ -4,10 +4,10 @@ const { getCart, addToCart, updateCartItem, removeCartItem, clearCart } = requir
 const { protect } = require('../middlewares/auth.middleware.js');
 
 // Protected Routes
-router.get('/', protect, getCart);
-router.post('/', protect, addToCart);
-router.put('/:itemId', protect, updateCartItem);
-router.delete('/:itemId', protect, removeCartItem);
+router.get('/',  getCart);
+router.post('/', addToCart);
+router.put('/:itemId',  updateCartItem);
+router.delete('/:itemId', removeCartItem);
 router.delete('/', protect, clearCart);
 
 module.exports = router;

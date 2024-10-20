@@ -1,0 +1,9 @@
+.cart-product-summary {
+    display: flex;
+    gap: 2rem;
+
+}
+
+.cart-products-con {
+    /* width: 40rem; */
+}

@@ -9,26 +9,13 @@ const getUserOrders = asyncHandler(async (req, res) => {
 
 // Create a new order
 const placeOrder = asyncHandler(async (req, res) => {
-  const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error('No order items');
-  } else {
-    const order = new Order({
-      user: req.user._id,
-      orderItems,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    });
+
+    const order = new Order(req.body);
 
     const createdOrder = await order.save();
     res.status(201).json(createdOrder);
-  }
+ 
 });
 
 // Get order by ID

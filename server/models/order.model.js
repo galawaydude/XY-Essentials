@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  // Reference to User model
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  
   orderItems: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },  // Reference to Product
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, 
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
   }],
   shippingAddress: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String,
+    type: mongoose.Schema.Types.ObjectId, ref: 'Address'
   },
-  paymentMethod: { type: String, required: true },  // E.g., 'Credit Card', 'UPI', etc.
-  paymentStatus: { type: String, default: 'Pending' },  // 'Paid', 'Pending', 'Failed'
+  paymentMethod: { type: String, required: true },  
+  paymentStatus: { type: String, default: 'Pending' }, 
   totalPrice: { type: Number, required: true },
   isDelivered: { type: Boolean, default: false },
   deliveredAt: { type: Date },

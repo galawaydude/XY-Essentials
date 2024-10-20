@@ -1,0 +1,122 @@
+.home-product-item {
+    display: flex;
+    /* gap: 1rem; */
+    flex-direction: column;
+    /* width: 18vw; */
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: 0.67px solid #0000002a;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.home-product-item:hover {
+    /* transform: scale(1.03); */
+    filter: brightness(0.95);
+    /* box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.277); */
+
+    border: 1px solid var(--pri);
+}
+
+.home-product-img,
+.home-product-img img {
+    border-radius: 0.5rem 0.5rem 0 0;
+    height: 15vmax;
+    width: 100%;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.home-product-details {
+    padding: 0.4rem;
+}
+
+.h-product-price-cart {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.7rem;
+}
+
+.h-p-cart-btn {
+
+    flex: 3;
+
+}
+
+.h-p-cart-btn button {
+    height: 100%;
+    flex: 3;
+    width: 100%;
+}
+
+.h-product-prices {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    flex: 1;
+}
+
+.h-p-striked-price {
+    text-decoration: line-through;
+    color: var(--m2);
+    font-size: 0.7rem;
+}
+
+.home-product-details hr {
+    margin: 0.5rem 0;
+}
+
+.h-product-title {
+    font-weight: 600;
+    /* font-size: 0.9rem; */
+    max-lines: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+.h-product-title:hover {
+    color: rgb(40, 40, 186);
+
+}
+
+.h-product-subtitle {
+    /* font-weight: 300; */
+    font-size: 0.7rem;
+    color: var(--m4);
+}
+
+.h-product-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* Limits to 1 line */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: black;
+}
+.h-product-subtitle {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* Limits to 1 line */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.home-product-item {
+    height: fit-content;
+    /* width: 100%; */
+}
+
+.pc-divider {
+    color: black;
+}
+
+.h-p-price {
+    color: black;
+}
+

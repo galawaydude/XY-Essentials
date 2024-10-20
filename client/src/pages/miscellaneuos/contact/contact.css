@@ -1,0 +1,88 @@
+.contact-maincon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.contact-top-bg {
+    position: relative;
+    text-align: center;
+}
+
+.contact-top-bg img {
+    width: 100%;
+    height: 20rem; /* Fixed height for consistency */
+    object-fit: cover; /* Ensure the image covers the area */
+    display: block;
+    filter: brightness(0.8); /* Slightly darken the image for better text contrast */
+}
+
+.contact-overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; /* Text color */
+    font-size: 2.5rem; /* Larger font size for emphasis */
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7); /* Enhance text readability */
+    z-index: 1; /* Ensure it appears above the image */
+}
+
+.contact-content {
+    padding: 20px; /* Add padding for the content */
+}
+
+git-head {
+    color: var(--pri); /* Dark color for headings */
+    font-size: 1.8rem; /* Adjust heading size */
+}
+
+p {
+    margin-bottom: 15px; /* Space below paragraphs */
+    line-height: 1.6; /* Improve readability */
+    color: #555; /* Slightly lighter text color */
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Space between form elements */
+    margin-top: 20px; /* Space above the form */
+}
+
+label {
+    font-weight: bold; /* Make labels bold */
+}
+
+input, textarea {
+    padding: 10px; /* Padding for input fields */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+}
+
+button {
+    padding: 10px; /* Button padding */
+    background-color: var(--pri); /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Button font size */
+}
+
+/* button:hover {
+    background-color: #0056b3; 
+} */
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .contact-overlay-text {
+        font-size: 2rem; /* Adjust for smaller screens */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Smaller heading size for mobile */
+    }
+}

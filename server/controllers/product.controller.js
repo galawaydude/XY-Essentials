@@ -9,7 +9,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 // Get a product by ID
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id)
+  .populate('reviews');
 
   if (product) {
     res.json(product);
@@ -21,45 +22,84 @@ const getProductById = asyncHandler(async (req, res) => {
 
 // Create a new product (Admin only)
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, category, brand, countInStock, image } = req.body;
+  try {
+      // Log incoming request body
+      console.log('Incoming request body:', req.body);
 
-  const product = new Product({
-    name,
-    price,
-    description,
-    category,
-    brand,
-    countInStock,
-    image,
-    user: req.user._id,
-  });
+      // Extract product data
+      const productData = { ...req.body };
 
-  const createdProduct = await product.save();
-  res.status(201).json(createdProduct);
+      // Parse keyIngredients if it's a string
+      if (typeof productData.keyIngredients === 'string') {
+          productData.keyIngredients = JSON.parse(productData.keyIngredients);
+      }
+
+      console.log('Product data:', productData); // Debugging
+
+      // Retrieve uploaded images
+      const productImages = req.files['productImages'] ? req.files['productImages'].map(file => file.path) : [];
+      console.log('Uploaded product images:', productImages); // Debugging
+
+      // Create new product instance
+      const product = new Product({
+          ...productData,
+          images: productImages,
+      });
+
+      // Save the product to the database
+      const createdProduct = await product.save();
+      console.log('Product created successfully:', createdProduct); // Debugging
+
+      // Respond with the created product
+      res.status(201).json(createdProduct);
+  } catch (error) {
+      console.error('Error creating product:', error); // Debugging
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
 });
+
 
 // Update a product (Admin only)
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, category, brand, countInStock, image } = req.body;
+  try {
+      // Log the incoming request body for debugging
+      console.log('Incoming request body:', req.body);
 
-  const product = await Product.findById(req.params.id);
+      // Retrieve the product by ID
+      const product = await Product.findById(req.params.id);
 
-  if (product) {
-    product.name = name || product.name;
-    product.price = price || product.price;
-    product.description = description || product.description;
-    product.category = category || product.category;
-    product.brand = brand || product.brand;
-    product.countInStock = countInStock || product.countInStock;
-    product.image = image || product.image;
+      if (!product) {
+          res.status(404);
+          throw new Error('Product not found');
+      }
 
-    const updatedProduct = await product.save();
-    res.json(updatedProduct);
-  } else {
-    res.status(404);
-    throw new Error('Product not found');
+      // Parse keyIngredients if it's a string
+      if (typeof req.body.keyIngredients === 'string') {
+          req.body.keyIngredients = JSON.parse(req.body.keyIngredients);
+      }
+
+      // Use Object.assign to update the product with the request body
+      Object.assign(product, req.body);
+
+      // Handle image updates if new images are provided
+      const productImages = req.files['productImages'] ? req.files['productImages'].map(file => file.path) : [];
+      if (productImages.length > 0) {
+          product.images = productImages; // Update images if new ones are provided
+      }
+
+      // Save the updated product
+      const updatedProduct = await product.save();
+      console.log('Product updated successfully:', updatedProduct); // Debugging
+
+      // Respond with the updated product
+      res.json(updatedProduct);
+  } catch (error) {
+      console.error('Error updating product:', error); // Debugging
+      res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
+
 
 // Delete a product (Admin only)
 const deleteProduct = asyncHandler(async (req, res) => {

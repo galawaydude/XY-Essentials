@@ -5,7 +5,7 @@ const { protect, admin } = require('../middlewares/auth.middleware.js');
 
 // User Routes
 router.get('/', protect, getUserOrders);
-router.post('/', protect, placeOrder);
+router.post('/', placeOrder);
 router.get('/:id', protect, getOrderById);
 
 // Admin Routes

@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Review = require('../models/review.model');
+const Product = require('../models/product.model');
 
 // Get all reviews for a product
 const getProductReviews = asyncHandler(async (req, res) => {
@@ -9,18 +10,23 @@ const getProductReviews = asyncHandler(async (req, res) => {
 
 // Add a review
 const addReview = asyncHandler(async (req, res) => {
-  const { productId, rating, comment } = req.body;
+  const { id } = req.params;
 
+  // Create a new review with the productId included
   const review = new Review({
-    user: req.user._id,
-    product: productId,
-    rating,
-    comment,
+    ...req.body,        // Spread the existing body data
+    product: id  // Set the product field
   });
 
   const createdReview = await review.save();
+
+  await Product.findByIdAndUpdate(id, {
+    $push: { reviews: createdReview._id }
+  });
+
   res.status(201).json(createdReview);
 });
+
 
 // Update a review
 const updateReview = asyncHandler(async (req, res) => {
