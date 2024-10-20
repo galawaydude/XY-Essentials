@@ -1,10 +1,39 @@
 const asyncHandler = require('express-async-handler');
 const Payment = require('../models/payment.model');
+const {razorpayInstance} = require('../config/razorpayConfig');
 
 // Process a new payment
-const processPayment = asyncHandler(async (req, res) => {
+const processRazorpay = asyncHandler(async (req, res) => {
+  const { amount } = req.body;
+
+  // Log the incoming request body
+  console.log("Received request to create Razorpay order:", req.body);
+
+  // Create a new order in Razorpay
+  const options = {
+    amount: amount * 100, // Amount in paise
+    currency: "INR",
+    receipt: "receipt#1",
+    payment_capture: 1, 
+  };
+
+  console.log("Order options:", options); // Log the options being sent to Razorpay
+
+  try {
+    const order = await razorpayInstance.orders.create(options);
+    console.log("Order created successfully:", order); // Log the order details
+    res.status(201).json(order);
+  } catch (error) {
+    console.error("Error creating order:", error); // Log the error
+    res.status(500).json({ message: "Error creating order" });
+  }
+});
+
+
+const verifyPayment = asyncHandler(async (req, res) => {
   const { orderId, paymentMethod, amount } = req.body;
 
+  // Logic to save payment details
   const payment = new Payment({
     user: req.user._id,
     order: orderId,
@@ -13,8 +42,8 @@ const processPayment = asyncHandler(async (req, res) => {
     paidAt: Date.now(),
   });
 
-  const createdPayment = await payment.save();
-  res.status(201).json(createdPayment);
+  await payment.save();
+  res.status(201).json(payment);
 });
 
 // Get payment status by Order ID
@@ -33,23 +62,8 @@ const getPaymentStatus = asyncHandler(async (req, res) => {
   }
 });
 
-// Verify payment via Razorpay webhook
-const verifyPayment = asyncHandler(async (req, res) => {
-  const { paymentId, orderId } = req.body;
-
-  const payment = await Payment.findOne({ order: orderId });
-
-  if (payment && payment.paymentId === paymentId) {
-    payment.isVerified = true;
-    await payment.save();
-    res.status(200).json({ message: 'Payment verified' });
-  } else {
-    res.status(400).json({ message: 'Payment verification failed' });
-  }
-});
-
 module.exports = {
-  processPayment,
+  processRazorpay,
   getPaymentStatus,
   verifyPayment,
 };

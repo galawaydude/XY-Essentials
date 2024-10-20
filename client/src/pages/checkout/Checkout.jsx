@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './checkout.css';
 
 const Checkout = () => {
+  // const razorpayKeyId = process.env.REACT_APP_RAZORPAY_KEY_ID;
+
   const [addresses, setAddresses] = useState([
     { id: 1, address: '123 Main St, City, Country' },
     { id: 2, address: '456 Another Rd, City, Country' }
@@ -25,9 +27,90 @@ const Checkout = () => {
     }
   };
 
-  const handlePayment = () => {
-    // Implement Razorpay integration here
-  };
+  const handlePayment = async () => {
+    const amount = totalAmount; // Total amount to be paid
+  
+    if (paymentMethod === 'cod') {
+      // Handle cash on delivery logic here
+      const paymentData = {
+        orderId: 'COD-' + Date.now(), // You can use a unique identifier for the order
+        paymentMethod: 'cod',
+        amount,
+      };
+  
+      // Save the order details to your backend (e.g., create a new order)
+      await fetch('/api/payment/verify', { // Adjust endpoint as necessary
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+  
+      alert("Order placed successfully with Cash on Delivery!");
+      return; // Exit the function
+    }
+  
+    // Continue with Razorpay if payment method is 'razorpay'
+    try {
+      const response = await fetch('http://localhost:5000/api/payments/razorpay', { // Replace with your actual endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount }),
+      });
+  
+      const data = await response.json();
+  
+      const options = {
+        key: 'rzp_test_mRwGhrvW3W8Tlv',
+        amount: data.amount,
+        currency: data.currency,
+        name: "XY Essentials",
+        description: "Order Description",
+        order_id: data.id,
+        handler: async (response) => {
+          // Payment successful, save the payment details to the database
+          const paymentData = {
+            orderId: data.id,
+            paymentMethod: 'razorpay',
+            amount,
+          };
+  
+          await fetch('http://localhost:5000/api/payments/verify', { // Adjust endpoint as necessary
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentData),
+          });
+  
+          alert("Payment Successful!");
+        },
+        prefill: {
+          name: "Customer Name",
+          email: "customer@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#0A4834",
+        },
+        method: {
+          card: true, // Enable card payments
+          netbanking: true, 
+          upi: true, 
+          wallet: false, 
+        }
+      };
+  
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Payment failed", error);
+    }
+  }; 
+  
 
   const totalItems = orderItems.reduce((acc, item) => acc + item.price, 0);
   const totalAmount = totalItems + deliveryCharge;
