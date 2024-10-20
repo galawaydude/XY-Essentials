@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 // import './editProduct.css';
 import { FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom'
 
 const EditProduct = () => {
+    const navigate = useNavigate();
     const { id } = useParams(); // Assuming the product ID is in the URL
     const [product, setProduct] = useState({
         name: '',
@@ -132,6 +134,7 @@ const EditProduct = () => {
             });
             const data = await response.json();
             console.log('Product updated:', data);
+            navigate('/admin/inventory');
         } catch (error) {
             console.error('Error updating product:', error);
         }

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './addproduct.css';
 import { FaTrash } from 'react-icons/fa';
+import {Link, useNavigate} from 'react-router-dom';
 
 const AddProduct = () => {
+    const navigate = useNavigate()
+
     const [product, setProduct] = useState({
         name: '',
         description: '',
@@ -81,36 +84,36 @@ const AddProduct = () => {
 
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
-        setProduct({ ...product, images: files }); // Change from productImages to images
+        setProduct({ ...product, productImages: files }); // Change from productImages to images
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-
+    
         // Append product details to formData
         for (const key in product) {
             if (Array.isArray(product[key])) {
-                product[key].forEach((item) => {
-                    if (typeof item === 'object') {
-                        formData.append(key, JSON.stringify(item));
-                    } else {
-                        formData.append(key, item);
-                    }
-                });
+                if (key === 'keyIngredients') {
+                    product[key].forEach((item) => {
+                        formData.append(`${key}[]`, JSON.stringify(item)); // Append as JSON string with key as an array
+                    });
+                } else {
+                    product[key].forEach((item) => {
+                        formData.append(key, item); // Keep this for other arrays
+                    });
+                }
             } else {
                 formData.append(key, product[key]);
             }
         }
-
-
+    
         product.images.forEach((image) => {
             if (image instanceof File) {
                 formData.append('productImages', image);
             }
         });
-        
-
+    
         // Send the formData to the backend
         try {
             const response = await fetch('http://localhost:5000/api/products', {
@@ -119,10 +122,12 @@ const AddProduct = () => {
             });
             const data = await response.json();
             console.log('Product created:', data);
+            navigate('/admin/inventory');
         } catch (error) {
             console.error('Error creating product:', error);
         }
     };
+    
 
     return (
         <div className="add-product-maincon">

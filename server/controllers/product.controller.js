@@ -23,22 +23,23 @@ const getProductById = asyncHandler(async (req, res) => {
 // Create a new product (Admin only)
 const createProduct = asyncHandler(async (req, res) => {
   try {
-      // Log incoming request body
       console.log('Incoming request body:', req.body);
 
       // Extract product data
       const productData = { ...req.body };
 
-      // Parse keyIngredients if it's a string
-      if (typeof productData.keyIngredients === 'string') {
-          productData.keyIngredients = JSON.parse(productData.keyIngredients);
+      // Parse keyIngredients if it's an array of strings
+      if (req.body.keyIngredients && Array.isArray(req.body.keyIngredients)) {
+          productData.keyIngredients = req.body.keyIngredients.map(item => JSON.parse(item));
+      } else if (typeof req.body.keyIngredients === 'string') {
+          productData.keyIngredients = [JSON.parse(req.body.keyIngredients)];
       }
 
-      console.log('Product data:', productData); // Debugging
+      console.log('Product data:', productData);
 
       // Retrieve uploaded images
       const productImages = req.files['productImages'] ? req.files['productImages'].map(file => file.path) : [];
-      console.log('Uploaded product images:', productImages); // Debugging
+      console.log('Uploaded product images:', productImages);
 
       // Create new product instance
       const product = new Product({
@@ -48,15 +49,16 @@ const createProduct = asyncHandler(async (req, res) => {
 
       // Save the product to the database
       const createdProduct = await product.save();
-      console.log('Product created successfully:', createdProduct); // Debugging
+      console.log('Product created successfully:', createdProduct);
 
       // Respond with the created product
       res.status(201).json(createdProduct);
   } catch (error) {
-      console.error('Error creating product:', error); // Debugging
+      console.error('Error creating product:', error);
       res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
 
 
 // Update a product (Admin only)
