@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './login.css'; // Import the CSS file
 import OAuth from '../../../components/oauth/OAuth';
 import { Link } from 'react-router-dom'; 
@@ -8,6 +8,37 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+  
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+  
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email, password }), // Use email and password from state
+            });
+  
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+            }
+  
+            // Handle successful login
+            // alert('Login successful!');
+            localStorage.setItem('user-info', JSON.stringify(data)); // Save user info if needed
+            navigate('/'); // Redirect to the home page or dashboard
+  
+        } catch (error) {
+            setError(error.message);
+        }
+    };
 
     const [user, setUser] = useState(null);
 
@@ -39,7 +70,6 @@ const Login = () => {
         
                 setUser(obj);
                 console.log(response.data.user);
-                // console.log(response.data.token);
                 navigate('/');
             }
         } catch (err) {
@@ -57,22 +87,34 @@ const Login = () => {
         <div className="login-maincon section container">
             <div className="login-con">
                 <div className="login-head">
-                <h3>    Login</h3>
+                    <h3>Login</h3>
                 </div>
                 <div className="login-form-con">
-                    <form className="login-form">
-                        <div className="input-component ">
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <div className="input-component">
                             <label>Email</label>
-                            <input type="email" placeholder="example@email.com" id='email' />
+                            <input
+                                type="email"
+                                placeholder="example@email.com"
+                                id="email"
+                                value={email} // Link state to input
+                                onChange={(e) => setEmail(e.target.value)} // Update state on change
+                                required
+                            />
                         </div>
-                        <div className="input-component ">
+                        <div className="input-component">
                             <label>Password</label>
-                            <input type="password" placeholder="Enter your password" id='password' />
+                            <input
+                                type="password"
+                                placeholder="Enter your password"
+                                id="password"
+                                value={password} // Link state to input
+                                onChange={(e) => setPassword(e.target.value)} // Update state on change
+                                required
+                            />
                         </div>
 
-                
-
-                        <button className="btn btn-primary">
+                        <button className="btn btn-primary" type="submit">
                             Login
                         </button>
 
@@ -81,10 +123,11 @@ const Login = () => {
                             <OAuth />
                         </div>
 
-                        {/* <div className="divider"></div> */}
-
-                        <p className="login-text">Don't have an account? <span className='text-blue-700'>Sign up</span></p>
+                        <p className="login-text">
+                            Don't have an account? <span className='text-blue-700'>Sign up</span>
+                        </p>
                     </form>
+                    {error && <div className="error-message">{error}</div>} {/* Display error message */}
                 </div>
             </div>
         </div>

@@ -1,18 +1,20 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt'); // Add this line
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   pfp: { type: String },
-  password: { type: String }, 
-  googleId: { type: String }, 
+  password: { type: String },
+  googleId: { type: String },
   isAdmin: { type: Boolean, default: false },
   addresses: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'Address'
   }],
-  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }], 
+  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
+  otp: { type: String }, // OTP field
+  otpExpires: { type: Date }, // Expiration time for OTP
 }, { timestamps: true });
-
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password') || !this.password) {

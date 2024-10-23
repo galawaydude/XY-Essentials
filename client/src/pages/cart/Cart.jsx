@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './cart.css';
 import CartProductCard from '../../components/cartproductcard/CartProductCard';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
+    const navigate = useNavigate(); // For navigation to checkout
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -70,6 +72,14 @@ const Cart = () => {
         }
     };
 
+    // Calculate total price
+    const totalPrice = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+
+    const handleCheckout = () => {
+        // Redirect to the checkout page
+        navigate('/checkout'); // Use navigate instead of history.push
+    };
+
     return (
         <div className="cart">
             <div className="section container">
@@ -93,7 +103,13 @@ const Cart = () => {
                         />
                     ))}
                 </div>
-                <div className="cart-summary-con"></div>
+                <div className="cart-summary-con">
+                    <h3>Order Summary</h3>
+                    <p>Total Price: ${totalPrice.toFixed(2)}</p>
+                    <button className="checkout-button" onClick={handleCheckout}>
+                        Proceed to Checkout
+                    </button>
+                </div>
             </div>
         </div>
     );

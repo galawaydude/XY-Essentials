@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './productcard.css';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
@@ -9,16 +8,28 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/cart', {
-        productId: product._id, // Ensure your product has an _id field
-        quantity: 1, // You can modify this to allow user to choose quantity
-      }, { withCredentials: true }); // Include credentials for cookie
+      const response = await fetch('http://localhost:5000/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include credentials for cookie
+        body: JSON.stringify({
+          productId: product._id, // Ensure your product has an _id field
+          quantity: 1, // You can modify this to allow user to choose quantity
+        }),
+      });
 
-      console.log('Product added to cart:', response.data);
+      if (!response.ok) {
+        throw new Error('Failed to add product to cart');
+      }
+
+      const data = await response.json();
+      console.log('Product added to cart:', data);
       setMessage('Added to cart');
       setButtonVisible(false);
 
-      // Reset message and show button after 3 seconds
+      // Reset message and show button after 6 seconds
       setTimeout(() => {
         setMessage('');
         setButtonVisible(true);

@@ -4,7 +4,7 @@ const Cart = require('../models/cart.model');
 // Get the cart for a user
 const getCart = asyncHandler(async (req, res) => {
     const cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' }) // Use req.user._id for dynamic user
-        .populate('cartItems.product', 'name price images');
+        .populate('cartItems.product');
 
     if (cart) {
         res.json(cart);
