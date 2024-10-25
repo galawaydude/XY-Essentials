@@ -127,7 +127,7 @@ const Account = () => {
                             <p className="acc-order-detail"><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
                             <p className="acc-order-detail"><strong>Status:</strong> {order.paymentStatus}</p>
                             <p className="acc-order-detail"><strong>Total:</strong> ${order.totalPrice.toFixed(2)}</p>
-                            <button className="acc-btn acc-btn-view-order">View Order</button>
+                         <a href={`/order-details/${order._id}`}>   <button className="acc-btn acc-btn-view-order">View Order</button></a>
                         </li>
                     ))}
                 </ul>
