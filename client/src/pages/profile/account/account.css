@@ -1,0 +1,195 @@
+/* General Account Page Layout */
+.acc-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
+  }
+  
+  /* Section Styling */
+  .acc-section {
+    margin-bottom: 50px;
+  }
+  
+  .acc-section-title {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 20px;
+  }
+  
+  /* Personal Details */
+  .acc-personal-details .acc-details-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .acc-detail-item {
+    margin-bottom: 10px;
+  }
+  
+  .acc-btn-edit {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .acc-btn-edit:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Past Orders */
+  .acc-orders-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .acc-order-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .acc-order-detail {
+    margin-bottom: 8px;
+  }
+  
+  .acc-btn-view-order {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .acc-btn-view-order:hover {
+    background-color: #218838;
+  }
+  
+  /* Addresses Section */
+  .acc-addresses-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .acc-address-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .acc-btn-edit-address {
+    padding: 8px 15px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .acc-btn-edit-address:hover {
+    background-color: #138496;
+  }
+  
+  .acc-btn-add-address {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .acc-btn-add-address:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Modal Styling */
+  .acc-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .acc-modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .acc-modal-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .acc-modal-textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .acc-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .acc-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .acc-btn-cancel {
+    background-color: #6c757d;
+  }
+  
+  .acc-btn-cancel:hover {
+    background-color: #5a6268;
+  }
+  
+  .acc-btn-submit {
+    background-color: #28a745;
+  }
+  
+  .acc-btn-submit:hover {
+    background-color: #218838;
+  }
+  
+  .acc-modal-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  

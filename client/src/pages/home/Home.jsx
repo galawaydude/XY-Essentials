@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react'
 import './home.css';
 import ProductCard from '../../components/productcard/ProductCard';
 import BlogCard from '../../components/blogcard/BlogCard';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -12,6 +14,20 @@ const Home = () => {
         const response = await fetch('http://localhost:5000/api/products/');
         const data = await response.json();
         setProducts(data.slice(0, 4)); // Get only the first 4 products
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/blogs/');
+        const data = await response.json();
+        setBlogs(data.slice(0, 3)); // Get only the first 4 products
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -81,32 +97,18 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="cat-items">
-          <div className="cat-item">
+<div className="cat-items">
+    {['Cleansers', 'Treats', 'Serums'].map((category) => (
+        <Link to={`/shop?category=${category}`} className="cat-item" key={category}>
             <div className="cat-item-img">
-              <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt={category} />
             </div>
             <div className="cat-item-title">
-              Cleansers
+                {category}
             </div>
-          </div>
-          <div className="cat-item">
-            <div className="cat-item-img">
-              <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-            </div>
-            <div className="cat-item-title">
-              Treats
-            </div>
-          </div>
-          <div className="cat-item">
-            <div className="cat-item-img">
-              <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-            </div>
-            <div className="cat-item-title">
-              Serums
-            </div>
-          </div>
-        </div>
+        </Link>
+    ))}
+</div>
       </div>
 
       {/* <div className="hero section container">
@@ -143,7 +145,9 @@ const Home = () => {
         </div>
         <hr />
         <div className="home-blog-con">
-          <BlogCard />
+        {blogs.map(blog => (
+            <BlogCard key={blog._id} blog={blog} />
+          ))}
         </div>
       </div>
       <div className="home-testimonials section container">

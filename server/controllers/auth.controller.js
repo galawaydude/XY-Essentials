@@ -12,41 +12,85 @@ const bcrypt = require('bcrypt');
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TIMEOUT = process.env.JWT_TIMEOUT;
 
+// const registerUser = async (req, res) => {
+//     const { name, email, password } = req.body;
+//     console.log('Received registration request:', { name, email });
+
+//     try {
+//         console.log('Checking for existing user in the database...');
+//         const existingUser = await User.findOne({ email });
+//         console.log('Existing user check result:', existingUser ? 'User found' : 'No user found');
+
+//         if (existingUser) {
+//             console.warn('User already exists:', email);
+//             return res.status(400).json({ message: 'User already exists' });
+//         }
+
+//         // Generate OTP
+//         console.log('Generating OTP...');
+//         const otp = generateOTP();
+//         console.log('Generated OTP:', otp);
+
+//         // Send OTP to user's email
+//         console.log('Sending OTP to email:', email);
+//         await sendOTP(email, otp);
+//         console.log('OTP sent successfully.');
+
+//         // Store the OTP in the user's data temporarily with an expiry
+//         console.log('Creating new user with temporary OTP...');
+//         const user = new User({ name, email, password, otp, otpExpires: Date.now() + 15 * 60 * 1000 }); // OTP expires in 15 minutes
+//         const savedUser = await user.save();
+//         console.log('User temporarily created:', savedUser);
+
+//         res.status(200).json({
+//             message: 'OTP sent to email. Please verify to complete the registration.',
+//             email,
+//         });
+
+//     } catch (error) {
+//         console.error('Error registering user:', error);
+//         res.status(500).json({ message: 'Error registering user', error });
+//     }
+// };
+
+
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     console.log('Received registration request:', { name, email });
 
     try {
-        console.log('Checking for existing user in the database...');
         const existingUser = await User.findOne({ email });
-        console.log('Existing user check result:', existingUser ? 'User found' : 'No user found');
+        console.log('Checking for existing user:', existingUser);
 
         if (existingUser) {
             console.warn('User already exists:', email);
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Generate OTP
-        console.log('Generating OTP...');
-        const otp = generateOTP();
-        console.log('Generated OTP:', otp);
+        // console.log('Raw password before hashing:', password);
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        // console.log('Hashed password after hashing:', hashedPassword);
 
-        // Send OTP to user's email
-        console.log('Sending OTP to email:', email);
-        await sendOTP(email, otp);
-        console.log('OTP sent successfully.');
+        const user = await User.create({ name, email, password: password });
+        console.log('New user created:', user);
 
-        // Store the OTP in the user's data temporarily with an expiry
-        console.log('Creating new user with temporary OTP...');
-        const user = new User({ name, email, password, otp, otpExpires: Date.now() + 15 * 60 * 1000 }); // OTP expires in 15 minutes
-        const savedUser = await user.save();
-        console.log('User temporarily created:', savedUser);
+        // Generate token
+        const token = generateToken(user._id);
+        console.log('Token generated for user:', user._id, "is", token);
 
-        res.status(200).json({
-            message: 'OTP sent to email. Please verify to complete the registration.',
-            email,
+        // Set cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // Set to true in production
+            sameSite: 'lax',
+            maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
+        res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ message: 'Error registering user', error });
