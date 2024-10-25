@@ -1,32 +1,51 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './checkout.css';
 
 const Checkout = () => {
-  const [addresses, setAddresses] = useState([
-    { id: 1, address: '123 Main St, City, Country' },
-    { id: 2, address: '456 Another Rd, City, Country' }
-  ]);
-  const [selectedAddress, setSelectedAddress] = useState(addresses[0]);
+  const navigate = useNavigate();
+  const [addresses, setAddresses] = useState([]); // Initialize as an empty array
+  const [selectedAddress, setSelectedAddress] = useState(null); // Initialize as null
   const [newAddress, setNewAddress] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [couponCode, setCouponCode] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('razorpay'); // Default payment method
-  const [cartItems, setCartItems] = useState([]); // State for cart items
-  const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5; // Adjust delivery charge based on payment method
-  const [discount, setDiscount] = useState(0); // State for discount
+  const [paymentMethod, setPaymentMethod] = useState('razorpay');
+  const [cartItems, setCartItems] = useState([]);
+  const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
+  const [discount, setDiscount] = useState(0);
 
   const coupons = {
-    'SAVE10': 10, // 10% off
-    'SAVE20': 20, // 20% off
+    'SAVE10': 10,
+    'SAVE20': 20,
   };
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/addresses/');
+        if (!response.ok) throw new Error('Failed to fetch addresses');
+        const data = await response.json();
+
+        // Assuming the response data is an array of addresses
+        setAddresses(data);
+        if (data.length > 0) {
+          setSelectedAddress(data[0]); // Set the first address as the selected address
+        }
+      } catch (error) {
+        console.error('Error fetching addresses:', error);
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/cart'); // Adjust the endpoint as necessary
+        const response = await fetch('http://localhost:5000/api/cart');
         if (!response.ok) throw new Error('Failed to fetch cart items');
         const data = await response.json();
-        
+
         if (data.cartItems && Array.isArray(data.cartItems)) {
           setCartItems(data.cartItems);
         } else {
@@ -51,7 +70,7 @@ const Checkout = () => {
   };
 
   const totalItems = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  const totalAmount = totalItems + deliveryCharge - discount; // Total amount considering discount
+  const totalAmount = totalItems + deliveryCharge - discount;
 
   const handleApplyCoupon = () => {
     if (coupons[couponCode]) {
@@ -64,57 +83,81 @@ const Checkout = () => {
   };
 
   const handlePayment = async () => {
-    const amount = totalAmount; // Total amount to be paid
-    console.log('Handling payment with amount:', amount, 'and payment method:', paymentMethod);
-  
+    const amount = totalAmount;
+
+    // Debugging: Log the total amount
+    console.log("Total amount to be paid:", amount);
+
+    // Create the order items array
+    const orderItems = cartItems.map(item => ({
+      product: item.product._id,
+      quantity: item.quantity,
+      price: item.product.price
+    }));
+
+    // Debugging: Log the order items array
+    console.log("Order items:", orderItems);
+
+    // Create order data based on the selected payment method
+    const orderData = {
+      orderItems: orderItems,
+      shippingAddress: selectedAddress._id, // Assuming this is the address ID
+      paymentMethod: paymentMethod,
+      totalPrice: totalAmount,
+    };
+
+    // Debugging: Log the order data
+    console.log("Order data before sending:", orderData);
+
     if (paymentMethod === 'cod') {
-      // Handle cash on delivery logic here
-      const paymentData = {
-        orderId: 'COD-' + Date.now(), // Unique identifier for the order
-        paymentMethod: 'cod',
-        amount,
-      };
-  
-      console.log('Processing Cash on Delivery:', paymentData);
-  
       try {
-        // Save the order details to your backend
-        const response = await fetch('/api/payment/verify', { // Adjust endpoint as necessary
+        const response = await fetch('http://localhost:5000/api/orders/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(paymentData),
+          body: JSON.stringify(orderData),
         });
-  
+
+        // Debugging: Log the response status
+        console.log("Response from order save:", response);
+
         if (!response.ok) {
-          throw new Error('Failed to save order details: ' + response.statusText);
+          const errorText = await response.text();
+          throw new Error('Failed to save order details: ' + errorText);
         }
-  
+
         alert("Order placed successfully with Cash on Delivery!");
-        return; // Exit the function
+        navigate('/order-details');
       } catch (error) {
         console.error("Error during Cash on Delivery processing:", error);
       }
+      return; // Exit the function to avoid Razorpay triggering
     }
-  
+
     // Continue with Razorpay if payment method is 'razorpay'
     try {
-      const response = await fetch('http://localhost:5000/api/payments/razorpay', { // Replace with your actual endpoint
+      const response = await fetch('http://localhost:5000/api/payments/razorpay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ amount }),
       });
-  
+
+      // Debugging: Log the response from Razorpay initialization
+      console.log("Response from Razorpay initiation:", response);
+
       if (!response.ok) {
-        throw new Error('Failed to initiate Razorpay payment: ' + response.statusText);
+        const errorText = await response.text();
+        throw new Error('Failed to initiate Razorpay payment: ' + errorText);
       }
-  
+
       const data = await response.json();
-      console.log('Razorpay response received:', data);
-  
+
+      // Debugging: Log the data received from Razorpay
+      console.log("Razorpay data received:", data);
+
       const options = {
         key: 'rzp_test_mRwGhrvW3W8Tlv',
         amount: data.amount,
@@ -123,31 +166,34 @@ const Checkout = () => {
         description: "Order Description",
         order_id: data.id,
         handler: async (razorpayResponse) => {
-          console.log('Payment successful with response:', razorpayResponse);
-          
-          // Payment successful, save the payment details to the database
           const paymentData = {
-            orderId: data.id,
-            paymentMethod: 'razorpay',
-            amount,
-            transactionId: razorpayResponse.razorpay_payment_id, // Capture the transaction ID
-            signature: razorpayResponse.razorpay_signature // Capture the signature
+            ...orderData,
+            transactionId: razorpayResponse.razorpay_payment_id,
+            signature: razorpayResponse.razorpay_signature
           };
-  
+
+          // Debugging: Log payment data before verification
+          console.log("Payment data to verify:", paymentData);
+
           try {
-            const verifyResponse = await fetch('http://localhost:5000/api/payments/verify', { // Adjust endpoint as necessary
+            const verifyResponse = await fetch('http://localhost:5000/api/payments/verify', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify(paymentData),
             });
-  
+
+            // Debugging: Log the response from payment verification
+            console.log("Response from payment verification:", verifyResponse);
+
             if (!verifyResponse.ok) {
-              throw new Error('Failed to save payment details: ' + verifyResponse.statusText);
+              const errorText = await verifyResponse.text();
+              throw new Error('Failed to save payment details: ' + errorText);
             }
-  
+
             alert("Payment Successful!");
+            navigate('/order-details');
           } catch (error) {
             console.error("Error saving payment details:", error);
           }
@@ -161,19 +207,19 @@ const Checkout = () => {
           color: "#0A4834",
         },
         method: {
-          card: true, // Enable card payments
+          card: true,
           netbanking: true,
           upi: true,
           wallet: false,
         }
       };
-  
+
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
       console.error("Payment failed:", error);
     }
-  };  
+  };
 
   return (
     <div className="checkout-con container">
@@ -191,8 +237,11 @@ const Checkout = () => {
           <h3>Select Delivery Address</h3>
           <select onChange={(e) => setSelectedAddress(addresses[e.target.value])}>
             {addresses.map((addr, index) => (
-              <option key={addr.id} value={index}>{addr.address}</option>
+              <option key={addr._id} value={index}>
+                {addr.addressLine1}, {addr.addressLine2 ? `${addr.addressLine2}, ` : ''}{addr.city}, {addr.state}, {addr.postalCode}, {addr.country}
+              </option>
             ))}
+
           </select>
           <button onClick={() => setModalOpen(true)}>Add New Address</button>
 
@@ -222,7 +271,7 @@ const Checkout = () => {
                 checked={paymentMethod === 'razorpay'}
                 onChange={(e) => {
                   setPaymentMethod(e.target.value);
-                  setDiscount(0); // Reset discount when changing payment method
+                  setDiscount(0);
                 }}
               /> Razorpay
             </label>
@@ -234,9 +283,9 @@ const Checkout = () => {
                 checked={paymentMethod === 'cod'}
                 onChange={(e) => {
                   setPaymentMethod(e.target.value);
-                  setDiscount(0); // Reset discount when changing payment method
+                  setDiscount(0);
                 }}
-              /> Cash on Delivery (POD)
+              /> Cash on Delivery (COD)
             </label>
           </div>
 
@@ -262,7 +311,12 @@ const Checkout = () => {
 
         <div className="checkout-right">
           <h3>Order Summary</h3>
-          <p>Delivery Address: {selectedAddress.address}</p>
+          <p>
+            Delivery Address: {selectedAddress
+              ? `${selectedAddress.addressLine1}${selectedAddress.addressLine2 ? ', ' + selectedAddress.addressLine2 : ''}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.postalCode}, ${selectedAddress.country}`
+              : 'Select an address'}
+          </p>
+
           <p>Payment Method: {paymentMethod === 'razorpay' ? 'Razorpay' : 'Cash on Delivery'}</p>
           <p>Items Total: ${totalItems.toFixed(2)}</p>
           <p>Delivery Charge: ${deliveryCharge}</p>

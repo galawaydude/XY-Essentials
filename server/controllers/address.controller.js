@@ -3,7 +3,7 @@ const Address = require('../models/address.model');
 
 // Get all addresses for a user
 const getUserAddresses = asyncHandler(async (req, res) => {
-  const addresses = await Address.find({ user: req.user._id });
+  const addresses = await Address.find({ user: '67162ddff162c40b40be0062' });
   res.json(addresses);
 });
 
@@ -21,19 +21,15 @@ const getAddressById = asyncHandler(async (req, res) => {
 
 // Create a new address
 const createAddress = asyncHandler(async (req, res) => {
-  const { address, city, postalCode, country } = req.body;
-
   const newAddress = new Address({
-    user: req.user._id,
-    address,
-    city,
-    postalCode,
-    country,
+    ...req.body, 
+    // user = '67162ddff162c40b40be0062'
   });
 
   const createdAddress = await newAddress.save();
   res.status(201).json(createdAddress);
 });
+
 
 // Update an existing address
 const updateAddress = asyncHandler(async (req, res) => {

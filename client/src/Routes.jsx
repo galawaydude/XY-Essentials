@@ -52,6 +52,7 @@ const AppRoutes = () => {
                     <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
                     <Route path="/account" element={<Account />} />
                     <Route path="/order-details" element={<OrderDetails />} />
+                    <Route path="/order-details/:id" element={<OrderDetails />} />
                 </Routes>
             </main>
             <Footer />
