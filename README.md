@@ -60,25 +60,17 @@ cd xy-essentials
    - Create a `.env` file inside the `server/config` folder and add the following environment variables:
 
    ```bash
-   MONGO_URI=mongodb://localhost:27017/xyessentials
-   # Or use MongoDB Atlas connection string:
-   MONGO_URI=mongodb+srv://Aakarsh:xyessen@xy-essentials.xhqbs.mongodb.net/?retryWrites=true&w=majority&appName=XY-Essentials
-
+   MONGO_URI=
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    GOOGLE_REDIRECT_URI=http://localhost:5000/api/auth/google/callback
-
    SESSION_SECRET=your_session_secret
-
    JWT_SECRET=your_jwt_secret
    JWT_TIMEOUT='30d'
-
    RAZORPAY_KEY_ID=your_razorpay_key_id
    RAZORPAY_SECRET=your_razorpay_secret
-
    SENDGRID_API_KEY=your_sendgrid_api_key
    SENDGRID_FROM_EMAIL=your_verified_sender_email@example.com
-
    PORT=5000
    ```
 
