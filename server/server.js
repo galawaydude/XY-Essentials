@@ -19,6 +19,7 @@ const orderRoutes = require('./routes/order.routes');
 const cartRoutes = require('./routes/cart.routes');
 const categoryRoutes = require('./routes/category.routes');
 const couponRoutes = require('./routes/coupon.routes');
+const comboRoutes = require('./routes/combo.routes.js');
 const addressRoutes = require('./routes/address.routes');
 const inventoryRoutes = require('./routes/inventory.routes');
 const paymentRoutes = require('./routes/payment.routes');
@@ -32,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true, 
 };
 
@@ -46,6 +47,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/coupons', couponRoutes);
+app.use('/api/combos', comboRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/payments', paymentRoutes);

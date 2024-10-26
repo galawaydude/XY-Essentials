@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import './cart.css';
 import CartProductCard from '../../components/cartproductcard/CartProductCard';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
-    const navigate = useNavigate(); // For navigation to checkout
+    const [selectedItems, setSelectedItems] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/cart', {
-                    credentials: 'include', // Include cookies for authentication
+                    credentials: 'include',
                 });
                 if (response.ok) {
                     const data = await response.json();
                     setCartItems(data.cartItems);
+                    const initialSelectedItems = {};
+                    data.cartItems.forEach(item => {
+                        initialSelectedItems[item.product._id] = true; // Set to true by default
+                    });
+                    setSelectedItems(initialSelectedItems);
                 } else {
                     console.error('Failed to fetch cart:', await response.json());
                 }
@@ -28,19 +34,16 @@ const Cart = () => {
     }, []);
 
     const updateQuantity = async (productId, newQuantity) => {
-        if (newQuantity < 1) return; // Prevent setting quantity to less than 1
+        if (newQuantity < 1) return;
         try {
             const response = await fetch(`http://localhost:5000/api/cart/${productId}`, {
                 method: 'PUT',
                 credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ quantity: newQuantity }),
             });
 
             if (response.ok) {
-                // Update local state
                 setCartItems((prevItems) =>
                     prevItems.map((item) =>
                         item.product._id === productId ? { ...item, quantity: newQuantity } : item
@@ -62,7 +65,6 @@ const Cart = () => {
             });
 
             if (response.ok) {
-                // Remove item from local state
                 setCartItems((prevItems) => prevItems.filter((item) => item.product._id !== productId));
             } else {
                 console.error('Failed to remove item:', await response.json());
@@ -72,12 +74,22 @@ const Cart = () => {
         }
     };
 
-    // Calculate total price
     const totalPrice = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
 
     const handleCheckout = () => {
-        // Redirect to the checkout page
-        navigate('/checkout'); // Use navigate instead of history.push
+        const checkoutItems = cartItems.filter(item => selectedItems[item.product._id]);
+        if (checkoutItems.length === 0) {
+            alert("Please select at least one item to proceed to checkout.");
+            return;
+        }
+        navigate('/checkout', { state: { checkoutItems } });
+    };
+
+    const handleCheckboxChange = (productId) => {
+        setSelectedItems((prev) => ({
+            ...prev,
+            [productId]: !prev[productId],
+        }));
     };
 
     return (
@@ -94,13 +106,19 @@ const Cart = () => {
             <div className="cart-product-summary container">
                 <div className="cart-products-con">
                     {cartItems.map((item) => (
-                        <CartProductCard 
-                            key={item.product._id} 
-                            product={item.product} 
-                            quantity={item.quantity}
-                            onUpdateQuantity={updateQuantity}
-                            onRemoveFromCart={removeFromCart}
-                        />
+                        <div key={item.product._id}>
+                            <input
+                                type="checkbox"
+                                checked={!!selectedItems[item.product._id]}
+                                onChange={() => handleCheckboxChange(item.product._id)}
+                            />
+                            <CartProductCard 
+                                product={item.product} 
+                                quantity={item.quantity}
+                                onUpdateQuantity={updateQuantity}
+                                onRemoveFromCart={removeFromCart}
+                            />
+                        </div>
                     ))}
                 </div>
                 <div className="cart-summary-con">

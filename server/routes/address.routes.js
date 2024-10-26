@@ -3,7 +3,7 @@ const router = express.Router();
 const { getUserAddresses, createAddress, updateAddress, deleteAddress } = require('../controllers/address.controller.js');
 const { protect } = require('../middlewares/auth.middleware.js');
 
-// Protected Routes
-
+router.get('/', getUserAddresses)
+router.post('/', createAddress)
 
 module.exports = router;

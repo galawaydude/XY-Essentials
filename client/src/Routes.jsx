@@ -18,6 +18,11 @@ import Dashboard from './pages/admin/dashboard/Dashboard';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Checkout from './pages/checkout/Checkout';
 import EditProduct from './pages/admin/product/editproduct/EditProduct';
+import AddBlog from './pages/admin/blog/addblog/AddBlog';
+import EditBlog from './pages/admin/blog/editblog/EditBlog';
+import Account from './pages/profile/account/Account';
+import OrderDetails from './pages/profile/orderdetails/OrderDetails';
+import Combo from './pages/product/combos/Combo';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -33,17 +38,23 @@ const AppRoutes = () => {
                     <Route path="/shop" element={<ProductListing />} />
                     <Route path="/products/:id" element={<ProductDetails />} />
                     <Route path="/cart" element={<Cart />} />
+                    <Route path="/combos" element={<Combo />} />
                     <Route path="/checkout" element={<Checkout/>} />
                     <Route path="/blogs" element={<BlogListing />} />
                     <Route path="/blogs/:id" element={<BlogDetails />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/admin/inventory" element={<Inventory />} />
+                    {/* <Route path="/admin/inventory" element={<Inventory />} /> */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/admin/add-product" element={<AddProduct />} />
+                    {/* <Route path="/admin/add-product" element={<AddProduct />} />
                     <Route path="/admin/edit-product/:id" element={<EditProduct />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />
+                    <Route path="/admin/add-blog" element={<AddBlog />} />
+                    <Route path="/admin/edit-blog/:id" element={<EditBlog />} /> */}
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/order-details" element={<OrderDetails />} />
+                    <Route path="/order-details/:id" element={<OrderDetails />} />
                 </Routes>
             </main>
             <Footer />

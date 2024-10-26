@@ -6,7 +6,17 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   category: { type: String, required: true }, 
   stock: { type: Number, required: true }, 
-  images: [{type: String}],
+  skinType: {type: String},
+  images: { 
+    type: [{ type: String }], 
+    default: [
+      'https://m.media-amazon.com/images/I/61a3YAltH5L.jpg',
+      'https://m.media-amazon.com/images/I/61a3YAltH5L.jpg',
+      'https://m.media-amazon.com/images/I/61a3YAltH5L.jpg',
+      'https://m.media-amazon.com/images/I/61a3YAltH5L.jpg',
+      'https://m.media-amazon.com/images/I/61a3YAltH5L.jpg'
+    ]
+  },
   rating: { type: Number, default: 0 },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   claims: [{ type: String }], 

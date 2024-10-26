@@ -70,7 +70,7 @@
     /* font-size: 0.9rem; */
     max-lines: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
 
 }
 .h-product-title:hover {
@@ -88,7 +88,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1; /* Limits to 1 line */
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
     color: black;
 }
 .h-product-subtitle {
@@ -96,7 +96,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1; /* Limits to 1 line */
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
 }
 
 .home-product-item {

@@ -1,0 +1,25 @@
+.combo-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .combo-section {
+    margin: 20px 0;
+  }
+  
+  .combo {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .combo h2 {
+    margin-bottom: 10px;
+  }
+  
+  .products {
+    display: flex;
+    justify-content: space-around;
+  }
+  

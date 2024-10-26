@@ -11,8 +11,11 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod: { type: String, required: true },  
   paymentStatus: { type: String, default: 'Pending' }, 
-  totalPrice: { type: Number, required: true },
-  isDelivered: { type: Boolean, default: false },
+  subtotal: { type: Number, required: true },
+  discount: { type: Number, required: true },
+  shippingFee: { type: Number, required: true },
+  finalPrice: { type: Number, required: true },
+  shippingStatus: { type: String, required: true, default: 'Not yet shipped' },
   deliveredAt: { type: Date },
 }, { timestamps: true });
 

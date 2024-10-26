@@ -9,7 +9,11 @@ const ProductDetails = () => {
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [reviews, setReviews] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [reviewModalOpen, setReviewModalOpen] = useState(false);
+    const [rating, setRating] = useState(1);
+    const [comment, setComment] = useState('');
+    const [quantity, setQuantity] = useState(1); // State for quantity
     const { id: productId } = useParams();
 
     useEffect(() => {
@@ -34,10 +38,10 @@ const ProductDetails = () => {
                 }
                 const data = await response.json();
                 setProduct(data);
-                setReviews(data.reviews? data.reviews : []);
+                setReviews(data.reviews ? data.reviews : []);
             } catch (error) {
                 console.error(error);
-                setProduct(null); 
+                setProduct(null);
             } finally {
                 setLoading(false);
             }
@@ -46,6 +50,75 @@ const ProductDetails = () => {
         fetchProductDetails();
     }, [productId]);
 
+    const handleAddReview = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/products/${productId}/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rating, comment }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add review');
+            }
+
+            const newReview = await response.json();
+            setReviews((prevReviews) => [...prevReviews, newReview]);
+            setRating(1); // Reset rating
+            setComment(''); // Reset comment
+            setReviewModalOpen(false); // Close the modal
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleOpenReviewModal = () => {
+        setReviewModalOpen(true);
+    };
+
+    const handleCloseReviewModal = () => {
+        setReviewModalOpen(false);
+    };
+
+    const handleQuantityChange = (operation) => {
+        setQuantity((prevQuantity) => {
+            if (operation === 'increment') {
+                return prevQuantity + 1;
+            } else if (operation === 'decrement' && prevQuantity > 1) {
+                return prevQuantity - 1;
+            }
+            return prevQuantity;
+        });
+    };
+
+    const handleAddToCart = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/api/cart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include', 
+            body: JSON.stringify({
+              productId: product._id, 
+              quantity: quantity, 
+            }),
+          });
+    
+          if (!response.ok) {
+            throw new Error('Failed to add product to cart');
+          }
+    
+          const data = await response.json();
+          console.log('Product added to cart:', data);
+        } catch (error) {
+          console.error('Error adding product to cart:', error);
+        }
+      };
+
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -53,6 +126,8 @@ const ProductDetails = () => {
     if (!product) {
         return <p>Product not found.</p>;
     }
+
+
 
     return (
         <div className="product-details">
@@ -116,62 +191,59 @@ const ProductDetails = () => {
                             <p className='pd-desc'>{product.claims.join(', ')}</p>
                         </div>
                     </div>
+                 
                 </div>
                 <div className="product-order-con">
-                    <div className="pd-price">
-                        <div className="pd-actual-price">
-                            ${product.price}
-                        </div>
-                        {/* If there's a strike price, uncomment this */}
-                        {/* <div className="pd-strike-price">
-                            $102
-                        </div> */}
-                    </div>
-                    <div className="pd-quatity">
-                        <div className='pd-quantity-head'>Quantity</div>
-                        <div className="pd-quantity-counter">
-                            <button>-</button>
-                            <p className='pd-quantity-num'>1</p>
-                            <button>+</button>
-                        </div>
-                    </div>
-
-                    <div className="pd-divider"></div>
-
-                    <div className="pd-btns">
-                        <div className="pd-cart-btn">
-                            <button>
-                                <span>Add to Cart</span>
-                            </button>
-                        </div>
-                        <div className="pd-buy-btn">
-                            <button>
-                                <span>Buy Now</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="pd-service-features">
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-shipping-fast"></i>
+                        <div className="pd-price">
+                            <div className="pd-actual-price">
+                                ${product.price}
                             </div>
-                            <div className="pd-sf-text">Free Shipping</div>
                         </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-money-check-alt"></i>
+                        <div className="pd-quantity">
+                            <div className='pd-quantity-head'>Quantity</div>
+                            <div className="pd-quantity-counter">
+                                <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                                <p className='pd-quantity-num'>{quantity}</p>
+                                <button onClick={() => handleQuantityChange('increment')}>+</button>
                             </div>
-                            <div className="pd-sf-text">Money-back Guarantee</div>
                         </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-truck"></i>
+
+                        {/* <div className="pd-divider"></div> */}
+
+                        <div className="pd-btns">
+                            <div className="pd-cart-btn">
+                                <button onClick={handleAddToCart}>
+                                    <span>Add to Cart</span>
+                                </button>
                             </div>
-                            <div className="pd-sf-text">Fast Delivery</div>
+                            {/* <div className="pd-buy-btn">
+                                <button>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div> */}
+                        </div>
+
+                        <div className="pd-service-features">
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-shipping-fast"></i>
+                                </div>
+                                <div className="pd-sf-text">Free Shipping</div>
+                            </div>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-money-check-alt"></i>
+                                </div>
+                                <div className="pd-sf-text">Money-back Guarantee</div>
+                            </div>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-truck"></i>
+                                </div>
+                                <div className="pd-sf-text">Fast Delivery</div>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
 
             <div className="section container">
@@ -187,8 +259,8 @@ const ProductDetails = () => {
                 <hr />
                 <div className="home-products-con">
                     {products.map(product => (
-                  
-  <ProductCard product={product} key={product._id}/>
+
+                        <ProductCard product={product} key={product._id} />
 
 
                     ))}
@@ -199,16 +271,45 @@ const ProductDetails = () => {
                     <div className="section_left_title">
                         All <strong>Reviews</strong>
                     </div>
+                    <div className="add-review-btn">
+                        <button onClick={handleOpenReviewModal}>Add Review</button>
+                    </div>
                 </div>
                 <hr />
                 <div className="pd-reviews">
                     <div className="pd-reviews-con">
-                        {reviews.map(review => (
-                            <ReviewCard key={review._id} review={review} /> // Assuming ReviewCard accepts a review prop
+                        {reviews.map((review) => (
+                            <ReviewCard key={review._id} review={review} />
                         ))}
                     </div>
                 </div>
             </div>
+
+            {/* Review Modal */}
+            {reviewModalOpen && (
+                <div className="review-modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={handleCloseReviewModal}>&times;</span>
+                        <h2>Add Your Review</h2>
+                        <div>
+                            <label>Rating:</label>
+                            <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <option key={star} value={star}>{star}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label>Comment:</label>
+                            <textarea
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                            ></textarea>
+                        </div>
+                        <button onClick={handleAddReview}>Submit Review</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

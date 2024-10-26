@@ -3,24 +3,41 @@ const Order = require('../models/order.model');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: '67162ddff162c40b40be0062' });
   res.json(orders);
 });
 
 // Create a new order
 const placeOrder = asyncHandler(async (req, res) => {
+  console.log('Request Body:', req.body); // Log the request body
+  console.log('User Info:', req.user); // Log user information
 
+  try {
+      const orderData = {
+          ...req.body, 
+          user: '67162ddff162c40b40be0062', // Add the user's ID
+      };
 
-    const order = new Order(req.body);
+      console.log('Order Data:', orderData); // Log the combined order data
 
-    const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
- 
+      const order = new Order(orderData); // Create a new order with the combined data
+
+      const createdOrder = await order.save(); // Save the order to the database
+
+      console.log('Created Order:', createdOrder); // Log the created order
+      res.status(201).json(createdOrder); // Respond with the created order
+  } catch (error) {
+      console.error('Error creating order:', error); // Log any errors that occur
+      res.status(500).json({ message: 'Failed to create order', error: error.message });
+  }
 });
+
 
 // Get order by ID
 const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate('user', 'name email');
+  const order = await Order.findById(req.params.id).populate('user', 'name email')
+  .populate('orderItems.product') 
+  .populate('shippingAddress');
 
   if (order) {
     res.json(order);

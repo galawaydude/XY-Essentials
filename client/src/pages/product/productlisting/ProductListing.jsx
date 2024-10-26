@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './productlisting.css';
 import ProductCard from '../../../components/productcard/ProductCard';
-import { Link} from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const ProductListing = () => {
     const [products, setProducts] = useState([]);
@@ -10,6 +10,7 @@ const ProductListing = () => {
     const [selectedType, setSelectedType] = useState('');
     const [priceRange, setPriceRange] = useState([0, 1000]); // Example price range
     const [selectedRating, setSelectedRating] = useState('');
+    const location = useLocation();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -25,6 +26,16 @@ const ProductListing = () => {
 
         fetchProducts();
     }, []);
+
+    useEffect(() => {
+        const query = new URLSearchParams(location.search);
+        const category = query.get('category');
+        if (category) {
+            setSelectedCategory(category);
+        }
+    }, [location]);
+
+
 
     const filteredProducts = products.filter(product => {
         const passesCategory = selectedCategory === '' || product.category === selectedCategory;
@@ -80,7 +91,7 @@ const ProductListing = () => {
 
                         <div className="sf-subhead">
                             <p>Categories</p>
-                            {['Serum', 'Moisturizer', 'Cleanser', 'Oil', 'Balm', 'Scrub'].map((category) => (
+                            {['Protect', 'Cleanser', 'Treat'].map((category) => (
                                 <div className="sf-item" key={category}>
                                     <input
                                         type="checkbox"
@@ -96,7 +107,7 @@ const ProductListing = () => {
 
                         <div className="sf-subhead">
                             <p>Skin Type</p>
-                            {['Dry', 'Oily', 'Combination', 'Sensitive', 'All'].map((skinType) => (
+                            {['Dry', 'Oily'].map((skinType) => (
                                 <div className="sf-item" key={skinType}>
                                     <input
                                         type="checkbox"
@@ -110,7 +121,7 @@ const ProductListing = () => {
                             ))}
                         </div>
 
-                        <div className="sf-subhead">
+                        {/* <div className="sf-subhead">
                             <p>Product Type</p>
                             {['Moisturizer', 'Grooming', 'Scrub', 'Cleanser'].map((type) => (
                                 <div className="sf-item" key={type}>
@@ -124,7 +135,7 @@ const ProductListing = () => {
                                     <label htmlFor={type}>{type}</label>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
 
                         <div className="sf-subhead">
                             <p>Price Range</p>
@@ -138,7 +149,7 @@ const ProductListing = () => {
                             <p>Price: ${priceRange[0]} - ${priceRange[1]}</p>
                         </div>
 
-                        <div className="sf-subhead">
+                        {/* <div className="sf-subhead">
                             <p>Minimum Rating</p>
                             {['', 4, 4.5, 5].map((rating) => (
                                 <div className="sf-item" key={rating}>
@@ -152,7 +163,7 @@ const ProductListing = () => {
                                     <label htmlFor={`rating-${rating}`}>{rating ? `≥ ${rating}` : 'All Ratings'}</label>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="home-products-con">

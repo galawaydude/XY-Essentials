@@ -4,9 +4,9 @@ const { getUserOrders, getOrderById, placeOrder, updateOrderStatus, cancelOrder 
 const { protect, admin } = require('../middlewares/auth.middleware.js');
 
 // User Routes
-router.get('/', protect, getUserOrders);
+router.get('/', getUserOrders);
 router.post('/', placeOrder);
-router.get('/:id', protect, getOrderById);
+router.get('/:id',getOrderById);
 
 // Admin Routes
 router.put('/:id', protect, admin, updateOrderStatus);
