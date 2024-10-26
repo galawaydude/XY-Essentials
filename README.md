@@ -5,6 +5,7 @@ This repository contains the frontend and backend code for XY Essentials, a dire
 ## Project Structure
 
 - **Frontend (Client)**: Runs on port `5173`
+- **Frontend (Admin)**: Runs on port `5174`
 - **Backend (Server)**: Runs on port `5000`
 - **Database**: MongoDB (local/Atlas)
 
@@ -60,25 +61,17 @@ cd xy-essentials
    - Create a `.env` file inside the `server/config` folder and add the following environment variables:
 
    ```bash
-   MONGO_URI=mongodb://localhost:27017/xyessentials
-   # Or use MongoDB Atlas connection string:
-   MONGO_URI=mongodb+srv://Aakarsh:xyessen@xy-essentials.xhqbs.mongodb.net/?retryWrites=true&w=majority&appName=XY-Essentials
-
+   MONGO_URI=
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    GOOGLE_REDIRECT_URI=http://localhost:5000/api/auth/google/callback
-
    SESSION_SECRET=your_session_secret
-
    JWT_SECRET=your_jwt_secret
    JWT_TIMEOUT='30d'
-
    RAZORPAY_KEY_ID=your_razorpay_key_id
    RAZORPAY_SECRET=your_razorpay_secret
-
    SENDGRID_API_KEY=your_sendgrid_api_key
    SENDGRID_FROM_EMAIL=your_verified_sender_email@example.com
-
    PORT=5000
    ```
 
@@ -90,7 +83,7 @@ cd xy-essentials
 
    The backend will run on `http://localhost:5000`.
 
-### Frontend Setup
+### Client Setup
 
 1. Navigate to the `client` folder:
 
@@ -112,9 +105,32 @@ cd xy-essentials
 
    The frontend will run on `http://localhost:5173`.
 
+### Admin Setup
+
+1. Navigate to the `client` folder:
+
+   ```bash
+   cd ../admin
+   ```
+
+2. Install the required dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the frontend:
+
+   ```bash
+   npm run dev
+   ```
+
+   The frontend will run on `http://localhost:5174`.
+
 ## Usage
 
-- Access the frontend by visiting `http://localhost:5173`.
+- Access the client-side by visiting `http://localhost:5173`.
+- Access the admin panel by visiting `http://localhost:5174`.
 - The backend API runs at `http://localhost:5000`.
 
 ## Third-Party Integrations
@@ -137,6 +153,10 @@ Make sure to replace the placeholder keys (`your_google_client_id`, `your_razorp
 ## Folder Structure
 
 ```
+├── admin
+│   ├── public
+│   └── src
+│       └── pages
 ├── client
 │   ├── public
 │   └── src
