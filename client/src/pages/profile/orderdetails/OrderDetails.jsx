@@ -31,30 +31,36 @@ const OrderDetails = () => {
   if (error) return <p>Error: {error}</p>;
   if (!order) return <p>No order found</p>;
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   // Destructure order data
   const {
-    orderId,
+    _id,
     orderItems,
-    totalPrice,
-    shippingPrice,
-    taxPrice,
+    shippingFee,
+    subtotal,
     discount,
     finalPrice,
     deliveryDate,
-    orderDate,
+    createdAt,
     shippingAddress,
     paymentMethod,
     paymentStatus,
+    shippingStatus,
     trackingNumber,
   } = order;
 
   return (
     <div className="order-details-container">
-      <h1 className="order-details-heading">Order #{orderId}</h1>
+      <h1 className="order-details-heading">Order ID: {_id}</h1>
 
       {/* Order Status */}
       <div className="order-status-section">
-        <p><strong>Order Status:</strong> {paymentStatus}</p>
+        <p><strong>Payment Status:</strong> {paymentStatus}</p>
+        <p><strong>Shipping Status:</strong> {shippingStatus}</p>
         {trackingNumber && (
           <p><strong>Tracking Number:</strong> {trackingNumber}</p>
         )}
@@ -66,7 +72,7 @@ const OrderDetails = () => {
         <h2>Products in this order</h2>
         {orderItems.map((item, index) => (
           <div key={index} className="product-item">
-            <img src={item.product.image} alt={item.product.name} className="product-image" />
+            <img src={item.product.images[0]} alt={item.product.name} className="product-image" />
             <div className="product-details">
               <p><strong>Product Name:</strong> {item.product.name}</p>
               <p><strong>Quantity:</strong> {item.quantity}</p>
@@ -79,10 +85,10 @@ const OrderDetails = () => {
       {/* Pricing Breakdown */}
       <div className="pricing-breakdown">
         <h2>Price Breakdown</h2>
-        <p><strong>Subtotal:</strong> ₹{totalPrice}</p>
-        <p><strong>Shipping Price:</strong> ₹{shippingPrice}</p>
-        <p><strong>Tax:</strong> ₹{taxPrice}</p>
-        {discount > 0 && <p><strong>Discount:</strong> -₹{discount}</p>}
+        <p><strong>Subtotal:</strong> ₹{subtotal}</p>
+        <p><strong>Shipping Price:</strong> ₹{shippingFee}</p>
+        {/* <p><strong>Tax:</strong> ₹{taxPrice}</p> */}
+        {discount > 0 && <p><strong>Discount:</strong> ₹{discount}</p>}
         <p><strong>Total Amount:</strong> ₹{finalPrice}</p>
       </div>
 
@@ -97,15 +103,14 @@ const OrderDetails = () => {
         <p><strong>City:</strong> {shippingAddress.city}</p>
         <p><strong>State:</strong> {shippingAddress.state}</p>
         <p><strong>Postal Code:</strong> {shippingAddress.postalCode}</p>
-        <p><strong>Country:</strong> {shippingAddress.country}</p>
         <p><strong>Phone Number:</strong> {shippingAddress.phoneNumber}</p>
       </div>
 
       {/* Payment Information */}
       <div className="payment-section">
         <h2>Payment Information</h2>
-        <p><strong>Payment Method:</strong> {paymentMethod}</p>
-        <p><strong>Order Date:</strong> {orderDate}</p>
+        <p><strong>Payment Method:</strong> {paymentMethod === 'cod'? "Pay On Delivery" : "Razorpay"}</p>
+        <p><strong>Order Date:</strong> {formatDate(createdAt)}</p>
       </div>
     </div>
   );

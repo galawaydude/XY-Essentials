@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const [addresses, setAddresses] = useState([]); // Initialize as an empty array
-  const [selectedAddress, setSelectedAddress] = useState(null); // Initialize as null
+  const location = useLocation();
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
-  const [cartItems, setCartItems] = useState([]);
+  const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
   const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
   const [discount, setDiscount] = useState(0);
 
@@ -39,27 +40,27 @@ const Checkout = () => {
     fetchAddresses();
   }, []);
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/cart');
-        if (!response.ok) throw new Error('Failed to fetch cart items');
-        const data = await response.json();
+  // useEffect(() => {
+  //   const fetchCartItems = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:5000/api/cart');
+  //       if (!response.ok) throw new Error('Failed to fetch cart items');
+  //       const data = await response.json();
 
-        if (data.cartItems && Array.isArray(data.cartItems)) {
-          setCartItems(data.cartItems);
-        } else {
-          console.error('Expected cartItems to be an array:', data.cartItems);
-          setCartItems([]);
-        }
-      } catch (error) {
-        console.error('Error fetching cart items:', error);
-        setCartItems([]);
-      }
-    };
+  //       if (data.cartItems && Array.isArray(data.cartItems)) {
+  //         setCartItems(data.cartItems);
+  //       } else {
+  //         console.error('Expected cartItems to be an array:', data.cartItems);
+  //         setCartItems([]);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching cart items:', error);
+  //       setCartItems([]);
+  //     }
+  //   };
 
-    fetchCartItems();
-  }, []);
+  //   fetchCartItems();
+  // }, []);
 
   const handleAddAddress = () => {
     if (newAddress) {
@@ -69,7 +70,7 @@ const Checkout = () => {
     }
   };
 
-  const totalItems = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+  const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalAmount = totalItems + deliveryCharge - discount;
 
   const handleApplyCoupon = () => {
@@ -89,11 +90,16 @@ const Checkout = () => {
     console.log("Total amount to be paid:", amount);
 
     // Create the order items array
-    const orderItems = cartItems.map(item => ({
+    const orderItems = checkoutItems.map(item => ({
       product: item.product._id,
       quantity: item.quantity,
       price: item.product.price
     }));
+    // const orderItems = cartItems.map(item => ({
+    //   product: item.product._id,
+    //   quantity: item.quantity,
+    //   price: item.product.price
+    // }));
 
     // Debugging: Log the order items array
     console.log("Order items:", orderItems);
@@ -102,8 +108,11 @@ const Checkout = () => {
     const orderData = {
       orderItems: orderItems,
       shippingAddress: selectedAddress._id, // Assuming this is the address ID
+      shippingFee: deliveryCharge,
+      discount: discount,
+      subtotal: totalItems,
       paymentMethod: paymentMethod,
-      totalPrice: totalAmount,
+      finalPrice: totalAmount,
     };
 
     // Debugging: Log the order data
@@ -127,8 +136,11 @@ const Checkout = () => {
           throw new Error('Failed to save order details: ' + errorText);
         }
 
+        const createdOrder = await response.json(); // Get the created order
         alert("Order placed successfully with Cash on Delivery!");
-        navigate('/order-details');
+        
+        // Redirect to the order details page with the order ID
+        navigate(`/order-details/${createdOrder._id}`);
       } catch (error) {
         console.error("Error during Cash on Delivery processing:", error);
       }
@@ -301,7 +313,7 @@ const Checkout = () => {
 
           <h3>Order Items Preview</h3>
           <ul>
-            {cartItems.map((item) => (
+            {checkoutItems.map((item) => (
               <li key={item.product._id}>
                 {item.product.name} - ${item.product.price} x {item.quantity}
               </li>

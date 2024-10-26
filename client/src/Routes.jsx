@@ -42,14 +42,14 @@ const AppRoutes = () => {
                     <Route path="/blogs/:id" element={<BlogDetails />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/admin/inventory" element={<Inventory />} />
+                    {/* <Route path="/admin/inventory" element={<Inventory />} /> */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/admin/add-product" element={<AddProduct />} />
+                    {/* <Route path="/admin/add-product" element={<AddProduct />} />
                     <Route path="/admin/edit-product/:id" element={<EditProduct />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />
                     <Route path="/admin/add-blog" element={<AddBlog />} />
-                    <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
+                    <Route path="/admin/edit-blog/:id" element={<EditBlog />} /> */}
                     <Route path="/account" element={<Account />} />
                     <Route path="/order-details" element={<OrderDetails />} />
                     <Route path="/order-details/:id" element={<OrderDetails />} />
