@@ -107,7 +107,7 @@ const ProductListing = () => {
 
                         <div className="sf-subhead">
                             <p>Skin Type</p>
-                            {['Dry', 'Oily', 'Combination'].map((skinType) => (
+                            {['Dry', 'Oily'].map((skinType) => (
                                 <div className="sf-item" key={skinType}>
                                     <input
                                         type="checkbox"
@@ -149,7 +149,7 @@ const ProductListing = () => {
                             <p>Price: ${priceRange[0]} - ${priceRange[1]}</p>
                         </div>
 
-                        <div className="sf-subhead">
+                        {/* <div className="sf-subhead">
                             <p>Minimum Rating</p>
                             {['', 4, 4.5, 5].map((rating) => (
                                 <div className="sf-item" key={rating}>
@@ -163,7 +163,7 @@ const ProductListing = () => {
                                     <label htmlFor={`rating-${rating}`}>{rating ? `≥ ${rating}` : 'All Ratings'}</label>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="home-products-con">
