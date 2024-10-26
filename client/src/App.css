@@ -347,13 +347,13 @@ a {
 }
 
 .r-tag {
-  border: 0.2rem solid #E95252;
+  border: 1px solid #E95252;
   border-radius: 0.3rem;
   padding: 0.2rem 0.7rem;
   background-color: rgba(233, 82, 82, 0.4);
   color: var(--m1);
-
 }
+
 .g-tag {
   border: 0.2rem solid #10CE36;
   border-radius: 0.3rem;

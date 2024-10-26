@@ -7,6 +7,8 @@ import EditProduct from './pages/product/editproduct/EditProduct';
 import AddBlog from './pages/blog/addblog/AddBlog';
 import EditBlog from './pages/blog/editblog/EditBlog';
 import Inventory from './pages/inventory/Inventory';
+import AllOrders from './pages/orders/AllOrders';
+import Blogs from './pages/blog/allblogs/allBlogs';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -24,6 +26,8 @@ const AppRoutes = () => {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/admin/add-blog" element={<AddBlog />} />
                     <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
+                    <Route path="/admin/blogs" element={<Blogs />} />
+                    <Route path="/admin/orders" element={<AllOrders />} />
                 </Routes>
             </main>
       

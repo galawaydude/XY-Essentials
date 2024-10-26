@@ -1,0 +1,59 @@
+.order-card-main-con {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-card-con {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .order-card-details-header {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .order-card-details-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+
+  }
+  
+  .order-item-con {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    height: 5vh;
+  }
+
+  .order-card-details-con {
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+  
+  .order-card-product, .order-card-price, .order-card-quantity, .order-card-total {
+    font-size: 0.9em;
+  }
+  
+  .order-summary-con {
+    border-top: 1px solid #ddd;;
+    padding: 1rem 0;
+    font-weight: 500;
+  }
+  
+  .order-summary-con p {
+    margin: 5px 0;
+  }
+  
+  .bullet-pt{
+    color: black;
+    margin-right: 0.5rem;
+  }
