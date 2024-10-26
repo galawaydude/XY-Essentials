@@ -90,7 +90,7 @@ cd xy-essentials
 
    The backend will run on `http://localhost:5000`.
 
-### Frontend Setup
+### Client Setup
 
 1. Navigate to the `client` folder:
 
@@ -112,9 +112,32 @@ cd xy-essentials
 
    The frontend will run on `http://localhost:5173`.
 
+### Admin Setup
+
+1. Navigate to the `client` folder:
+
+   ```bash
+   cd ../admin
+   ```
+
+2. Install the required dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the frontend:
+
+   ```bash
+   npm run dev
+   ```
+
+   The frontend will run on `http://localhost:5174`.
+
 ## Usage
 
-- Access the frontend by visiting `http://localhost:5173`.
+- Access the client-side by visiting `http://localhost:5173`.
+- Access the admin panel by visiting `http://localhost:5174`.
 - The backend API runs at `http://localhost:5000`.
 
 ## Third-Party Integrations
@@ -137,6 +160,10 @@ Make sure to replace the placeholder keys (`your_google_client_id`, `your_razorp
 ## Folder Structure
 
 ```
+├── admin
+│   ├── public
+│   └── src
+│       └── pages
 ├── client
 │   ├── public
 │   └── src
