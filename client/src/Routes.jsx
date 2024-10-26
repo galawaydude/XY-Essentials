@@ -22,6 +22,7 @@ import AddBlog from './pages/admin/blog/addblog/AddBlog';
 import EditBlog from './pages/admin/blog/editblog/EditBlog';
 import Account from './pages/profile/account/Account';
 import OrderDetails from './pages/profile/orderdetails/OrderDetails';
+import Combo from './pages/product/combos/Combo';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -37,6 +38,7 @@ const AppRoutes = () => {
                     <Route path="/shop" element={<ProductListing />} />
                     <Route path="/products/:id" element={<ProductDetails />} />
                     <Route path="/cart" element={<Cart />} />
+                    <Route path="/combos" element={<Combo />} />
                     <Route path="/checkout" element={<Checkout/>} />
                     <Route path="/blogs" element={<BlogListing />} />
                     <Route path="/blogs/:id" element={<BlogDetails />} />
