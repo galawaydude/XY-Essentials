@@ -5,6 +5,7 @@ This repository contains the frontend and backend code for XY Essentials, a dire
 ## Project Structure
 
 - **Frontend (Client)**: Runs on port `5173`
+- **Frontend (Admin)**: Runs on port `5174`
 - **Backend (Server)**: Runs on port `5000`
 - **Database**: MongoDB (local/Atlas)
 
