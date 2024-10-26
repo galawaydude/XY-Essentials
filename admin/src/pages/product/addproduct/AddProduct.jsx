@@ -146,9 +146,9 @@ const AddProduct = () => {
                     <label htmlFor="category">Category</label>
                     <select id="category" name="category" value={product.category} onChange={handleChange} required>
                         <option value="">Select Category</option>
-                        <option value="SPF + Moisturizer">SPF + Moisturizer</option>
-                        <option value="Cleaners">Cleaners</option>
-                        <option value="Serums">Serums</option>
+                        <option value="Treat">Treat</option>
+                        <option value="Cleaner">Cleaners</option>
+                        <option value="Protect">Protect</option>
                     </select>
 
                     <label htmlFor="stock">Stock</label>

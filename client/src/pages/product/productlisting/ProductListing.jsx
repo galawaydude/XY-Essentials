@@ -91,7 +91,7 @@ const ProductListing = () => {
 
                         <div className="sf-subhead">
                             <p>Categories</p>
-                            {['Protect', 'Cleansers', 'Treats'].map((category) => (
+                            {['Protect', 'Cleanser', 'Treat'].map((category) => (
                                 <div className="sf-item" key={category}>
                                     <input
                                         type="checkbox"
