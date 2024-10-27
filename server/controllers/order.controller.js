@@ -24,7 +24,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   try {
       const orderData = {
           ...req.body, 
-          user: req.user._id, // Add the user's ID
+          user: req.user._id, 
       };
 
       console.log('Order Data:', orderData); // Log the combined order data

@@ -37,7 +37,7 @@ const Checkout = () => {
       });
       const data = await response.json();
       setAddresses(data);
-      console.log(data);
+      // console.log(data);
 
       if (data.length > 0) {
         setSelectedAddress(data[0]); 
@@ -178,13 +178,12 @@ const Checkout = () => {
         handler: async (razorpayResponse) => {
           const paymentData = {
             ...orderData,
-            orderId: data.id, // Add this line to include orderId
+            orderId: data.id, 
             amount: totalAmount,
             transactionId: razorpayResponse.razorpay_payment_id,
             signature: razorpayResponse.razorpay_signature
           };
 
-          // Debugging: Log payment data before verification
           console.log("Payment data to verify:", paymentData);
 
           try {
@@ -197,7 +196,6 @@ const Checkout = () => {
               body: JSON.stringify(paymentData),
             });
 
-            // Debugging: Log the response from payment verification
             console.log("Response from payment verification:", verifyResponse);
 
             if (!verifyResponse.ok) {
@@ -206,34 +204,35 @@ const Checkout = () => {
             }
 
             alert("Payment Successful!");
-
-            const orderData = {
-              ...orderData,
-              paymentStatus: 'Completed'
-            };
-            console.log("Order data after successful payment:", orderData);
-            const response = await fetch('http://localhost:5000/api/orders/', {
-              method: 'POST',
-              credentials: 'include',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(orderData),
-            });
-    
-            // Debugging: Log the response status
-            console.log("Response from order save:", response);
-    
-            if (!response.ok) {
-              const errorText = await response.text();
-              throw new Error('Failed to save order details: ' + errorText);
-            }
-            const createdOrder = await response.json(); // Get the created order
-            alert("Order placed successfully with Cash on Delivery!");
-            navigate(`/order-details/${createdOrder._id}`);
           } catch (error) {
             console.error("Error saving payment details:", error);
           }
+
+          const razorpayOrderData = {
+            ...orderData,
+            paymentMethod: 'razorpay',
+            paymentStatus: 'Completed'
+          };
+          console.log("Order data after successful razorpay payment:", razorpayOrderData);
+          const response = await fetch('http://localhost:5000/api/orders/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(razorpayOrderData),
+          });
+  
+          // Debugging: Log the response status
+          console.log("Response from order save:", response);
+  
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error('Failed to save order details: ' + errorText);
+          }
+          const createdOrder = await response.json(); // Get the created order
+          alert("Order placed successfully with Cash on Delivery!");
+          navigate(`/order-details/${createdOrder._id}`);
         },
         prefill: {
           name: profile.name || "Customer Name",
