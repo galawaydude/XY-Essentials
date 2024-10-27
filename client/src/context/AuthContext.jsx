@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }) => {
         fetchUser();
     }, []);
 
-    console.log('User:', user);
-    console.log('Is Authenticated:', isAuthenticated);
+    // console.log('User:', user);
+    // console.log('Is Authenticated:', isAuthenticated);
 
     return (
         <AuthContext.Provider value={{ user, isAuthenticated }}>

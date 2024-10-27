@@ -38,6 +38,10 @@ const Checkout = () => {
       const data = await response.json();
       setAddresses(data);
       console.log(data);
+
+      if (data.length > 0) {
+        setSelectedAddress(data[0]); 
+      }
     };
 
 
@@ -184,6 +188,7 @@ const Checkout = () => {
           try {
             const verifyResponse = await fetch('http://localhost:5000/api/payments/verify', {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -217,7 +222,17 @@ const Checkout = () => {
           netbanking: true,
           upi: true,
           wallet: false,
+          paylater: false
+        },
+        config: {
+          display: {
+            hide: [
+            { method: 'paylater' }
+          ],
+          preferences: { show_default_blocks: true }
+          }
         }
+
       };
 
       const rzp = new window.Razorpay(options);

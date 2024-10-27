@@ -18,7 +18,7 @@ const ProductListing = () => {
                 const response = await fetch('http://localhost:5000/api/products/');
                 const data = await response.json();
                 setProducts(data);
-                console.log('Fetched Products:', data); 
+                // console.log('Fetched Products:', data); 
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -45,20 +45,20 @@ const ProductListing = () => {
         const passesRating = selectedRating === '' || product.rating >= selectedRating;
     
         // Log the product and whether it passes all filters
-        console.log(product, {
-            passesCategory,
-            passesSkinType,
-            passesType,
-            passesPrice,
-            passesRating,
-            passesAll: passesCategory && passesSkinType && passesType && passesPrice && passesRating
-        });
+        // console.log(product, {
+        //     passesCategory,
+        //     passesSkinType,
+        //     passesType,
+        //     passesPrice,
+        //     passesRating,
+        //     passesAll: passesCategory && passesSkinType && passesType && passesPrice && passesRating
+        // });
     
         return passesCategory && passesSkinType && passesType && passesPrice && passesRating;
     });
     
 
-    console.log('Filtered Products:', filteredProducts);
+    // console.log('Filtered Products:', filteredProducts);
 
     return (
         <div className="product-details">
