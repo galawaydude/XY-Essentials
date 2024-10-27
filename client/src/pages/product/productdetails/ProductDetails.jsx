@@ -53,6 +53,7 @@ const ProductDetails = () => {
     const handleAddReview = async () => {
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productId}/reviews`, {
+                credentials: 'include',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,6 +74,17 @@ const ProductDetails = () => {
             console.error(error);
         }
     };
+
+
+    const calculateAverageRating = (reviews) => {
+        if (reviews.length === 0) return 0; // Return 0 if no reviews
+        const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+        const average = totalRating / reviews.length;
+        return parseFloat(average.toFixed(1)); // Return average with one decimal place
+    };
+    
+    const averageRating = calculateAverageRating(reviews);
+    
 
     const handleOpenReviewModal = () => {
         setReviewModalOpen(true);
@@ -95,28 +107,28 @@ const ProductDetails = () => {
 
     const handleAddToCart = async () => {
         try {
-          const response = await fetch('http://localhost:5000/api/cart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include', 
-            body: JSON.stringify({
-              productId: product._id, 
-              quantity: quantity, 
-            }),
-          });
-    
-          if (!response.ok) {
-            throw new Error('Failed to add product to cart');
-          }
-    
-          const data = await response.json();
-          console.log('Product added to cart:', data);
+            const response = await fetch('http://localhost:5000/api/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    productId: product._id,
+                    quantity: quantity,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add product to cart');
+            }
+
+            const data = await response.json();
+            console.log('Product added to cart:', data);
         } catch (error) {
-          console.error('Error adding product to cart:', error);
+            console.error('Error adding product to cart:', error);
         }
-      };
+    };
 
 
     if (loading) {
@@ -152,7 +164,7 @@ const ProductDetails = () => {
                             {Array.from({ length: 5 }, (_, index) => (
                                 <i
                                     key={index}
-                                    className={`fas fa-star ${index < Math.floor(product.rating) ? '' : (index < product.rating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
+                                    className={`fas fa-star ${index < Math.floor(averageRating) ? '' : (index < averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
                                 ></i>
                             ))}
                             <span>({product.reviews.length} reviews)</span>
@@ -191,59 +203,59 @@ const ProductDetails = () => {
                             <p className='pd-desc'>{product.claims.join(', ')}</p>
                         </div>
                     </div>
-                 
+
                 </div>
                 <div className="product-order-con">
-                        <div className="pd-price">
-                            <div className="pd-actual-price">
-                                ${product.price}
-                            </div>
+                    <div className="pd-price">
+                        <div className="pd-actual-price">
+                            ${product.price}
                         </div>
-                        <div className="pd-quantity">
-                            <div className='pd-quantity-head'>Quantity</div>
-                            <div className="pd-quantity-counter">
-                                <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                                <p className='pd-quantity-num'>{quantity}</p>
-                                <button onClick={() => handleQuantityChange('increment')}>+</button>
-                            </div>
+                    </div>
+                    <div className="pd-quantity">
+                        <div className='pd-quantity-head'>Quantity</div>
+                        <div className="pd-quantity-counter">
+                            <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                            <p className='pd-quantity-num'>{quantity}</p>
+                            <button onClick={() => handleQuantityChange('increment')}>+</button>
                         </div>
+                    </div>
 
-                        {/* <div className="pd-divider"></div> */}
+                    {/* <div className="pd-divider"></div> */}
 
-                        <div className="pd-btns">
-                            <div className="pd-cart-btn">
-                                <button onClick={handleAddToCart}>
-                                    <span>Add to Cart</span>
-                                </button>
-                            </div>
-                            {/* <div className="pd-buy-btn">
+                    <div className="pd-btns">
+                        <div className="pd-cart-btn">
+                            <button onClick={handleAddToCart}>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                        {/* <div className="pd-buy-btn">
                                 <button>
                                     <span>Buy Now</span>
                                 </button>
                             </div> */}
-                        </div>
+                    </div>
 
-                        <div className="pd-service-features">
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-shipping-fast"></i>
-                                </div>
-                                <div className="pd-sf-text">Free Shipping</div>
+                    <div className="pd-service-features">
+                        <div className="pd-sf-item">
+                            <div className="pd-sf-icon">
+                                <i className="fas fa-shipping-fast"></i>
                             </div>
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-money-check-alt"></i>
-                                </div>
-                                <div className="pd-sf-text">Money-back Guarantee</div>
+                            <div className="pd-sf-text">Free Shipping</div>
+                        </div>
+                        <div className="pd-sf-item">
+                            <div className="pd-sf-icon">
+                                <i className="fas fa-money-check-alt"></i>
                             </div>
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-truck"></i>
-                                </div>
-                                <div className="pd-sf-text">Fast Delivery</div>
+                            <div className="pd-sf-text">Money-back Guarantee</div>
+                        </div>
+                        <div className="pd-sf-item">
+                            <div className="pd-sf-icon">
+                                <i className="fas fa-truck"></i>
                             </div>
+                            <div className="pd-sf-text">Fast Delivery</div>
                         </div>
                     </div>
+                </div>
             </div>
 
             <div className="section container">

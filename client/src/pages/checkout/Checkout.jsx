@@ -24,24 +24,26 @@ const Checkout = () => {
   useEffect(() => {
     // Fetch Addresses
     const fetchProfile = async () => {
-        const response = await fetch(`http://localhost:5000/api/users/profile/`, {
-            credentials: 'include',
-        });
-        const data = await response.json();
-        setProfile(data);
+      const response = await fetch(`http://localhost:5000/api/users/profile/`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setProfile(data);
+      // console.log(data);
     };
     const fetchAddresses = async () => {
-        const response = await fetch(`http://localhost:5000/api/addresses/`, {
-            credentials: 'include',
-        });
-        const data = await response.json();
-        setAddresses(data);
+      const response = await fetch(`http://localhost:5000/api/addresses/`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setAddresses(data);
+      console.log(data);
     };
 
 
     fetchProfile();
     fetchAddresses();
-}, []);
+  }, []);
 
   // useEffect(() => {
   //   const fetchCartItems = async () => {
@@ -141,7 +143,7 @@ const Checkout = () => {
 
         const createdOrder = await response.json(); // Get the created order
         alert("Order placed successfully with Cash on Delivery!");
-        
+
         // Redirect to the order details page with the order ID
         navigate(`/order-details/${createdOrder._id}`);
       } catch (error) {
@@ -251,13 +253,18 @@ const Checkout = () => {
         <div className="checkout-left">
           <h3>Select Delivery Address</h3>
           <select onChange={(e) => setSelectedAddress(addresses[e.target.value])}>
-            {addresses.map((addr, index) => (
-              <option key={addr._id} value={index}>
-                {addr.addressLine1}, {addr.addressLine2 ? `${addr.addressLine2}, ` : ''}{addr.city}, {addr.state}, {addr.postalCode}, {addr.country}
-              </option>
-            ))}
-
+            {addresses.length > 0 ? (
+              addresses.map((addr, index) => (
+                <option key={addr._id} value={index}>
+                  {`${addr.fullName}, ${addr.addressLine1}, ${addr.addressLine2 ? `${addr.addressLine2}, ` : ''}${addr.landMark ? `${addr.landMark}, ` : ''}${addr.city}, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
+                </option>
+              ))
+            ) : (
+              <option disabled>No addresses available</option>
+            )}
           </select>
+
+
           <button onClick={() => setModalOpen(true)}>Add New Address</button>
 
           {modalOpen && (
@@ -328,7 +335,7 @@ const Checkout = () => {
           <h3>Order Summary</h3>
           <p>
             Delivery Address: {selectedAddress
-              ? `${selectedAddress.addressLine1}${selectedAddress.addressLine2 ? ', ' + selectedAddress.addressLine2 : ''}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.postalCode}, ${selectedAddress.country}`
+              ? `${selectedAddress.fullName}, ${selectedAddress.addressLine1}${selectedAddress.addressLine2 ? ', ' + selectedAddress.addressLine2 : ''}, ${selectedAddress.landMark ? `${selectedAddress.landMark}, ` : ''}${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.postalCode}, ${selectedAddress.phoneNumber}`
               : 'Select an address'}
           </p>
 

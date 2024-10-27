@@ -69,7 +69,7 @@ const Login = () => {
                 localStorage.setItem('user-info', JSON.stringify(obj));
         
                 setUser(obj);
-                console.log(response.data.user);
+                // console.log(response.data.user);
                 navigate('/');
             }
         } catch (err) {

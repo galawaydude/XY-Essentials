@@ -145,9 +145,10 @@ const Account = () => {
                     {addresses.length > 0 ? (
                         addresses.map((address, index) => (
                             <li className="acc-address-item" key={index}>
-                                {`${address.addressLine1 || 'Not available'}, ${address.city || 'Not available'}, ${address.state || 'Not available'}, ${address.postalCode || 'Not available'}`}
+                                {`${address.fullName || 'Not available'}, ${address.addressLine1 || 'Not available'}, ${address.addressLine2 || 'Not available'}, ${address.landMark || 'Not available'}, ${address.city || 'Not available'}, ${address.state || 'Not available'}, ${address.postalCode || 'Not available'}, ${address.phoneNumber || 'Not available'}`}
                                 <button className="acc-btn acc-btn-edit-address" onClick={() => openEditModal(index)}>Edit</button>
                             </li>
+
                         ))
                     ) : (
                         <li className="acc-address-item"><p>No saved addresses available.</p></li>
