@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getUserOrders, getOrderById, placeOrder, updateOrderStatus, cancelOrder } = require('../controllers/order.controller.js');
+const { getUserOrders, getAllOrders, getOrderById, placeOrder, updateOrderStatus, cancelOrder } = require('../controllers/order.controller.js');
 const { protect, admin } = require('../middlewares/auth.middleware.js');
 
 // User Routes
-router.get('/', protect, getUserOrders);
+// router.get('/', protect, getUserOrders);
+router.get('/', protect, getAllOrders);
 router.post('/', protect, placeOrder);
 router.get('/:id', protect, getOrderById);
 

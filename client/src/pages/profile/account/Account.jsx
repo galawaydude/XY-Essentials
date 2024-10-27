@@ -67,7 +67,7 @@ const Account = () => {
             setProfile(data);
         };
         const fetchAddresses = async () => {
-            const response = await fetch(`http://localhost:5000/api/addresses/`, {
+            const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -76,7 +76,7 @@ const Account = () => {
 
         // Fetch Orders
         const fetchOrders = async () => {
-            const response = await fetch(`http://localhost:5000/api/orders/`, {
+            const response = await fetch(`http://localhost:5000/api/users/user/orders`, {
                 credentials: 'include',
             });
             const data = await response.json();

@@ -32,7 +32,7 @@ const Checkout = () => {
       // console.log(data);
     };
     const fetchAddresses = async () => {
-      const response = await fetch(`http://localhost:5000/api/addresses/`, {
+      const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -178,6 +178,8 @@ const Checkout = () => {
         handler: async (razorpayResponse) => {
           const paymentData = {
             ...orderData,
+            orderId: data.id, // Add this line to include orderId
+            amount: totalAmount,
             transactionId: razorpayResponse.razorpay_payment_id,
             signature: razorpayResponse.razorpay_signature
           };
@@ -204,7 +206,31 @@ const Checkout = () => {
             }
 
             alert("Payment Successful!");
-            navigate('/order-details');
+
+            const orderData = {
+              ...orderData,
+              paymentStatus: 'Completed'
+            };
+            console.log("Order data after successful payment:", orderData);
+            const response = await fetch('http://localhost:5000/api/orders/', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(orderData),
+            });
+    
+            // Debugging: Log the response status
+            console.log("Response from order save:", response);
+    
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error('Failed to save order details: ' + errorText);
+            }
+            const createdOrder = await response.json(); // Get the created order
+            alert("Order placed successfully with Cash on Delivery!");
+            navigate(`/order-details/${createdOrder._id}`);
           } catch (error) {
             console.error("Error saving payment details:", error);
           }

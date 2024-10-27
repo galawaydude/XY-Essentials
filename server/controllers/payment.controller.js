@@ -34,6 +34,7 @@ const processRazorpay = asyncHandler(async (req, res) => {
 
 const verify = asyncHandler(async (req, res) => {
   const { orderId, paymentMethod, amount, transactionId, signature } = req.body;
+  console.log(req.body);
 
   // Debugging: Log incoming request data
   console.log('Received payment verification request:', {
@@ -45,7 +46,6 @@ const verify = asyncHandler(async (req, res) => {
     userId: req.user._id
   });
 
-  // Step 1: Validate the payment details for Razorpay
   if (paymentMethod === 'razorpay') {
     const isValidSignature = validateSignature(orderId, transactionId, signature);
 

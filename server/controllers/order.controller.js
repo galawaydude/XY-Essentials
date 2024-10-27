@@ -9,6 +9,13 @@ const getUserOrders = asyncHandler(async (req, res) => {
   res.json(orders);
 });
 
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find()
+  .populate('orderItems.product') 
+  .populate('shippingAddress');
+  res.json(orders);
+});
+
 // Create a new order
 const placeOrder = asyncHandler(async (req, res) => {
   console.log('Request Body:', req.body); // Log the request body
@@ -83,6 +90,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
 
 module.exports = {
   getUserOrders,
+  getAllOrders,
   placeOrder,
   getOrderById,
   updateOrderStatus,
