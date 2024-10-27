@@ -90,43 +90,31 @@ const Checkout = () => {
 
   const handlePayment = async () => {
     const amount = totalAmount;
-
-    // Debugging: Log the total amount
     console.log("Total amount to be paid:", amount);
 
-    // Create the order items array
     const orderItems = checkoutItems.map(item => ({
       product: item.product._id,
       quantity: item.quantity,
       price: item.product.price
     }));
-    // const orderItems = cartItems.map(item => ({
-    //   product: item.product._id,
-    //   quantity: item.quantity,
-    //   price: item.product.price
-    // }));
-
-    // Debugging: Log the order items array
     console.log("Order items:", orderItems);
 
-    // Create order data based on the selected payment method
     const orderData = {
       orderItems: orderItems,
-      shippingAddress: selectedAddress._id, // Assuming this is the address ID
+      shippingAddress: selectedAddress._id, 
       shippingFee: deliveryCharge,
       discount: discount,
       subtotal: totalItems,
       paymentMethod: paymentMethod,
       finalPrice: totalAmount,
     };
-
-    // Debugging: Log the order data
     console.log("Order data before sending:", orderData);
 
     if (paymentMethod === 'cod') {
       try {
         const response = await fetch('http://localhost:5000/api/orders/', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -156,6 +144,7 @@ const Checkout = () => {
     try {
       const response = await fetch('http://localhost:5000/api/payments/razorpay', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -177,7 +166,7 @@ const Checkout = () => {
 
       const options = {
         key: 'rzp_test_mRwGhrvW3W8Tlv',
-        amount: data.amount,
+        amount: Math.round(data.amount * 100),
         currency: data.currency,
         name: "XY Essentials",
         description: "Order Description",
@@ -252,7 +241,7 @@ const Checkout = () => {
       <div className="checkout-content">
         <div className="checkout-left">
           <h3>Select Delivery Address</h3>
-          <select onChange={(e) => setSelectedAddress(addresses[e.target.value])}>
+          <select onChange={(e) => setSelectedAddress(addresses[e.target.value])} className='address-selector'>
             {addresses.length > 0 ? (
               addresses.map((addr, index) => (
                 <option key={addr._id} value={index}>

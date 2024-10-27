@@ -10,9 +10,10 @@ const processRazorpay = asyncHandler(async (req, res) => {
   // Log the incoming request body
   console.log("Received request to create Razorpay order:", req.body);
 
+  const amountInRupees = Math.round(amount);
   // Create a new order in Razorpay
   const options = {
-    amount: amount * 100, // Amount in paise
+    amount: amountInRupees * 100, // Amount in paise
     currency: "INR",
     receipt: "receipt#1",
     payment_capture: 1, 
