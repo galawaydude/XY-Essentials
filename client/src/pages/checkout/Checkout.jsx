@@ -5,6 +5,7 @@ import './checkout.css';
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [profile, setProfile] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState('');
@@ -21,24 +22,26 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    const fetchAddresses = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/addresses/');
-        if (!response.ok) throw new Error('Failed to fetch addresses');
+    // Fetch Addresses
+    const fetchProfile = async () => {
+        const response = await fetch(`http://localhost:5000/api/users/profile/`, {
+            credentials: 'include',
+        });
         const data = await response.json();
-
-        // Assuming the response data is an array of addresses
+        setProfile(data);
+    };
+    const fetchAddresses = async () => {
+        const response = await fetch(`http://localhost:5000/api/addresses/`, {
+            credentials: 'include',
+        });
+        const data = await response.json();
         setAddresses(data);
-        if (data.length > 0) {
-          setSelectedAddress(data[0]); // Set the first address as the selected address
-        }
-      } catch (error) {
-        console.error('Error fetching addresses:', error);
-      }
     };
 
+
+    fetchProfile();
     fetchAddresses();
-  }, []);
+}, []);
 
   // useEffect(() => {
   //   const fetchCartItems = async () => {
@@ -211,9 +214,9 @@ const Checkout = () => {
           }
         },
         prefill: {
-          name: "Customer Name",
-          email: "customer@example.com",
-          contact: "9999999999",
+          name: profile.name || "Customer Name",
+          email: profile.email || "customer@example.com",
+          contact: profile.mobileNumber || "9999999999",
         },
         theme: {
           color: "#0A4834",

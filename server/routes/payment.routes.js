@@ -4,11 +4,11 @@ const { processRazorpay, getPaymentStatus, verify, handleRazorpayWebhook } = req
 const { protect } = require('../middlewares/auth.middleware.js');
 
 // Protected Routes
-router.post('/razorpay', processRazorpay);
+router.post('/razorpay', protect, processRazorpay);
 router.get('/status/:orderId', protect, getPaymentStatus);
 
 // Razorpay Webhook for payment verification
-router.post('/verify', verify);
-router.post('/razorpayWebhook', handleRazorpayWebhook);
+router.post('/verify', protect, verify);
+router.post('/razorpayWebhook', protect, handleRazorpayWebhook);
 
 module.exports = router;

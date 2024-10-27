@@ -10,28 +10,37 @@ const Cart = () => {
 
     useEffect(() => {
         const fetchCart = async () => {
+            // console.log('Attempting to fetch cart...');
+    
             try {
-                const response = await fetch('http://localhost:5000/api/cart', {
+                const response = await fetch('http://localhost:5000/api/cart', {   
                     credentials: 'include',
                 });
+    
+                // console.log('Response status:', response.status); // Log the response status
+    
                 if (response.ok) {
                     const data = await response.json();
+                    // console.log('Fetched cart data:', data); // Log the fetched cart data
+    
                     setCartItems(data.cartItems);
                     const initialSelectedItems = {};
                     data.cartItems.forEach(item => {
-                        initialSelectedItems[item.product._id] = true; // Set to true by default
+                        initialSelectedItems[item.product._id] = true; 
                     });
                     setSelectedItems(initialSelectedItems);
                 } else {
-                    console.error('Failed to fetch cart:', await response.json());
+                    const errorData = await response.json();
+                    console.error('Failed to fetch cart:', errorData); // Log error details
                 }
             } catch (error) {
-                console.error('Error fetching cart:', error);
+                console.error('Error fetching cart:', error); // Log error
             }
         };
-
+    
         fetchCart();
     }, []);
+    
 
     const updateQuantity = async (productId, newQuantity) => {
         if (newQuantity < 1) return;

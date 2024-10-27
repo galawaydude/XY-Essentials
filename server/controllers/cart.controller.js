@@ -3,14 +3,26 @@ const Cart = require('../models/cart.model');
 
 // Get the cart for a user
 const getCart = asyncHandler(async (req, res) => {
-    const cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' }) // Use req.user._id for dynamic user
-        .populate('cartItems.product');
+    try {
+        // Log the user ID from the request
+        // console.log('Fetching cart for user ID:', req.user._id);
 
-    if (cart) {
-        res.json(cart);
-    } else {
-        res.status(404);
-        throw new Error('Cart not found');
+        const cart = await Cart.findOne({ user: req.user._id })
+            .populate('cartItems.product');
+
+        // Log the fetched cart details
+        // console.log('Fetched cart:', cart);
+
+        if (cart) {
+            res.json(cart);
+        } else {
+            console.log('No cart found for user ID:', req.user._id);
+            res.status(404);
+            throw new Error('Cart not found');
+        }
+    } catch (error) {
+        console.error('Error fetching cart:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -20,11 +32,11 @@ const addToCart = asyncHandler(async (req, res) => {
         const { productId, quantity } = req.body;
 
         // Find the cart or create a new one
-        let cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' });
+        let cart = await Cart.findOne({ user: req.user._id });
         
         if (!cart) {
             cart = new Cart({
-                user: '6712d2d09834a102935d7fd8',
+                user: req.user._id,
                 cartItems: [],
             });
         }
@@ -41,6 +53,8 @@ const addToCart = asyncHandler(async (req, res) => {
         }
 
         const updatedCart = await cart.save();
+
+        
         res.status(201).json(updatedCart);
     } catch (error) {
         console.error('Error adding to cart:', error);
@@ -52,7 +66,7 @@ const addToCart = asyncHandler(async (req, res) => {
 const removeCartItem = asyncHandler(async (req, res) => {
     const { itemId } = req.params;
 
-    const cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' });
+    const cart = await Cart.findOne({ user: req.user._id });
 
     if (cart) {
         cart.cartItems = cart.cartItems.filter(item => item.product.toString() !== itemId);
@@ -70,7 +84,7 @@ const updateCartItem = asyncHandler(async (req, res) => {
     const { itemId } = req.params;
     const { quantity } = req.body;
 
-    const cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' });
+    const cart = await Cart.findOne({ user: req.user._id });
 
     if (cart) {
         const itemIndex = cart.cartItems.findIndex(item => item.product.toString() === itemId);
@@ -98,7 +112,7 @@ const updateCartItem = asyncHandler(async (req, res) => {
 
 // Clear the entire cart
 const clearCart = asyncHandler(async (req, res) => {
-    const cart = await Cart.findOne({ user: '6712d2d09834a102935d7fd8' });
+    const cart = await Cart.findOne({ user: req.user._id });
 
     if (cart) {
         cart.cartItems = [];

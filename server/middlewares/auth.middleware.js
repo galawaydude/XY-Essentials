@@ -3,18 +3,19 @@ const User = require('../models/user.model.js');
 const asyncHandler = require('express-async-handler');
 
 const protect = asyncHandler(async (req, res, next) => {
-  console.log('Cookies:', req.cookies);
+  // console.log('Cookies:', req.cookies);
   const token = req.cookies.token;
-
+  
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = await User.findById(decoded._id);
 
-      console.log(req.user);
+      // console.log(req.user);
+      next();
     } catch (error) {
       console.error(error);
-      return res.redirect('/'); // Redirect on token verification failure
+      return res.redirect('/'); 
     }
   } else {
     return res.redirect('/'); // Redirect if no token found

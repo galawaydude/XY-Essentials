@@ -3,7 +3,9 @@ const Order = require('../models/order.model');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: '67162ddff162c40b40be0062' });
+  const orders = await Order.find({ user: req.user._id })
+  .populate('orderItems.product') 
+  .populate('shippingAddress');
   res.json(orders);
 });
 
@@ -15,7 +17,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   try {
       const orderData = {
           ...req.body, 
-          user: '67162ddff162c40b40be0062', // Add the user's ID
+          user: req.user._id, // Add the user's ID
       };
 
       console.log('Order Data:', orderData); // Log the combined order data

@@ -3,7 +3,7 @@ const Address = require('../models/address.model');
 
 // Get all addresses for a user
 const getUserAddresses = asyncHandler(async (req, res) => {
-  const addresses = await Address.find({ user: '67162ddff162c40b40be0062' });
+  const addresses = await Address.find({ user: req.user._id });
   res.json(addresses);
 });
 
@@ -23,7 +23,7 @@ const getAddressById = asyncHandler(async (req, res) => {
 const createAddress = asyncHandler(async (req, res) => {
   const newAddress = new Address({
     ...req.body, 
-    // user = '67162ddff162c40b40be0062'
+    // user = req.user._id
   });
 
   const createdAddress = await newAddress.save();

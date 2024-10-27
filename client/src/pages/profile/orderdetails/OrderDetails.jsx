@@ -11,7 +11,9 @@ const OrderDetails = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/orders/${id}`);
+        const response = await fetch(`http://localhost:5000/api/orders/${id}`, {
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch order details');
         }

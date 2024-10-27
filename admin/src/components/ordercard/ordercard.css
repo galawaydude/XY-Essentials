@@ -15,7 +15,7 @@
   
   .order-card-details-header {
     padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -44,7 +44,7 @@
   }
   
   .order-summary-con {
-    border-top: 1px solid #ddd;;
+    /* border-top: 1px solid #ddd; */
     padding: 1rem 0;
     font-weight: 500;
   }

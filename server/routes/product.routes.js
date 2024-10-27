@@ -7,18 +7,18 @@ const validateRequest = require('../middlewares/validate.middleware.js');
 const { getProductReviews, addReview, updateReview, deleteReview } = require('../controllers/review.controller.js');
 const { upload } = require('../middlewares/multer.middleware.js');
 
-// Public Routes
+// User Routes
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
+router.get('/:id/reviews', getProductReviews);
+router.post('/:id/reviews', protect, addReview);
+router.post('/:id/reviews/:id', protect, updateReview);
 
 // Admin Routes
 router.post('/', upload.fields([{ name: 'productImages' }]), createProduct);
-router.put('/:id',upload.fields([{ name: 'productImages' }]), updateProduct);
+router.put('/:id', upload.fields([{ name: 'productImages' }]), updateProduct);
 router.delete('/:id', deleteProduct);
 
-router.get('/:id/reviews', getProductReviews);
 
-router.post('/:id/reviews', addReview);
-router.post('/:id/reviews/:id', updateReview);
 
 module.exports = router;

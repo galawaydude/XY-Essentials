@@ -50,7 +50,8 @@ const AddressModal = ({ isOpen, onClose, onSubmit, initialAddress }) => {
 };
 
 const Account = () => {
-    const userId = '67162ddff162c40b40be0062';
+
+    const [profile, setProfile] = useState([]);
     const [addresses, setAddresses] = useState([]);
     const [orders, setOrders] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,15 +59,26 @@ const Account = () => {
 
     useEffect(() => {
         // Fetch Addresses
+        const fetchProfile = async () => {
+            const response = await fetch(`http://localhost:5000/api/users/profile/`, {
+                credentials: 'include',
+            });
+            const data = await response.json();
+            setProfile(data);
+        };
         const fetchAddresses = async () => {
-            const response = await fetch(`http://localhost:5000/api/addresses/`);
+            const response = await fetch(`http://localhost:5000/api/addresses/`, {
+                credentials: 'include',
+            });
             const data = await response.json();
             setAddresses(data);
         };
 
         // Fetch Orders
         const fetchOrders = async () => {
-            const response = await fetch(`http://localhost:5000/api/orders/`);
+            const response = await fetch(`http://localhost:5000/api/orders/`, {
+                credentials: 'include',
+            });
             const data = await response.json();
             if (Array.isArray(data)) {
                 setOrders(data);
@@ -76,9 +88,11 @@ const Account = () => {
             }
         };
 
+        fetchProfile();
         fetchAddresses();
         fetchOrders();
-    }, [userId]);
+    }, []);
+
 
     const handleAddAddress = (newAddress) => {
         if (editAddressIndex !== null) {
@@ -109,45 +123,66 @@ const Account = () => {
                 <h2 className="acc-section-title">Account Information</h2>
                 <div className="acc-details-grid">
                     <div>
-                        <p className="acc-detail-item"><strong>Name:</strong> John Doe</p>
-                        <p className="acc-detail-item"><strong>Email:</strong> john.doe@example.com</p>
-                        <p className="acc-detail-item"><strong>Phone:</strong> +1 123 456 7890</p>
+                        <p className="acc-detail-item">
+                            <strong>Name:</strong> {profile.name || 'Not available'}
+                        </p>
+                        <p className="acc-detail-item">
+                            <strong>Email:</strong> {profile.email || 'Not available'}
+                        </p>
+                        <p className="acc-detail-item">
+                            <strong>Phone:</strong> {profile.mobileNumber || 'Not available'}
+                        </p>
+
                     </div>
                     <button className="acc-btn acc-btn-edit">Edit Profile</button>
                 </div>
-            </section>
-
-            {/* Past Orders Section */}
-            <section className="acc-section acc-past-orders">
-                <h2 className="acc-section-title">Past Orders</h2>
-                <ul className="acc-orders-list">
-                    {orders.map(order => (
-                        <li className="acc-order-item" key={order._id}>
-                            <p className="acc-order-detail"><strong>Order ID:</strong> {order._id}</p>
-                            <p className="acc-order-detail"><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
-                            <p className="acc-order-detail"><strong>Status:</strong> {order.paymentStatus}</p>
-                            <p className="acc-order-detail"><strong>Total:</strong> ${order.finalPrice.toFixed(2)}</p>
-                         <a href={`/order-details/${order._id}`}>   <button className="acc-btn acc-btn-view-order">View Order</button></a>
-                        </li>
-                    ))} 
-                </ul>
             </section>
 
             {/* Addresses Section */}
             <section className="acc-section acc-addresses">
                 <h2 className="acc-section-title">Saved Addresses</h2>
                 <ul className="acc-addresses-list">
-                    {addresses.map((address, index) => (
-                        <li className="acc-address-item" key={index}>
-                            {`${address.addressLine1}, ${address.city}, ${address.state}, ${address.postalCode}`}
-                            <button className="acc-btn acc-btn-edit-address" onClick={() => openEditModal(index)}>Edit</button>
-                        </li>
-                    ))}
+                    {addresses.length > 0 ? (
+                        addresses.map((address, index) => (
+                            <li className="acc-address-item" key={index}>
+                                {`${address.addressLine1 || 'Not available'}, ${address.city || 'Not available'}, ${address.state || 'Not available'}, ${address.postalCode || 'Not available'}`}
+                                <button className="acc-btn acc-btn-edit-address" onClick={() => openEditModal(index)}>Edit</button>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="acc-address-item"><p>No saved addresses available.</p></li>
+                    )}
                 </ul>
                 <button className="acc-btn acc-btn-add-address" onClick={openAddModal}>
                     Add New Address
                 </button>
             </section>
+
+            {/* Past Orders Section */}
+            <section className="acc-section acc-past-orders">
+                <h2 className="acc-section-title">Past Orders</h2>
+                <ul className="acc-orders-list">
+                    {orders.length > 0 ? (
+                        orders.map(order => (
+                            <li className="acc-order-item" key={order._id}>
+                                <p className="acc-order-detail"><strong>Order ID:</strong> {order._id}</p>
+                                <p className="acc-order-detail"><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+                                <p className="acc-order-detail"><strong>Status:</strong> {order.paymentStatus}</p>
+                                <p className="acc-order-detail"><strong>Total:</strong> ${order.finalPrice.toFixed(2)}</p>
+                                <a href={`/order-details/${order._id}`}>
+                                    <button className="acc-btn acc-btn-view-order">View Order</button>
+                                </a>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="acc-order-item"><p>No past orders available.</p></li>
+                    )}
+                </ul>
+            </section>
+
+
+
+
 
             {/* Modal for Adding/Editing Address */}
             <AddressModal

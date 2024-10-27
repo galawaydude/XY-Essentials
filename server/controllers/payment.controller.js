@@ -41,7 +41,7 @@ const verify = asyncHandler(async (req, res) => {
     amount,
     transactionId,
     signature,
-    userId: '67162ddff162c40b40be0062'
+    userId: req.user._id
   });
 
   // Step 1: Validate the payment details for Razorpay
@@ -57,7 +57,7 @@ const verify = asyncHandler(async (req, res) => {
   try {
     // Logic to save payment details
     const paymentData = {
-      user: '67162ddff162c40b40be0062',
+      user: req.user._id,
       paymentMethod,
       amount,
       status: 'Completed', // Add this field
