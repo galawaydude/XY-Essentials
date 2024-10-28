@@ -91,7 +91,7 @@ const ProductListing = () => {
 
                         <div className="sf-subhead">
                             <p>Categories</p>
-                            {['Protect', 'Cleanser', 'Treat'].map((category) => (
+                            {['Cleanse', 'Protect', 'Treat'].map((category) => (
                                 <div className="sf-item" key={category}>
                                     <input
                                         type="checkbox"
@@ -123,7 +123,7 @@ const ProductListing = () => {
 
                         {/* <div className="sf-subhead">
                             <p>Product Type</p>
-                            {['Moisturizer', 'Grooming', 'Scrub', 'Cleanser'].map((type) => (
+                            {['Moisturizer', 'Grooming', 'Scrub', 'Cleanse'].map((type) => (
                                 <div className="sf-item" key={type}>
                                     <input
                                         type="checkbox"
@@ -136,7 +136,7 @@ const ProductListing = () => {
                                 </div>
                             ))}
                         </div> */}
-
+{/* 
                         <div className="sf-subhead">
                             <p>Price Range</p>
                             <input
@@ -147,7 +147,7 @@ const ProductListing = () => {
                                 onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
                             />
                             <p>Price: ${priceRange[0]} - ${priceRange[1]}</p>
-                        </div>
+                        </div> */}
 
                         {/* <div className="sf-subhead">
                             <p>Minimum Rating</p>
@@ -166,7 +166,7 @@ const ProductListing = () => {
                         </div> */}
                     </div>
 
-                    <div className="home-products-con">
+                    <div className="pl-products-con">
                         {filteredProducts.map(product => (
               
                                 <ProductCard product={product} key={product._id} />

@@ -114,6 +114,13 @@ const Checkout = () => {
         }
 
         const createdOrder = await response.json();
+
+        for (const item of checkoutItems) {
+          await fetch(`http://localhost:5000/api/cart/${item.product._id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+        }
         alert("Order placed successfully with Cash on Delivery!");
         navigate(`/order-details/${createdOrder._id}`);
       } catch (error) {
@@ -194,7 +201,16 @@ const Checkout = () => {
             const errorText = await response.text();
             throw new Error('Failed to save order details: ' + errorText);
           }
-          const createdOrder = await response.json(); // Get the created order
+          const createdOrder = await response.json(); 
+
+
+          for (const item of checkoutItems) {
+            await fetch(`http://localhost:5000/api/cart/${item.product._id}`, {
+              method: 'DELETE',
+              credentials: 'include',
+            });
+          }
+
           alert("Order placed successfully with Cash on Delivery!");
           navigate(`/order-details/${createdOrder._id}`);
         },

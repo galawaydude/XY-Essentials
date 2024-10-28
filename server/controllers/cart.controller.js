@@ -62,7 +62,6 @@ const addToCart = asyncHandler(async (req, res) => {
     }
 });
 
-// Remove an item from the cart
 const removeCartItem = asyncHandler(async (req, res) => {
     const { itemId } = req.params;
 
@@ -79,7 +78,6 @@ const removeCartItem = asyncHandler(async (req, res) => {
     }
 });
 
-// Update the quantity of an item in the cart
 const updateCartItem = asyncHandler(async (req, res) => {
     const { itemId } = req.params;
     const { quantity } = req.body;

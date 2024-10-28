@@ -2,3 +2,9 @@
     display: flex;
     gap: 1.5rem;
 }
+
+.pl-products-con {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
