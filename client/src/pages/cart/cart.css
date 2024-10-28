@@ -1,6 +1,5 @@
-/* General styles remain the same */
+
 .cart {
-    padding: 2rem 0;
     background-color: #fff;
 }
 
@@ -31,7 +30,7 @@
     flex: 1.5;
     border-radius: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Flexbox alignment adjustments */
@@ -45,7 +44,7 @@
 /* Cart header remains the same */
 .cart-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2.35fr 1.1fr 1fr 1fr;
     padding: 1rem 0;
     border-bottom: 1px solid #eee;
     font-weight: 500;
@@ -56,8 +55,8 @@
     border-radius: 1rem;
     padding: 1.5rem;
     height: fit-content;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    max-width: 20rem;
 }
 
 /* Heading adjustments */
@@ -114,6 +113,7 @@
     border-radius: 4px;
     background-color: #fff;
     position: relative;
+    overflow: hidden;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -133,6 +133,11 @@
 
 .cart-item-checkbox:hover {
     border-color: #777;
+}
+
+.cart-price {
+    font-size: 2rem;
+    color: var(--pri);
 }
 
 /* Media queries for responsiveness */
@@ -186,7 +191,6 @@
     .cart-product-summary {
         gap: 1rem; /* Reduce gap between sections */
         justify-content: center; /* Center-align the flex children */
-        align-items: center; /* Center-align the contents */
     }
 
     .cart-products-con, 

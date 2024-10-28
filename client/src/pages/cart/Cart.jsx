@@ -98,7 +98,7 @@ const Cart = () => {
         <div className="cart">
             <div className="section container">
                 <div className="home-pro-head">
-                    <div className="section_left_title">Shopping Bag</div>
+                    <div className="section_left_title">Shopping Cart</div>
                     <div className="items-count">{cartItems.length} items in your bag.</div>
                 </div>
                 <div className="cart-product-summary">
@@ -129,8 +129,8 @@ const Cart = () => {
                     <div className="cart-summary-con">
                         <h3>Cart Total</h3>
                         <div className="total-con">
-                            <span>Total</span>
-                            <span>${calculateSubtotal().toFixed(2)}</span>
+                            {/* <span>Total</span> */}
+                            <span className='cart-price'>${calculateSubtotal().toFixed(2)}</span>
                         </div>
                         <button className="checkout-button" onClick={handleCheckout}>
                             Checkout
