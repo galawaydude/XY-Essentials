@@ -122,18 +122,122 @@ const Checkout = () => {
       return;
     }
 
-    // Razorpay Payment Logic (Same as Before)
+    try {
+      const response = await fetch('http://localhost:5000/api/payments/razorpay', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount }),
+      });
+      // Debugging: Log the response from Razorpay initialization
+      console.log("Response from Razorpay initiation:", response);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error('Failed to initiate Razorpay payment: ' + errorText);
+      }
+      const data = await response.json();
+      // Debugging: Log the data received from Razorpay
+      console.log("Razorpay data received:", data);
+      const options = {
+        key: 'rzp_test_mRwGhrvW3W8Tlv',
+        amount: Math.round(data.amount * 100),
+        currency: data.currency,
+        name: "XY Essentials",
+        description: "Order Description",
+        order_id: data.id,
+        handler: async (razorpayResponse) => {
+          const paymentData = {
+            ...orderData,
+            orderId: data.id,
+            amount: totalAmount,
+            transactionId: razorpayResponse.razorpay_payment_id,
+            signature: razorpayResponse.razorpay_signature
+          };
+          console.log("Payment data to verify:", paymentData);
+          try {
+            const verifyResponse = await fetch('http://localhost:5000/api/payments/verify', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(paymentData),
+            });
+            console.log("Response from payment verification:", verifyResponse);
+            if (!verifyResponse.ok) {
+              const errorText = await verifyResponse.text();
+              throw new Error('Failed to save payment details: ' + errorText);
+            }
+            alert("Payment Successful!");
+          } catch (error) {
+            console.error("Error saving payment details:", error);
+          }
+          const razorpayOrderData = {
+            ...orderData,
+            paymentMethod: 'razorpay',
+            paymentStatus: 'Completed'
+          };
+          console.log("Order data after successful razorpay payment:", razorpayOrderData);
+          const response = await fetch('http://localhost:5000/api/orders/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(razorpayOrderData),
+          });
+          // Debugging: Log the response status
+          console.log("Response from order save:", response);
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error('Failed to save order details: ' + errorText);
+          }
+          const createdOrder = await response.json(); // Get the created order
+          alert("Order placed successfully with Cash on Delivery!");
+          navigate(`/order-details/${createdOrder._id}`);
+        },
+        prefill: {
+          name: profile.name || "Customer Name",
+          email: profile.email || "customer@example.com",
+          contact: profile.mobileNumber || "9999999999",
+        },
+        theme: {
+          color: "#0A4834",
+        },
+        method: {
+          card: true,
+          netbanking: true,
+          upi: true,
+          wallet: false,
+          paylater: false
+        },
+        config: {
+          display: {
+            hide: [
+              { method: 'paylater' }
+            ],
+            preferences: { show_default_blocks: true }
+          }
+        }
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Payment failed:", error);
+    }
   };
 
   return (
     <div className="checkout-con container">
-      <div className="section container">
+      <div className="">
         <div className="home-pro-head">
           <div className="section_left_title">
             <strong>Checkout</strong>
           </div>
         </div>
-        <hr />
+        {/* <hr /> */}
       </div>
 
       <div className="checkout-content">
@@ -190,7 +294,7 @@ const Checkout = () => {
               </label>
             </div>
           </div>
-
+                  
           {/* Coupon Section */}
           <div className="coupon-section">
             <h4 className="coupon-heading">Have a Coupon?</h4>
