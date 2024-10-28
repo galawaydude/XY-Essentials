@@ -21,18 +21,22 @@ const Coupons = () => {
         isActive: true,
     });
 
-    const dummyCoupons = [
-        { _id: '1', code: 'SAVE10', discount: 10, description: 'Save 10% on your next purchase' },
-        { _id: '2', code: 'FREESHIP', discount: 0, description: 'Free shipping on orders over $50' },
-        { _id: '3', code: 'SUMMER20', discount: 20, description: 'Get 20% off during the summer sale' },
-    ];
-
     useEffect(() => {
-        const fetchCoupons = () => {
-            setTimeout(() => {
-                setCoupons(dummyCoupons);
+        const fetchCoupons = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/coupons/', {
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch coupons');
+                }
+                const data = await response.json();
+                setCoupons(data);
                 setLoading(false);
-            }, 1000); // Simulate fetching data
+            } catch (error) {
+                setError(error.message);
+                setLoading(false);
+            }
         };
 
         fetchCoupons();
@@ -40,30 +44,56 @@ const Coupons = () => {
 
     const handleDelete = async () => {
         try {
+            // Send DELETE request to the API
+            const response = await fetch(`http://localhost:5000/api/coupons/${couponToDelete}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to delete coupon');
+            }
+    
+            // Update the state to remove the deleted coupon
             setCoupons(coupons.filter(coupon => coupon._id !== couponToDelete));
             setModalVisible(false);
             setCouponToDelete(null);
         } catch (error) {
-            setError('Failed to delete coupon');
+            setError(error.message);
         }
     };
+    
 
-    const handleAddCoupon = () => {
-        // Logic to add the new coupon (e.g., API call) can go here
-        // For now, simulate adding it to the coupons list
-        const newCouponEntry = { ...newCoupon, _id: Date.now().toString() };
-        setCoupons([...coupons, newCouponEntry]);
-        setModalVisible(false);
-        setNewCoupon({
-            code: '',
-            discountType: 'percentage',
-            discountValue: '',
-            expirationDate: '',
-            minimumPurchaseAmount: '',
-            maxDiscountAmount: '',
-            usageLimit: '',
-            isActive: true,
-        });
+    const handleAddCoupon = async () => {
+        // Logic to add the new coupon (e.g., API call)
+        try {
+            const response = await fetch('http://localhost:5000/api/coupons/', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newCoupon),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add coupon');
+            }
+            const newCouponEntry = await response.json();
+            setCoupons([...coupons, newCouponEntry]);
+            setModalVisible(false);
+            setNewCoupon({
+                code: '',
+                discountType: 'percentage',
+                discountValue: '',
+                expirationDate: '',
+                minimumPurchaseAmount: '',
+                maxDiscountAmount: '',
+                usageLimit: '',
+                isActive: true,
+            });
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     const handleInputChange = (e) => {

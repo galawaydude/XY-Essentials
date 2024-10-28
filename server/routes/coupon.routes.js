@@ -7,9 +7,9 @@ const { protect, admin } = require('../middlewares/auth.middleware.js');
 router.post('/apply', protect, applyCoupon);
 
 // Admin Routes
-router.get('/', protect, admin, getAllCoupons);
-router.post('/', protect, admin, createCoupon);
+router.get('/', protect, getAllCoupons);
+router.post('/', protect, createCoupon);
 router.put('/:id', protect, admin, updateCoupon);
-router.delete('/:id', protect, admin, deleteCoupon);
+router.delete('/:id', protect, deleteCoupon);
 
 module.exports = router;

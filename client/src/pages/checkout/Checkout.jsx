@@ -16,11 +16,6 @@ const Checkout = () => {
   const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
   const [discount, setDiscount] = useState(0);
 
-  const coupons = {
-    'SAVE10': 10,
-    'SAVE20': 20,
-  };
-
   useEffect(() => {
     // Fetch Addresses
     const fetchProfile = async () => {
@@ -40,7 +35,7 @@ const Checkout = () => {
       // console.log(data);
 
       if (data.length > 0) {
-        setSelectedAddress(data[0]); 
+        setSelectedAddress(data[0]);
       }
     };
 
@@ -82,13 +77,28 @@ const Checkout = () => {
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalAmount = totalItems + deliveryCharge - discount;
 
-  const handleApplyCoupon = () => {
-    if (coupons[couponCode]) {
-      const discountAmount = (totalItems * coupons[couponCode]) / 100;
+  const handleApplyCoupon = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/coupons/apply', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: couponCode, totalAmount }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+
+      const { discountAmount } = await response.json();
       setDiscount(discountAmount);
       alert(`Coupon applied! You saved $${discountAmount.toFixed(2)}`);
-    } else {
-      alert('Invalid coupon code');
+    } catch (error) {
+      alert(error.message);
+      console.error('Error applying coupon:', error);
     }
   };
 
@@ -105,7 +115,7 @@ const Checkout = () => {
 
     const orderData = {
       orderItems: orderItems,
-      shippingAddress: selectedAddress._id, 
+      shippingAddress: selectedAddress._id,
       shippingFee: deliveryCharge,
       discount: discount,
       subtotal: totalItems,
@@ -178,7 +188,7 @@ const Checkout = () => {
         handler: async (razorpayResponse) => {
           const paymentData = {
             ...orderData,
-            orderId: data.id, 
+            orderId: data.id,
             amount: totalAmount,
             transactionId: razorpayResponse.razorpay_payment_id,
             signature: razorpayResponse.razorpay_signature
@@ -222,10 +232,10 @@ const Checkout = () => {
             },
             body: JSON.stringify(razorpayOrderData),
           });
-  
+
           // Debugging: Log the response status
           console.log("Response from order save:", response);
-  
+
           if (!response.ok) {
             const errorText = await response.text();
             throw new Error('Failed to save order details: ' + errorText);
@@ -252,9 +262,9 @@ const Checkout = () => {
         config: {
           display: {
             hide: [
-            { method: 'paylater' }
-          ],
-          preferences: { show_default_blocks: true }
+              { method: 'paylater' }
+            ],
+            preferences: { show_default_blocks: true }
           }
         }
 
