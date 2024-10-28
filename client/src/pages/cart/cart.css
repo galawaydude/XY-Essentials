@@ -3,11 +3,13 @@
     background-color: #fff;
 }
 
-.container {
+
+.cart .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
 }
+
 
 .home-pro-head {
     padding: 1rem 0;
