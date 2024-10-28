@@ -16,9 +16,8 @@
 }
 
 .section_left_title strong {
-  font-size: 1.75rem;
   color: #0A4834;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .checkout-content {
@@ -101,7 +100,7 @@
   min-width: 120px;
 }
 
-button {
+.checkout-con button {
   background-color: #0A4834;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -110,23 +109,23 @@ button {
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.2s ease;
+  overflow: hidden;
 }
 
-button:hover {
+.checkout-con button:hover {
   background-color: #0d5f43;
 }
 
-button:active {
+.checkout-con button:active {
   transform: translateY(1px);
 }
 
-/* Add New Address button styling */
 .add-address-btn {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.modal {
+.checkout-con .modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -139,7 +138,7 @@ button:active {
   z-index: 1000;
 }
 
-.modal-content {
+.checkout-con .modal-content {
   background: white;
   padding: 2rem;
   border-radius: 12px;
@@ -147,7 +146,7 @@ button:active {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.modal-content h4 {
+.checkout-con .modal-content h4 {
   color: #0A4834;
   margin-bottom: 1.5rem;
   font-size: 1.25rem;
@@ -176,7 +175,7 @@ button:active {
   margin: 1.5rem 0;
 }
 
-label {
+.checkout-con label {
   display: block;
   margin-bottom: 0.75rem;
   padding: 0.75rem;
@@ -186,11 +185,11 @@ label {
   transition: all 0.2s ease;
 }
 
-label:hover {
+.checkout-con label:hover {
   background-color: rgba(10, 72, 52, 0.05);
 }
 
-input[type="radio"] {
+.checkout-con input[type="radio"] {
   margin-right: 0.75rem;
 }
 
@@ -226,13 +225,13 @@ ul {
   justify-content: center;
 }
 
-li {
+.checkout-con li {
   padding: 0.75rem 0;
   border-bottom: 1px solid #eee;
 
 }
 
-li:last-child {
+.checkout-con li:last-child {
   border-bottom: none;
 }
 
