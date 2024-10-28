@@ -9,6 +9,7 @@ import EditBlog from './pages/blog/editblog/EditBlog';
 import Inventory from './pages/inventory/Inventory';
 import AllOrders from './pages/orders/AllOrders';
 import Blogs from './pages/blog/allblogs/allBlogs';
+import Coupons from './pages/coupons/Coupons';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -28,6 +29,7 @@ const AppRoutes = () => {
                     <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
                     <Route path="/admin/blogs" element={<Blogs />} />
                     <Route path="/admin/orders" element={<AllOrders />} />
+                    <Route path="/admin/coupons" element={<Coupons />} />
                 </Routes>
             </main>
       

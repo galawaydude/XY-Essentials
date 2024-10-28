@@ -1,9 +1,202 @@
+/* General styles remain the same */
+.cart {
+    padding: 2rem 0;
+    background-color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.home-pro-head {
+    padding: 1rem 0;
+}
+
+.section_left_title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .cart-product-summary {
     display: flex;
     gap: 2rem;
-
+    padding: 2rem 0;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
+/* Responsive grid for the cart products container */
 .cart-products-con {
-    /* width: 40rem; */
+    flex: 1.5;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Flexbox alignment adjustments */
+.cart-item-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+/* Cart header remains the same */
+.cart-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+
+.cart-summary-con {
+    flex: 0.8;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    height: fit-content;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+}
+
+/* Heading adjustments */
+.cart-summary-con h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Flexbox for totals section */
+.total-con {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #000;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+/* Button adjustments for responsiveness */
+.checkout-button {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1.5rem;
+}
+
+.checkout-button:hover {
+    opacity: 0.9;
+}
+
+.items-count {
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+}
+
+/* Updated styles for cart-item-checkbox */
+.cart-item-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.cart-item-checkbox:checked {
+    background-color: var(--pri);
+}
+
+.cart-item-checkbox:checked::after {
+    content: '✔';
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cart-item-checkbox:hover {
+    border-color: #777;
+}
+
+/* Media queries for responsiveness */
+
+/* Mobile devices (up to 600px wide) */
+@media (max-width: 600px) {
+    .cart-product-summary {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align the contents */
+    }
+
+    .cart-header {
+        display: none; /* Hide the header on small screens for better layout */
+    }
+
+    .cart-item-container {
+        flex-direction: column; /* Stack the product details */
+        align-items: center; /* Center-align product details */
+        text-align: center; /* Center-align text */
+    }
+
+    .cart-summary-con {
+        width: 100%; /* Use full width for the summary */
+        margin: 0 auto; /* Center align within its parent */
+    }
+}
+
+/* Tablets (up to 900px wide) */
+@media (max-width: 900px) {
+    .cart-product-summary {
+        flex-direction: column; /* Stack items vertically for tablets */
+        align-items: center; /* Center-align the contents */
+    }
+
+    .cart-products-con, 
+    .cart-summary-con {
+        flex: 1; /* Equal width for both containers */
+        margin-bottom: 1rem;
+        margin-left: auto; /* Center align horizontally */
+        margin-right: auto; /* Center align horizontally */
+    }
+
+    .cart-header {
+        grid-template-columns: 2fr 1fr 1fr; /* Adjust columns for tablets */
+        justify-items: center; /* Center the grid items */
+    }
+}
+
+/* Large tablets and small desktops (up to 1200px wide) */
+@media (max-width: 1200px) {
+    .cart-product-summary {
+        gap: 1rem; /* Reduce gap between sections */
+        justify-content: center; /* Center-align the flex children */
+        align-items: center; /* Center-align the contents */
+    }
+
+    .cart-products-con, 
+    .cart-summary-con {
+        margin-left: auto; /* Center align horizontally */
+        margin-right: auto; /* Center align horizontally */
+    }
+
+    .cart-header {
+        grid-template-columns: 2fr 1fr 1fr; /* Adjust grid for larger screens */
+        justify-items: center; /* Center the grid items */
+    }
 }

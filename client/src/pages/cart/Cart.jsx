@@ -10,19 +10,13 @@ const Cart = () => {
 
     useEffect(() => {
         const fetchCart = async () => {
-            // console.log('Attempting to fetch cart...');
-    
             try {
                 const response = await fetch('http://localhost:5000/api/users/user/cart', {   
                     credentials: 'include',
                 });
     
-                // console.log('Response status:', response.status); // Log the response status
-    
                 if (response.ok) {
                     const data = await response.json();
-                    // console.log('Fetched cart data:', data); // Log the fetched cart data
-    
                     setCartItems(data.cartItems);
                     const initialSelectedItems = {};
                     data.cartItems.forEach(item => {
@@ -31,16 +25,15 @@ const Cart = () => {
                     setSelectedItems(initialSelectedItems);
                 } else {
                     const errorData = await response.json();
-                    console.error('Failed to fetch cart:', errorData); // Log error details
+                    console.error('Failed to fetch cart:', errorData);
                 }
             } catch (error) {
-                console.error('Error fetching cart:', error); // Log error
+                console.error('Error fetching cart:', error);
             }
         };
     
         fetchCart();
     }, []);
-    
 
     const updateQuantity = async (productId, newQuantity) => {
         if (newQuantity < 1) return;
@@ -58,8 +51,6 @@ const Cart = () => {
                         item.product._id === productId ? { ...item, quantity: newQuantity } : item
                     )
                 );
-            } else {
-                console.error('Failed to update quantity:', await response.json());
             }
         } catch (error) {
             console.error('Error updating quantity:', error);
@@ -75,15 +66,17 @@ const Cart = () => {
 
             if (response.ok) {
                 setCartItems((prevItems) => prevItems.filter((item) => item.product._id !== productId));
-            } else {
-                console.error('Failed to remove item:', await response.json());
             }
         } catch (error) {
             console.error('Error removing item:', error);
         }
     };
 
-    const totalPrice = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    const calculateSubtotal = () => {
+        return cartItems
+            .filter(item => selectedItems[item.product._id])
+            .reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    };
 
     const handleCheckout = () => {
         const checkoutItems = cartItems.filter(item => selectedItems[item.product._id]);
@@ -105,37 +98,44 @@ const Cart = () => {
         <div className="cart">
             <div className="section container">
                 <div className="home-pro-head">
-                    <div className="section_left_title">
-                        <strong>Cart</strong>
-                    </div>
+                    <div className="section_left_title">Shopping Bag</div>
+                    <div className="items-count">{cartItems.length} items in your bag.</div>
                 </div>
-                <hr />
-            </div>
-
-            <div className="cart-product-summary container">
-                <div className="cart-products-con">
-                    {cartItems.map((item) => (
-                        <div key={item.product._id}>
-                            <input
-                                type="checkbox"
-                                checked={!!selectedItems[item.product._id]}
-                                onChange={() => handleCheckboxChange(item.product._id)}
-                            />
-                            <CartProductCard 
-                                product={item.product} 
-                                quantity={item.quantity}
-                                onUpdateQuantity={updateQuantity}
-                                onRemoveFromCart={removeFromCart}
-                            />
+                <div className="cart-product-summary">
+                    <div className="cart-products-con">
+                        <div className="cart-header">
+                            <span>Product</span>
+                            <span>Price</span>
+                            <span>Quantity</span>
+                            <span>Total Price</span>
                         </div>
-                    ))}
-                </div>
-                <div className="cart-summary-con">
-                    <h3>Order Summary</h3>
-                    <p>Total Price: ${totalPrice.toFixed(2)}</p>
-                    <button className="checkout-button" onClick={handleCheckout}>
-                        Proceed to Checkout
-                    </button>
+                        {cartItems.map((item) => (
+                            <div key={item.product._id} className="cart-item-container">
+                                <input
+                                    type="checkbox"
+                                    className="cart-item-checkbox"
+                                    checked={!!selectedItems[item.product._id]}
+                                    onChange={() => handleCheckboxChange(item.product._id)}
+                                />
+                                <CartProductCard 
+                                    product={item.product} 
+                                    quantity={item.quantity}
+                                    onUpdateQuantity={updateQuantity}
+                                    onRemoveFromCart={removeFromCart}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="cart-summary-con">
+                        <h3>Cart Total</h3>
+                        <div className="total-con">
+                            <span>Total</span>
+                            <span>${calculateSubtotal().toFixed(2)}</span>
+                        </div>
+                        <button className="checkout-button" onClick={handleCheckout}>
+                            Checkout
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

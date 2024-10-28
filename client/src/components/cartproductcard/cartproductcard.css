@@ -1,58 +1,93 @@
-
 .cart-product-card {
-    cursor: pointer;
-    margin: 1.5rem auto;
     width: 100%;
-}
-
-.cart-products-con {
-    border-radius: 0.4rem;
-    border: 1px solid #6f6f6f;
-    padding: 0 1.5rem 0 1.5rem ;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eaeaea;
 }
 
 .cart-product-details {
-    display: flex;
-    gap: 0.8rem;
-    align-items: flex-start;
-    flex: 2;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
 }
 
-.cp-name {
-    font-size: 1.1rem;
-    font-weight: 600;
+.product-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-.cp-details {
-    display: flex;
-    gap: 0.3rem;
-    flex-direction: column;
-    justify-content: space-between;
+.cp-img {
+    width: 6rem;
+    height: 6rem; /* Changed to match width for square aspect ratio */
+    flex-shrink: 0; /* Prevents image from shrinking */
 }
 
 .cp-img img {
-    border: none;
-    border-radius: 0.3rem;
-    width: 5rem;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    height: 5rem;
+    border-radius: 0.5rem;
+}
 
+.cp-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.cp-name {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.cp-attributes {
+    font-size: 0.875rem;
+    
+    margin-top: 0.25rem;
+}
+
+.cp-price {
+    font-weight: 500;
 }
 
 .cp-counter {
     display: flex;
-    gap: 0.5rem;
-}
-
-.cp-options {
-    display: flex;
-    gap: 1rem;
     align-items: center;
-    font-size: 0.8rem;
-    justify-content: space-between;
-    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 2.5rem;
+    width: fit-content;
 }
 
-.cart-summary-con {
-    flex: 1;
+.cp-counter span {
+    padding: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cp-counter span:nth-child(2) {
+    padding: 1rem;
+}
+
+.total-price {
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cp-dlt-btn {
+    
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cp-dlt-btn:hover {
+    color: #ff4444;
+}
+
+.checkout-button {
+    background-color: var(--pri);
 }

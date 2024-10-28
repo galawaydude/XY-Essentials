@@ -1,0 +1,29 @@
+.coupon-card-main-con {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+   }
+  
+  .coupon-card-con {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .coupon-card-details-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .coupon-card-details-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .coupon-attribute {
+    font-size: 0.9em;
+  }
+  

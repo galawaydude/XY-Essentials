@@ -1,0 +1,162 @@
+.coupons-maincon {
+    padding-top: 2rem;
+}
+
+.coupons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+}
+
+.coupons-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.search-bar {
+    border: 1px solid;
+    border-radius: 0.4rem;
+    width: 20vw;
+    height: 80%;
+    padding: 0 0.5rem;
+}
+
+.add-coupon-btn {
+    background-color: darkgreen;
+    color: white;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    height: 80%;
+    overflow: hidden;
+    margin-left: 1rem;
+    padding: 0 1rem;
+}
+
+.coupons-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    gap: 15px;
+    margin-top: 2rem;
+}
+
+.coupon-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 2px dashed darkgreen;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.coupon-card:hover {
+    transform: scale(1.01);
+}
+
+.ic-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.ic-action-icon {
+    cursor: pointer;
+    color: darkgreen;
+    transition: color 0.3s;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35vw;
+    max-width: 500px;
+    max-height: 70vh; /* Limit height to 70% of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+    border-radius: 5px;
+    text-align: center;
+    gap: 0.8rem; /* Reduced spacing between form elements */
+    background: white;
+    padding: 1.5rem; /* Slightly reduced padding */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0.8rem; /* Reduced margin between form fields */
+}
+
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-top: 0.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    padding: 0.7rem 1.2rem;
+}
+
+.add-btn {
+    background-color: darkgreen;
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    padding: 0.7rem 1.2rem;
+}
+
+.modal h3 {
+    margin-bottom: 1rem;
+    color: darkgreen;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: darkgreen;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.3);
+}
