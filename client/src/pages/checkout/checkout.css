@@ -1,37 +1,342 @@
 .checkout-con {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.home-pro-head {
+  margin-bottom: 1rem;
+}
+
+.section_left_title strong {
+  font-size: 1.75rem;
+  color: #0A4834;
+  font-weight: 600;
+}
+
+.checkout-content {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.checkout-left, .checkout-right {
+  padding: 1.5rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.checkout-left {
+  width: 60%;
+}
+
+.checkout-right {
+  width: 40%;
+  height: fit-content;
+  position: sticky;
+  top: 5rem;
+}
+
+.checkout-left h3, .checkout-right h3 {
+  color: #0A4834;
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0A4834;
+}
+
+/* Address section styling */
+
+.address-selector {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+
+}
+
+.address-selector:focus {
+  outline: none;
+  border-color: #0A4834;
+  box-shadow: 0 0 0 2px rgba(10, 72, 52, 0.1);
+}
+
+/* Payment method section styling */
+.payment-section{
+  border-bottom: 2px solid #0A4834;
+}
+
+/* Coupon section styling */
+.coupon-section {
+  display: flex;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  align-items: center;
+}
+
+.coupon-section input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  height: 2.75rem;
+}
+
+.coupon-section button {
+  white-space: nowrap;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  min-width: 120px;
+}
+
+button {
+  background-color: #0A4834;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #0d5f43;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Add New Address button styling */
+.add-address-btn {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h4 {
+  color: #0A4834;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.modal-content input:focus {
+  outline: none;
+  border-color: #0A4834;
+  box-shadow: 0 0 0 2px rgba(10, 72, 52, 0.1);
+}
+
+.modal-content button {
+  margin-right: 1rem;
+}
+
+/* Payment method radio buttons */
+.payment-options {
+  margin: 1.5rem 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+label:hover {
+  background-color: rgba(10, 72, 52, 0.05);
+}
+
+input[type="radio"] {
+  margin-right: 0.75rem;
+}
+
+/* Order items list */
+.order-items {
+  margin: 2.5rem 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Add this to your existing CSS */
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.quantity-bubble {
+  position: absolute;
+  top: -10px;
+  background-color: #0A4834;
+  color: white;
+  font-size: 0.75rem; /* Slightly smaller font */
+  font-weight: 600;
+  width: 1.5rem; /* Fixed width */
+  height: 1.5rem; /* Fixed height */
+  border-radius: 50%; /* Full rounded */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+/* Order summary styles */
+.checkout-right p {
+  margin-bottom: 1rem;
+
+  line-height: 1.5;
+}
+
+.checkout-right p strong {
+  color: #0A4834;
+  font-size: 1.2rem;
+}
+
+/* Place order button */
+.checkout-right button {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Update for INR symbol and improved layout for order items and summary */
+.checkout-right p strong, .checkout-right p span.inr {
+  font-size: 1.2rem;
+  color: #0A4834;
+}
+
+ul li img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 0.75rem;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
+li.product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+li.product-item div.item-info {
+  display: flex;
+  align-items: center;
+}
+
+li.product-item span.quantity {
+  font-weight: 600;
+  color: #0A4834;
+}
+
+.checkout-right .summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-row{
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.checkout-right p span {
+  font-size: 1rem;
+
+}
+
+.checkout-right p strong {
+  font-size: 1.3rem;
+}
+
+.coupon-heading {
+  font-size: 1.25rem;
+  color: #0A4834;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .checkout-content {
     flex-direction: column;
   }
   
-  .checkout-content {
-    display: flex;
-    justify-content: space-between;
-  }
-  
   .checkout-left, .checkout-right {
-    width: 48%;
+    width: 100%;
   }
   
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .checkout-right {
+    position: static;
   }
   
   .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
+    width: 90%;
+    margin: 0 1rem;
   }
 
-  .address-selector {
-    max-width: 30rem;
+  .coupon-section {
+    flex-direction: column;
+    gap: 0.75rem;
   }
-  
+
+  .coupon-section button {
+    width: 100%;
+  }
+}
