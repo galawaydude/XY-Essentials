@@ -1,28 +1,42 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/user.model.js');
 const asyncHandler = require('express-async-handler');
 
 const protect = asyncHandler(async (req, res, next) => {
-  // console.log('Cookies:', req.cookies);
+  console.log('Cookies:', req.cookies);
   const token = req.cookies.token;
-  
+
   if (token) {
     try {
+      console.log('Token:', token);
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded._id);
+      console.log('Decoded Token:', decoded);
 
-      // console.log(req.user);
+      // Use decoded.id if present, otherwise use decoded._id
+      const userId = decoded.id || decoded._id; 
+      console.log('Decoded User ID:', userId);
+
+      req.user = await User.findById(userId);
+
+      if (!req.user) {
+        console.error('User not found');
+        return res.redirect('/');
+      }
+
+      console.log('Authenticated User:', req.user);
       next();
     } catch (error) {
-      console.error(error);
-      return res.redirect('/'); 
+      console.error('JWT Verification Error:', error.message);
+      return res.redirect('/');
     }
   } else {
-    return res.redirect('/'); // Redirect if no token found
+    console.error('No token found');
+    return res.redirect('/');
   }
 });
 
-// Admin middleware (only for users with admin role)
+
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();

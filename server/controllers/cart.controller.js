@@ -31,6 +31,8 @@ const addToCart = asyncHandler(async (req, res) => {
     try {
         const { productId, quantity } = req.body;
 
+        console.log("user", req.user);
+
         // Find the cart or create a new one
         let cart = await Cart.findOne({ user: req.user._id });
         
