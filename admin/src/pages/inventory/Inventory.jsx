@@ -30,8 +30,9 @@ const Inventory = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/products/${productToDelete}`, {
+            const response = await fetch(`http://localhost:5000/api/products/${productToDelete}`, {
                 method: 'DELETE',
+                credentials: 'include'
             });
             if (!response.ok) {
                 throw new Error('Failed to delete product');
@@ -75,10 +76,13 @@ const Inventory = () => {
                         </div>
                         <div className="ic-deets">
                             <p>{product.name}</p>
-                            <p className="ic-price">Price: ${product.price} | In Stock: {product.stock}</p>
+                            <p className="ic-price">Price: ₹{product.price}</p>
+                            <p className="ic-price">In Stock: {product.stock}</p>
+                            <p className="ic-price">Ordered: {product.ordered}</p>
+                            <p className="ic-price">Delivered: {product.delivered}</p>
                         </div>
                         <div className="ic-actions">
-                            <Link to={`/products/${product._id}`}>
+                            <Link to={`http://localhost:5173/products/${product._id}`}>
                                 <i className="fas fa-eye ic-action-icon" title="View"></i>
                             </Link>
                             <Link to={`/admin/edit-product/${product._id}`}>

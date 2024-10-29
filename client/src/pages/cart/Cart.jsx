@@ -17,6 +17,7 @@ const Cart = () => {
     
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Fetched cart items:', data.cartItems); 
                     setCartItems(data.cartItems);
                     const initialSelectedItems = {};
                     data.cartItems.forEach(item => {

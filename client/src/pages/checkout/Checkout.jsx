@@ -116,6 +116,20 @@ const Checkout = () => {
         const createdOrder = await response.json();
 
         for (const item of checkoutItems) {
+          await fetch('http://localhost:5000/api/products/update-stock', {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              productId: item.product._id,
+              quantity: item.quantity,
+            }),
+          });
+        }
+
+        for (const item of checkoutItems) {
           await fetch(`http://localhost:5000/api/cart/${item.product._id}`, {
             method: 'DELETE',
             credentials: 'include',
@@ -201,7 +215,21 @@ const Checkout = () => {
             const errorText = await response.text();
             throw new Error('Failed to save order details: ' + errorText);
           }
-          const createdOrder = await response.json(); 
+          const createdOrder = await response.json();
+
+          for (const item of checkoutItems) {
+            await fetch('http://localhost:5000/api/products/update-stock', {
+              method: 'PUT',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                productId: item.product._id,
+                quantity: item.quantity,
+              }),
+            });
+          }
 
 
           for (const item of checkoutItems) {
@@ -310,7 +338,7 @@ const Checkout = () => {
               </label>
             </div>
           </div>
-                  
+
           {/* Coupon Section */}
           <div className="coupon-section">
             <h4 className="coupon-heading">Have a Coupon?</h4>

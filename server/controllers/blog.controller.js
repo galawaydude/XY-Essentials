@@ -96,7 +96,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
       throw new Error('Not authorized to delete this blog post');
     }
 
-    await blogPost.remove();
+    await blogPost.deleteOne();
     res.json({ message: 'Blog post removed' });
   } else {
     res.status(404);

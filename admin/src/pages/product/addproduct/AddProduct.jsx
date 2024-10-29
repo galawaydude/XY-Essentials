@@ -11,6 +11,7 @@ const AddProduct = () => {
         description: '',
         price: '',
         category: '',
+        skintype: '',
         stock: '',
         images: [],
         claims: [''],
@@ -149,6 +150,12 @@ const AddProduct = () => {
                         <option value="Cleanse">Cleanse</option>
                         <option value="Treat">Treat</option>
                         <option value="Protect">Protect</option>
+                    </select>
+                    <label htmlFor="skintype">Skin Type</label>
+                    <select id="skintype" name="skintype" value={product.skinType} onChange={handleChange} required>
+                        <option value="">Select Skin Type</option>
+                        <option value="Cleanse">Dry</option>
+                        <option value="Treat">Oily</option>
                     </select>
 
                     <label htmlFor="stock">Stock</label>

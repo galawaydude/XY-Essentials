@@ -4,7 +4,9 @@
 }
 
 .pl-products-con {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
     gap: 2rem;
 }

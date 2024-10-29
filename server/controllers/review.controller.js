@@ -51,7 +51,7 @@ const deleteReview = asyncHandler(async (req, res) => {
   const review = await Review.findById(req.params.id);
 
   if (review && review.user.equals(req.user._id)) {
-    await review.remove();
+    await review.deleteOne();
     res.json({ message: 'Review removed' });
   } else {
     res.status(404);

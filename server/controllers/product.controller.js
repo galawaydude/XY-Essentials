@@ -102,7 +102,33 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 
+const updateProductStock = asyncHandler(async (req, res) => {
+  const { productId, quantity } = req.body;
 
+  try {
+      const product = await Product.findById(productId);
+      if (!product) {
+          return res.status(404).json({ message: 'Product not found' });
+      }
+
+      // Check if there is enough stock
+      if (product.stock >= quantity) {
+          product.stock -= quantity;
+
+          // Initialize ordered if it doesn't exist
+          product.ordered = product.ordered || 0; 
+          product.ordered += quantity; 
+
+          await product.save();
+          res.status(200).json({ message: 'Stock updated successfully' });
+      } else {
+          res.status(400).json({ message: 'Not enough stock available' });
+      }
+  } catch (error) {
+      console.error('Error updating stock:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 
 
@@ -111,7 +137,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    await product.remove();
+    await product.deleteOne();
     res.json({ message: 'Product removed' });
   } else {
     res.status(404);
@@ -122,6 +148,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 module.exports = {
   getAllProducts,
   getProductById,
+  updateProductStock,
   createProduct,
   updateProduct,
   deleteProduct,

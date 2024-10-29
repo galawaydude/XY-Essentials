@@ -5,7 +5,9 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: String, required: true }, 
-  stock: { type: Number, required: true }, 
+  stock: { type: Number,  default: 0 }, 
+  ordered: { type: Number, default: 0 }, 
+  delivered: { type: Number, default: 0}, 
   skinType: {type: String},
   images: { 
     type: [{ type: String }], 
@@ -19,6 +21,7 @@ const productSchema = new mongoose.Schema({
   },
   rating: { type: Number, default: 0 },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
+  // sizes: [{type: Number}],
   claims: [{ type: String }], 
   suitableFor: [{ type: String }],
   keyIngredients: [{ 

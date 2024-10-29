@@ -56,7 +56,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
   const address = await Address.findById(req.params.id);
 
   if (address && address.user.equals(req.user._id)) {
-    await address.remove();
+    await address.deleteOne();
     res.json({ message: 'Address removed' });
   } else {
     res.status(404);
