@@ -7,6 +7,7 @@ const Checkout = () => {
   const location = useLocation();
   const [profile, setProfile] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [products, setProducts] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -37,9 +38,103 @@ const Checkout = () => {
       }
     };
 
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/products/');
+        const data = await response.json();
+        setProducts(data);
+        // console.log('Fetched Products:', data); 
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
     fetchProfile();
     fetchAddresses();
   }, []);
+
+  const addFreeSachets = () => {
+    const uniqueSkinTypes = new Set();
+    const newItems = [...checkoutItems];
+
+    // Collect unique skin types from all categories in the cart
+    checkoutItems.forEach(item => {
+      if (item.product.category === 'Cleanse' ||
+        item.product.category === 'Treat' ||
+        item.product.category === 'Protect') {
+        uniqueSkinTypes.add(item.product.skinType);
+      }
+    });
+
+    console.log("Unique skin types collected:", [...uniqueSkinTypes]);
+
+    // Loop through each skin type and check for missing sachets
+    uniqueSkinTypes.forEach(skinType => {
+      const cleanserExists = newItems.some(item =>
+        item.product.category === 'Cleanse' && item.product.skinType === skinType
+      );
+      const treatExists = newItems.some(item =>
+        item.product.category === 'Treat' && item.product.skinType === skinType
+      );
+      const protectExists = newItems.some(item =>
+        item.product.category === 'Protect' && item.product.skinType === skinType
+      );
+
+      console.log(`Checking skin type: ${skinType}`);
+      console.log(`Cleanser exists: ${cleanserExists}, Treat exists: ${treatExists}, Protect exists: ${protectExists}`);
+
+      // Add Cleanser sachet if Treat and Protect exist
+      if (!cleanserExists) {
+        const cleanserSachet = products.find(product =>
+          product.category === 'Cleanse' &&
+          product.skinType === skinType &&
+          product.packaging === 'Sachet'
+        );
+        if (cleanserSachet) {
+          newItems.push({ product: cleanserSachet, quantity: 1 });
+          console.log(`Added Cleanser sachet for skin type: ${skinType}`);
+        }
+      }
+
+      // Add Treat sachet if Cleanser exists and Protect does not
+      if (!treatExists) {
+        const treatSachet = products.find(product =>
+          product.category === 'Treat' &&
+          product.skinType === skinType &&
+          product.packaging === 'Sachet'
+        );
+        if (treatSachet) {
+          newItems.push({ product: treatSachet, quantity: 1 });
+          console.log(`Added Treat sachet for skin type: ${skinType}`);
+        }
+      }
+
+      // Add Protect sachet if Cleanser exists and Treat does not
+      if (!protectExists) {
+        const protectSachet = products.find(product =>
+          product.category === 'Protect' &&
+          product.skinType === skinType &&
+          product.packaging === 'Sachet'
+        );
+        if (protectSachet) {
+          newItems.push({ product: protectSachet, quantity: 1 });
+          console.log(`Added Protect sachet for skin type: ${skinType}`);
+        }
+      }
+    });
+
+    // Log the updated checkout items
+    console.log("Updated checkout items:", newItems);
+
+    // Update the checkout items with the new sachets
+    setCheckoutItems(newItems);
+  };
+
+  useEffect(() => {
+    addFreeSachets();
+  }, [checkoutItems, products]);
+
 
   const handleAddAddress = () => {
     if (newAddress) {

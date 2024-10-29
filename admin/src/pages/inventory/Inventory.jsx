@@ -77,6 +77,7 @@ const Inventory = () => {
                         <div className="ic-deets">
                             <p>{product.name}</p>
                             <p className="ic-price">Price: ₹{product.price}</p>
+                            <p className="ic-price">Packaging: {product.packaging}</p>
                             <p className="ic-price">In Stock: {product.stock}</p>
                             <p className="ic-price">Ordered: {product.ordered}</p>
                             <p className="ic-price">Delivered: {product.delivered}</p>

@@ -5,6 +5,7 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: String, required: true }, 
+  packaging: { type: String, default: 'Tube' }, 
   stock: { type: Number,  default: 0 }, 
   ordered: { type: Number, default: 0 }, 
   delivered: { type: Number, default: 0}, 
@@ -21,7 +22,7 @@ const productSchema = new mongoose.Schema({
   },
   rating: { type: Number, default: 0 },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
-  // sizes: [{type: Number}],
+  sizes: [{type: Number}],
   claims: [{ type: String }], 
   suitableFor: [{ type: String }],
   keyIngredients: [{ 

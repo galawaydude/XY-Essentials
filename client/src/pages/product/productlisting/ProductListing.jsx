@@ -43,6 +43,7 @@ const ProductListing = () => {
         const passesType = selectedType === '' || product.type === selectedType;
         const passesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
         const passesRating = selectedRating === '' || product.rating >= selectedRating;
+        const passesPackaging = product.packaging !== 'Sachet';
     
         // Log the product and whether it passes all filters
         // console.log(product, {
@@ -54,7 +55,7 @@ const ProductListing = () => {
         //     passesAll: passesCategory && passesSkinType && passesType && passesPrice && passesRating
         // });
     
-        return passesCategory && passesSkinType && passesType && passesPrice && passesRating;
+        return passesPackaging & passesCategory && passesSkinType && passesType && passesPrice && passesRating;
     });
     
 

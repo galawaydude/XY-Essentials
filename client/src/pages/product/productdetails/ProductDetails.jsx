@@ -174,6 +174,13 @@ const ProductDetails = () => {
                     <div className="pd-desc-info">
                         <div className="pd-desc-item">
                             <div className="pd-desc-item-head">
+                                <h6>Sizes</h6>
+                                <i className="fas fa-angle-up"></i>
+                            </div>
+                            <p className='pd-desc'>{product.sizes.join(', ')}</p>
+                        </div>
+                        <div className="pd-desc-item">
+                            <div className="pd-desc-item-head">
                                 <h6>Suitable For</h6>
                                 <i className="fas fa-angle-up"></i>
                             </div>

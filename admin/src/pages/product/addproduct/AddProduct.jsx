@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './addproduct.css';
 import { FaTrash } from 'react-icons/fa';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const navigate = useNavigate()
@@ -10,10 +10,12 @@ const AddProduct = () => {
         name: '',
         description: '',
         price: '',
+        packaging: '',
         category: '',
-        skintype: '',
+        skinType: '',
         stock: '',
         images: [],
+        sizes: [''],
         claims: [''],
         suitableFor: [''],
         keyIngredients: [{ ingredient: '', description: '' }],
@@ -48,6 +50,12 @@ const AddProduct = () => {
             claims: [...product.claims, ''],
         });
     };
+    const addSize = () => {
+        setProduct({
+            ...product,
+            sizes: [...product.sizes, ''],
+        });
+    };
 
     const addSuitableFor = () => {
         setProduct({
@@ -56,6 +64,11 @@ const AddProduct = () => {
         });
     };
 
+    const handleSizeChange = (index, value) => {
+        const updatedSizes = [...product.sizes];
+        updatedSizes[index] = value;
+        setProduct({ ...product, sizes: updatedSizes });
+    };
     const handleClaimChange = (index, value) => {
         const updatedClaims = [...product.claims];
         updatedClaims[index] = value;
@@ -68,6 +81,10 @@ const AddProduct = () => {
         setProduct({ ...product, suitableFor: updatedSuitableFor });
     };
 
+    const deleteSize = (index) => {
+        const updatedSizes = product.sizes.filter((_, i) => i !== index);
+        setProduct({ ...product, sizes: updatedSizes });
+    };
     const deleteClaim = (index) => {
         const updatedClaims = product.claims.filter((_, i) => i !== index);
         setProduct({ ...product, claims: updatedClaims });
@@ -91,7 +108,7 @@ const AddProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-    
+
         // Append product details to formData
         for (const key in product) {
             if (Array.isArray(product[key])) {
@@ -108,13 +125,13 @@ const AddProduct = () => {
                 formData.append(key, product[key]);
             }
         }
-    
+
         product.images.forEach((image) => {
             if (image instanceof File) {
                 formData.append('productImages', image);
             }
         });
-    
+
         // Send the formData to the backend
         try {
             const response = await fetch('http://localhost:5000/api/products', {
@@ -128,7 +145,7 @@ const AddProduct = () => {
             console.error('Error creating product:', error);
         }
     };
-    
+
 
     return (
         <div className="add-product-maincon">
@@ -144,6 +161,13 @@ const AddProduct = () => {
                     <label htmlFor="price">Actual Price</label>
                     <input type="number" id="price" name="price" placeholder="Product Price" value={product.price} onChange={handleChange} required />
 
+                    <label htmlFor="packaging">Packaging</label>
+                    <select id="packaging" name="packaging" value={product.packaging} onChange={handleChange} required>
+                        <option value="">Select Packaging</option>
+                        <option value="Tube">Tube</option>
+                        <option value="Sachet">Sachet</option>
+                    </select>
+
                     <label htmlFor="category">Category</label>
                     <select id="category" name="category" value={product.category} onChange={handleChange} required>
                         <option value="">Select Category</option>
@@ -151,18 +175,35 @@ const AddProduct = () => {
                         <option value="Treat">Treat</option>
                         <option value="Protect">Protect</option>
                     </select>
-                    <label htmlFor="skintype">Skin Type</label>
-                    <select id="skintype" name="skintype" value={product.skinType} onChange={handleChange} required>
+
+                    <label htmlFor="skinType">Skin Type</label>
+                    <select id="skinType" name="skinType" value={product.skinType} onChange={handleChange} required>
                         <option value="">Select Skin Type</option>
-                        <option value="Cleanse">Dry</option>
-                        <option value="Treat">Oily</option>
+                        <option value="Dry">Dry</option>
+                        <option value="Oily">Oily</option>
                     </select>
+
 
                     <label htmlFor="stock">Stock</label>
                     <input type="number" id="stock" name="stock" placeholder="Stock Quantity" value={product.stock} onChange={handleChange} required />
 
                     <label htmlFor="images">Upload Images</label>
                     <input type="file" id="images" name="images" multiple onChange={handleImageUpload} required />
+
+                    <h3>Sizes</h3>
+                    {product.sizes.map((size, index) => (
+                        <div key={index} className="size">
+                            <input
+                                type="text"
+                                placeholder="Size"
+                                value={size}
+                                onChange={(e) => handleSizeChange(index, e.target.value)}
+                                required
+                            />
+                            <FaTrash onClick={() => deleteSize(index)} style={{ cursor: 'pointer', color: 'red' }} />
+                        </div>
+                    ))}
+                    <button type="button" onClick={addSize}>Add Size</button>
 
                     <h3>Claims</h3>
                     {product.claims.map((claim, index) => (
