@@ -158,7 +158,7 @@ const EditProduct = () => {
                     <select id="category" name="category" value={product.category} onChange={handleChange} required>
                         <option value="">Select Category</option>
                         <option value="SPF + Moisturizer">SPF + Moisturizer</option>
-                        <option value="Cleaners">Cleaners</option>
+                        <option value="Cleanse">Cleanse</option>
                         <option value="Serums">Serums</option>
                     </select>
 
