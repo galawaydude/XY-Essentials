@@ -8,3 +8,5 @@ client/.env
 server/.env
 admin/.env
 server/config/.env
+server/config/dev.env
+server/config/pro.env

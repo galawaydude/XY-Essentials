@@ -63,9 +63,9 @@ const ProductListing = () => {
 
     return (
         <div className="product-details">
-            <div className="text-nav-con container">
+            {/* <div className="text-nav-con container">
                 <p>Home &gt; Shop </p>
-            </div>
+            </div> */}
 
             <div className="section container">
                 <div className="home-pro-head">
