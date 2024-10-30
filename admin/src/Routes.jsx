@@ -7,7 +7,7 @@ import EditProduct from './pages/product/editproduct/EditProduct';
 import AddBlog from './pages/blog/addblog/AddBlog';
 import EditBlog from './pages/blog/editblog/EditBlog';
 import Inventory from './pages/inventory/Inventory';
-import AllOrders from './pages/orders/AllOrders';
+import AllOrders from './pages/orders/Allorders';
 import Blogs from './pages/blog/allblogs/allBlogs';
 import Coupons from './pages/coupons/Coupons';
 
