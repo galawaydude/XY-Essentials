@@ -38,10 +38,10 @@ const Home = () => {
 
   return (
     <div className='home'>
-      <div className="hero section container">
+      <div className="hero section con1">
         <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
       </div>
-      <div className="about section container">
+      <div className="about section con1">
         <div className="about-head">
           <div className="section_centre_title">
             About Us
@@ -87,7 +87,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="categories section container">
+      <div className="categories section con1">
         <div className="cat-head">
           <div className="section_centre_title">
             Categories
@@ -111,11 +111,11 @@ const Home = () => {
 </div>
       </div>
 
-      {/* <div className="hero section container">
+      {/* <div className="hero section con1">
         <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
       </div> */}
 
-      <div className="home-products section container">
+      <div className="home-products section con1">
         <div className="home-pro-head">
           <div className="section_left_title">
             Browse Our <strong>Products</strong>
@@ -133,7 +133,7 @@ const Home = () => {
         </div>
 
       </div>
-      <div className="home-blog section container">
+      <div className="home-blog section con1">
         <div className="home-pro-head">
           <div className="section_left_title">
             Explore More About  <strong>Skincare</strong>
@@ -150,7 +150,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div className="home-testimonials section container">
+      <div className="home-testimonials section con1">
         <div className="home-pro-head">
           <div className="section_left_title">
             Our Happy  <strong>Customers</strong>

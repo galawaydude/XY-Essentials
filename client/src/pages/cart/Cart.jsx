@@ -97,8 +97,8 @@ const Cart = () => {
 
     return (
         <div className="cart">
-            <div className="container">
-                <div className="home-pro-head">
+            <div className="con2">
+                <div className="home-pro-head con2">
                     <div className="section_left_title">Shopping Cart</div>
                     <div className="items-count">{cartItems.length} items in your bag.</div>
                 </div>
