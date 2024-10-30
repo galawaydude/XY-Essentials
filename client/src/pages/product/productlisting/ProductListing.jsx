@@ -8,7 +8,8 @@ const ProductListing = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSkinType, setSelectedSkinType] = useState('');
     const [selectedType, setSelectedType] = useState('');
-    const [priceRange, setPriceRange] = useState([0, 1000]); // Example price range
+    const [searchQuery, setSearchQuery] = useState('');
+    const [priceRange, setPriceRange] = useState([0, 1000]);
     const [selectedRating, setSelectedRating] = useState('');
     const location = useLocation();
 
@@ -30,12 +31,29 @@ const ProductListing = () => {
     useEffect(() => {
         const query = new URLSearchParams(location.search);
         const category = query.get('category');
+        const querySearch = query.get('query');
+
         if (category) {
             setSelectedCategory(category);
         }
+        if (querySearch) {
+            setSearchQuery(querySearch);
+        }
     }, [location]);
 
+    // Update the URL based on search input
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
 
+        const params = new URLSearchParams(location.search);
+        if (query) {
+            params.set('query', query);
+        } else {
+            params.delete('query');
+        }
+        history.replace({ search: params.toString() });
+    };
 
     const filteredProducts = products.filter(product => {
         const passesCategory = selectedCategory === '' || product.category === selectedCategory;
@@ -44,6 +62,7 @@ const ProductListing = () => {
         const passesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
         const passesRating = selectedRating === '' || product.rating >= selectedRating;
         const passesPackaging = product.packaging !== 'Sachet';
+        const passesSearchQuery = searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase());
     
         // Log the product and whether it passes all filters
         // console.log(product, {
@@ -55,7 +74,7 @@ const ProductListing = () => {
         //     passesAll: passesCategory && passesSkinType && passesType && passesPrice && passesRating
         // });
     
-        return passesPackaging & passesCategory && passesSkinType && passesType && passesPrice && passesRating;
+        return passesSearchQuery && passesPackaging & passesCategory && passesSkinType && passesType && passesPrice && passesRating;
     });
     
 
@@ -80,7 +99,8 @@ const ProductListing = () => {
                         <input
                             type="text"
                             placeholder="Search products..."
-                        // Implement search functionality as needed
+                            value={searchQuery}
+                            onChange={handleSearchChange}
                         />
                         <div className="filter-btn">
                             <button>Filter</button>

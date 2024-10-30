@@ -67,7 +67,7 @@ const Checkout = () => {
       }
     });
 
-    console.log("Unique skin types collected:", [...uniqueSkinTypes]);
+    // console.log("Unique skin types collected:", [...uniqueSkinTypes]);
 
     // Loop through each skin type and check for missing sachets
     uniqueSkinTypes.forEach(skinType => {
@@ -81,8 +81,8 @@ const Checkout = () => {
         item.product.category === 'Protect' && item.product.skinType === skinType
       );
 
-      console.log(`Checking skin type: ${skinType}`);
-      console.log(`Cleanser exists: ${cleanserExists}, Treat exists: ${treatExists}, Protect exists: ${protectExists}`);
+      // console.log(`Checking skin type: ${skinType}`);
+      // console.log(`Cleanser exists: ${cleanserExists}, Treat exists: ${treatExists}, Protect exists: ${protectExists}`);
 
       // Add Cleanser sachet if Treat and Protect exist
       if (!cleanserExists) {
@@ -93,7 +93,7 @@ const Checkout = () => {
         );
         if (cleanserSachet) {
           newItems.push({ product: cleanserSachet, quantity: 1 });
-          console.log(`Added Cleanser sachet for skin type: ${skinType}`);
+          // console.log(`Added Cleanser sachet for skin type: ${skinType}`);
         }
       }
 
@@ -106,7 +106,7 @@ const Checkout = () => {
         );
         if (treatSachet) {
           newItems.push({ product: treatSachet, quantity: 1 });
-          console.log(`Added Treat sachet for skin type: ${skinType}`);
+          // console.log(`Added Treat sachet for skin type: ${skinType}`);
         }
       }
 
@@ -119,13 +119,13 @@ const Checkout = () => {
         );
         if (protectSachet) {
           newItems.push({ product: protectSachet, quantity: 1 });
-          console.log(`Added Protect sachet for skin type: ${skinType}`);
+          // console.log(`Added Protect sachet for skin type: ${skinType}`);
         }
       }
     });
 
     // Log the updated checkout items
-    console.log("Updated checkout items:", newItems);
+    // console.log("Updated checkout items:", newItems);
 
     // Update the checkout items with the new sachets
     setCheckoutItems(newItems);

@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'Address'
   },
   paymentMethod: { type: String, required: true },  
-  razorpayOrderId : { type: String, required: true },
+  razorpayOrderId : { type: String },
   paymentStatus: { type: String, default: 'Pending' }, 
   subtotal: { type: Number, required: true },
   discount: { type: Number, required: true },
