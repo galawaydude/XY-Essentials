@@ -35,7 +35,7 @@ const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart
 
                 {/* Price Column */}
                 <div className="cp-price">
-                    ${product.price}
+                    ₹{product.price}
                 </div>
 
                 {/* Quantity Column */}
@@ -47,7 +47,7 @@ const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart
 
                 {/* Total Price Column */}
                 <div className="total-price">
-                    ${(product.price * quantity).toFixed(2)}
+                    ₹{(product.price * quantity).toFixed(2)}
                     <span className="cp-dlt-btn" onClick={handleDelete}>
                         <i className="fas fa-trash-alt"></i>
                     </span>

@@ -8,10 +8,12 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middlewares/error.middleware.js');
 
-dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
+// dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
+dotenv.config({ path: path.resolve(__dirname, 'config/dev.env') });
+// dotenv.config({ path: path.resolve(__dirname, 'config/pro.env') });
 connectDB();
 
-// // Route Imports
+// Route Imports
 const userRoutes = require('./routes/user.routes');
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');

@@ -49,29 +49,29 @@ const ProductCard = ({ product }) => {
       <div className="home-product-details">
         <Link to={`/products/${product._id}`} key={product._id}>
           <div className="h-product-title">
-            {product.name}         
+            {product.name}
           </div>
         </Link>
         <div className="h-product-subtitle">
           {product.description}
         </div>
-        <hr className='pc-divider' />
         <div className="h-product-price-cart">
           <div className="h-product-prices">
             <div className="h-p-price">
-              ${product.price}
+              ₹{product.price}
             </div>
           </div>
-          <div className="h-p-cart-btn">
-            {message ? (
-              <span>{message}</span> // Display plain text message
-            ) : (
-              <button onClick={handleAddToCart}>
-                <span>Add to Cart</span>
-                <i className="fas fa-shopping-cart"></i>
-              </button>
-            )}
-          </div>
+        </div>
+        <hr className='pc-divider' />
+        <div className="h-p-cart-btn">
+          {message ? (
+            <span>{message}</span> // Display plain text message
+          ) : (
+            <button onClick={handleAddToCart}>
+              <span>Add to Cart</span>
+              <i className="fas fa-shopping-cart"></i>
+            </button>
+          )}
         </div>
       </div>
     </div>

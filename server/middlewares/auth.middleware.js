@@ -4,18 +4,18 @@ const User = require('../models/user.model.js');
 const asyncHandler = require('express-async-handler');
 
 const protect = asyncHandler(async (req, res, next) => {
-  console.log('Cookies:', req.cookies);
+  // console.log('Cookies:', req.cookies);
   const token = req.cookies.token;
 
   if (token) {
     try {
-      console.log('Token:', token);
+      // console.log('Token:', token);
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log('Decoded Token:', decoded);
+      // console.log('Decoded Token:', decoded);
 
       // Use decoded.id if present, otherwise use decoded._id
       const userId = decoded.id || decoded._id; 
-      console.log('Decoded User ID:', userId);
+      // console.log('Decoded User ID:', userId);
 
       req.user = await User.findById(userId);
 
@@ -24,7 +24,7 @@ const protect = asyncHandler(async (req, res, next) => {
         return res.redirect('/');
       }
 
-      console.log('Authenticated User:', req.user);
+      // console.log('Authenticated User:', req.user);
       next();
     } catch (error) {
       console.error('JWT Verification Error:', error.message);

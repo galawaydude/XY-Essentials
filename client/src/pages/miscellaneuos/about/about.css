@@ -39,7 +39,7 @@ h2 {
     font-size: 1.8rem; /* Adjust heading size */
 }
 
-p {
+.about-maincon p {
     margin-bottom: 15px; /* Space below paragraphs */
     line-height: 1.6; /* Improve readability */
     color: #555; /* Slightly lighter text color */

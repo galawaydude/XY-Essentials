@@ -70,7 +70,7 @@ const ProductListing = () => {
             <div className="section container">
                 <div className="home-pro-head">
                     <div className="section_left_title">
-                        Explore <strong>Products</strong>
+                        All <strong>Products</strong>
                     </div>
                 </div>
                 <hr />

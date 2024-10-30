@@ -2,8 +2,8 @@
     display: flex;
     /* gap: 1rem; */
     flex-direction: column;
-    padding: 0.5rem;
-    width: 18vw;
+    padding: 0.2rem;
+    /* width: 18vw; */
     flex: 1;
     align-items: center;
     justify-content: center;
@@ -15,7 +15,7 @@
 .home-product-item:hover {
     box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.2);
     border: 1px solid var(--pri);
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 .home-product-img img {
@@ -25,8 +25,8 @@
 }
 
 .home-product-details {
-    width: 90%;
-    padding: 0.4rem;
+    /* width: 90%; */
+    padding: 0.3rem;
 }
 
 .h-product-price-cart {

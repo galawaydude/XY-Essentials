@@ -51,3 +51,8 @@ background-color: rgba(0, 0, 0, 0.034);
     padding: 0.1rem 0.5rem;
     width: fit-content;
 }
+
+.h-blog-card-tags {
+    display: flex;
+    gap: 0.2rem;
+}
