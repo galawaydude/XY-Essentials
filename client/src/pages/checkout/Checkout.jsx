@@ -293,7 +293,8 @@ const Checkout = () => {
           const razorpayOrderData = {
             ...orderData,
             paymentMethod: 'razorpay',
-            paymentStatus: 'Completed'
+            paymentStatus: 'Completed',
+            razorpayOrderId: data.id,
           };
           console.log("Order data after successful razorpay payment:", razorpayOrderData);
           const response = await fetch('http://localhost:5000/api/orders/', {
