@@ -1,0 +1,125 @@
+.address-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.address-modal-main-con {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    max-height: 80vh;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 2rem;
+    text-align: center;
+    gap: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+.address-modal-title {
+    font-size: 1.6rem;
+    color: #0A4834;
+    font-weight: 500;
+    align-self: flex-start;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid #0A4834;
+}
+
+.address-modal-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+.address-label {
+    font-size: 0.95rem;
+    color: #0A4834;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    text-align: left;
+}
+
+.address-modal-input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    transition: border 0.3s;
+    padding: 0.8rem;
+}
+
+.address-modal-input:focus {
+    border-color: #0A4834;
+    outline: none;
+}
+
+.address-modal-double-input {
+    display: flex;
+    gap: 1rem;
+}
+
+.half-width {
+    width: 100%;
+}
+
+.address-modal-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.address-modal-checkbox label {
+    color: #0A4834;
+    font-size: 0.9rem;
+}
+
+.address-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.address-modal-cancel,
+.address-modal-save {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+.address-modal-cancel {
+    background: #ccc;
+    color: white;
+}
+
+.address-modal-cancel:hover {
+    background: #b3b3b3;
+}
+
+.address-modal-save {
+    background: #0A4834;
+    color: white;
+}
+
+.address-modal-save:hover {
+    background: #005f29;
+}
+
+.address-multi-labels{
+    display: flex;
+    justify-content: space-between;
+}
