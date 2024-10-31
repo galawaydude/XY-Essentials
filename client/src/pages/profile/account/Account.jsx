@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Addressmodal from '../../../components/address/Addressmodal';
 import './account.css';
+import AddressModal from '../../../components/address/AddressModal';
 
 const Account = () => {
     const [profile, setProfile] = useState([]);
@@ -48,8 +48,8 @@ const Account = () => {
         } else {
             setAddresses([...addresses, newAddress]);
         }
-        setIsModalOpen(false); // Close modal after submitting
-        setEditAddressIndex(null); // Reset edit index
+        setIsModalOpen(false); 
+        setEditAddressIndex(null); 
     };
 
     const openAddModal = () => {
@@ -126,7 +126,7 @@ const Account = () => {
             </section>
 
             {/* Modal for Adding/Editing Address */}
-            <Addressmodal
+            <AddressModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleAddAddress}

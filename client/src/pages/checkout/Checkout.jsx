@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './checkout.css';
+import AddressModal from '../../components/address/AddressModal';
+
 
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState([]);
-  const [addresses, setAddresses] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState('');
@@ -16,6 +17,31 @@ const Checkout = () => {
   const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
   const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
   const [discount, setDiscount] = useState(0);
+  const [addresses, setAddresses] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editAddressIndex, setEditAddressIndex] = useState(null);
+
+  const handleAddAddress = (newAddress) => {
+    if (editAddressIndex !== null) {
+      const updatedAddresses = [...addresses];
+      updatedAddresses[editAddressIndex] = newAddress;
+      setAddresses(updatedAddresses);
+    } else {
+      setAddresses([...addresses, newAddress]);
+    }
+    setIsModalOpen(false);
+    // setEditAddressIndex(null); 
+  };
+
+  const openAddModal = () => {
+    setIsModalOpen(true);
+    setEditAddressIndex(null);
+  };
+
+  // const openEditModal = (index) => {
+  //     setEditAddressIndex(index);
+  //     setIsModalOpen(true);
+  // };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -136,13 +162,13 @@ const Checkout = () => {
   }, [checkoutItems, products]);
 
 
-  const handleAddAddress = () => {
-    if (newAddress) {
-      setAddresses([...addresses, { id: addresses.length + 1, address: newAddress }]);
-      setNewAddress('');
-      setModalOpen(false);
-    }
-  };
+  // const handleAddAddress = () => {
+  //   if (newAddress) {
+  //     setAddresses([...addresses, { id: addresses.length + 1, address: newAddress }]);
+  //     setNewAddress('');
+  //     setModalOpen(false);
+  //   }
+  // };
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalAmount = totalItems + deliveryCharge - discount;
@@ -399,7 +425,7 @@ const Checkout = () => {
                 <option disabled>No addresses available</option>
               )}
             </select>
-            <button className="add-address-btn" onClick={() => setModalOpen(true)}>
+            <button className="add-address-btn" onClick={openAddModal}>
               Add New Address
             </button>
           </div>
@@ -515,6 +541,13 @@ const Checkout = () => {
           </div>
         </div>
       )}
+
+      <AddressModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddAddress}
+        initialAddress={editAddressIndex !== null ? addresses[editAddressIndex] : null}
+      />
     </div>
   );
 };

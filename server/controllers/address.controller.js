@@ -21,12 +21,24 @@ const getAddressById = asyncHandler(async (req, res) => {
 
 // Create a new address
 const createAddress = asyncHandler(async (req, res) => {
+  // Log the incoming request body
+  console.log('Incoming request body:', req.body);
+
+  // Create a new address object
   const newAddress = new Address({
-    ...req.body, 
-    // user = req.user._id
+    ...req.body,
+    user: req.user._id,
   });
 
+  // Log the address object before saving
+  console.log('Address object to be saved:', newAddress);
+
+  // Save the address
   const createdAddress = await newAddress.save();
+
+  // Log the created address
+  console.log('Created address:', createdAddress);
+
   res.status(201).json(createdAddress);
 });
 

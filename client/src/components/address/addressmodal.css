@@ -17,9 +17,10 @@
     align-items: center;
     width: 40%;
     max-height: 80vh;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     background: #ffffff;
-    padding: 2rem;
+    padding: 1rem 1.5rem;
+    margin-top: 3rem;
     text-align: center;
     gap: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -27,11 +28,10 @@
 }
 
 .address-modal-title {
-    font-size: 1.6rem;
     color: #0A4834;
-    font-weight: 500;
-    align-self: flex-start;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    padding-bottom: 0.5rem;
     border-bottom: 2px solid #0A4834;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .address-modal-checkbox label {
-    color: #0A4834;
+    /* color: #0A4834; */
     font-size: 0.9rem;
 }
 
