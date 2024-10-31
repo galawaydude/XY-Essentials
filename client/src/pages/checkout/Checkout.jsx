@@ -118,8 +118,10 @@ const Checkout = () => {
           product.packaging === 'Sachet'
         );
         if (cleanserSachet) {
-          newItems.push({ product: cleanserSachet, quantity: 1 });
-          // console.log(`Added Cleanser sachet for skin type: ${skinType}`);
+          newItems.push({
+            product: { ...cleanserSachet, price: 0 }, // Set price to 0
+            quantity: 1
+          });
         }
       }
 
@@ -131,8 +133,10 @@ const Checkout = () => {
           product.packaging === 'Sachet'
         );
         if (treatSachet) {
-          newItems.push({ product: treatSachet, quantity: 1 });
-          // console.log(`Added Treat sachet for skin type: ${skinType}`);
+          newItems.push({
+            product: { ...treatSachet, price: 0 }, // Set price to 0
+            quantity: 1
+          });
         }
       }
 
@@ -144,8 +148,10 @@ const Checkout = () => {
           product.packaging === 'Sachet'
         );
         if (protectSachet) {
-          newItems.push({ product: protectSachet, quantity: 1 });
-          // console.log(`Added Protect sachet for skin type: ${skinType}`);
+          newItems.push({
+            product: { ...protectSachet, price: 0 }, // Set price to 0
+            quantity: 1
+          });
         }
       }
     });
@@ -490,7 +496,11 @@ const Checkout = () => {
                     </div>
                     <span>{item.product.name}</span>
                   </div>
-                  <span className="quantity">₹{(item.quantity * item.product.price).toFixed(2)}</span>
+                  <span className="quantity">
+                    {item.product.price === 0
+                      ? "Free"
+                      : `₹${(item.quantity * item.product.price).toFixed(2)}`}
+                  </span>
                 </li>
               ))}
             </ul>
