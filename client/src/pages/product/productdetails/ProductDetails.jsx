@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
+import './productdetails.css';
 import { Link } from 'react-router-dom';
 
 const CustomImageSlider = ({ images }) => {
