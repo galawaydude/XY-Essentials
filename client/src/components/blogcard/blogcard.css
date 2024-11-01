@@ -56,3 +56,14 @@ background-color: rgba(0, 0, 0, 0.034);
     display: flex;
     gap: 0.2rem;
 }
+
+@media (max-width: 500px) {
+    .home-blog-card {
+        width: 100%; /* Make cards full width on smaller screens */
+    }
+    
+    .home-blog-img,
+    .home-blog-img img {
+        height: 40vw; /* Adjust image height to be smaller on mobile */
+    }
+}
