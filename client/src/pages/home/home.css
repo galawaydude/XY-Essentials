@@ -192,7 +192,6 @@
         gap: 1rem;
     }
     .cat-item-img {
-        width: 30vw;
         aspect-ratio: 4 / 3;
     }
 
@@ -237,7 +236,7 @@
 }
 
 @media (max-width: 500px) {
-    .about-items, .home-testimonials-cards{
+    .about-items, .home-testimonials-cards, .home-blog-con{
         display: flex;
         flex-direction: column;
         align-items: center;

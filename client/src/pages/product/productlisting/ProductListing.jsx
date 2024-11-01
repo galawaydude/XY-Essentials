@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './productlisting.css';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ProductCard from '../../../components/productcard/ProductCard';
-import { Link, useLocation } from 'react-router-dom'
+import './productlisting.css';
 
 const ProductListing = () => {
     const [products, setProducts] = useState([]);
@@ -12,6 +12,7 @@ const ProductListing = () => {
     const [priceRange, setPriceRange] = useState([0, 1000]);
     const [selectedRating, setSelectedRating] = useState('');
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -19,7 +20,6 @@ const ProductListing = () => {
                 const response = await fetch('http://localhost:5000/api/products/');
                 const data = await response.json();
                 setProducts(data);
-                // console.log('Fetched Products:', data); 
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -41,7 +41,6 @@ const ProductListing = () => {
         }
     }, [location]);
 
-    // Update the URL based on search input
     const handleSearchChange = (e) => {
         const query = e.target.value;
         setSearchQuery(query);
@@ -52,41 +51,41 @@ const ProductListing = () => {
         } else {
             params.delete('query');
         }
-        history.replace({ search: params.toString() });
+        navigate({ search: params.toString() });
+    };
+
+    const handleClearFilters = () => {
+        setSelectedCategory('');
+        setSelectedSkinType('');
+        setSelectedType('');
+        setPriceRange([0, 1000]);
+        setSelectedRating('');
+        setSearchQuery('');
+        navigate({ search: '' });
     };
 
     const filteredProducts = products.filter(product => {
         const passesCategory = selectedCategory === '' || product.category === selectedCategory;
-        const passesSkinType = selectedSkinType === '' || product.skinType === selectedSkinType || selectedSkinType === 'All';
+        const passesSkinType = selectedSkinType === '' || product.skinType === selectedSkinType;
         const passesType = selectedType === '' || product.type === selectedType;
         const passesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
         const passesRating = selectedRating === '' || product.rating >= selectedRating;
         const passesPackaging = product.packaging !== 'Sachet';
-        const passesSearchQuery = searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    
-        // Log the product and whether it passes all filters
-        // console.log(product, {
-        //     passesCategory,
-        //     passesSkinType,
-        //     passesType,
-        //     passesPrice,
-        //     passesRating,
-        //     passesAll: passesCategory && passesSkinType && passesType && passesPrice && passesRating
-        // });
-    
-        return passesSearchQuery && passesPackaging & passesCategory && passesSkinType && passesType && passesPrice && passesRating;
-    });
-    
+        const passesSearchQuery = searchQuery === '' || 
+            product.name.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // console.log('Filtered Products:', filteredProducts);
+        return passesSearchQuery && 
+               passesPackaging && 
+               passesCategory && 
+               passesSkinType && 
+               passesType && 
+               passesPrice && 
+               passesRating;
+    });
 
     return (
         <div className="product-details">
-            {/* <div className="text-nav-con container">
-                <p>Home &gt; Shop </p>
-            </div> */}
-
-            <div className="section container">
+            <div className="section">
                 <div className="home-pro-head">
                     <div className="section_left_title">
                         All <strong>Products</strong>
@@ -94,107 +93,103 @@ const ProductListing = () => {
                 </div>
                 <hr />
 
-                <div className="shop-con">
-                    <div className="shop-filter">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                        />
-                        <div className="filter-btn">
-                            <button>Filter</button>
-                        </div>
-
-                        <div className='shop-filter-head'>
-                            <h6>Filter</h6>
-                        </div>
-
-                        <div className="sf-subhead">
-                            <p>Categories</p>
-                            {['Cleanse', 'Protect', 'Treat'].map((category) => (
-                                <div className="sf-item" key={category}>
-                                    <input
-                                        type="checkbox"
-                                        id={category}
-                                        name="category"
-                                        checked={selectedCategory === category}
-                                        onChange={() => setSelectedCategory(category === selectedCategory ? '' : category)}
-                                    />
-                                    <label htmlFor={category}>{category}</label>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="sf-subhead">
-                            <p>Skin Type</p>
-                            {['Dry', 'Oily'].map((skinType) => (
-                                <div className="sf-item" key={skinType}>
-                                    <input
-                                        type="checkbox"
-                                        id={skinType}
-                                        name="skinType"
-                                        checked={selectedSkinType === skinType}
-                                        onChange={() => setSelectedSkinType(skinType === selectedSkinType ? '' : skinType)}
-                                    />
-                                    <label htmlFor={skinType}>{skinType}</label>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* <div className="sf-subhead">
-                            <p>Product Type</p>
-                            {['Moisturizer', 'Grooming', 'Scrub', 'Cleanse'].map((type) => (
-                                <div className="sf-item" key={type}>
-                                    <input
-                                        type="checkbox"
-                                        id={type}
-                                        name="type"
-                                        checked={selectedType === type}
-                                        onChange={() => setSelectedType(type === selectedType ? '' : type)}
-                                    />
-                                    <label htmlFor={type}>{type}</label>
-                                </div>
-                            ))}
-                        </div> */}
-{/* 
-                        <div className="sf-subhead">
-                            <p>Price Range</p>
+                <div className="plp-main-container">
+                    <div className="plp-filter-sidebar">
+                        <div className="plp-search-container">
                             <input
-                                type="range"
-                                min="0"
-                                max="1000"
-                                value={priceRange[0]}
-                                onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                                type="text"
+                                className="plp-search-input"
+                                placeholder="Search products..."
+                                value={searchQuery}
+                                onChange={handleSearchChange}
                             />
-                            <p>Price: ${priceRange[0]} - ${priceRange[1]}</p>
-                        </div> */}
+                        </div>
 
-                        {/* <div className="sf-subhead">
-                            <p>Minimum Rating</p>
-                            {['', 4, 4.5, 5].map((rating) => (
-                                <div className="sf-item" key={rating}>
-                                    <input
-                                        type="radio"
-                                        id={`rating-${rating}`}
-                                        name="rating"
-                                        checked={selectedRating === rating}
-                                        onChange={() => setSelectedRating(rating)}
-                                    />
-                                    <label htmlFor={`rating-${rating}`}>{rating ? `≥ ${rating}` : 'All Ratings'}</label>
-                                </div>
-                            ))}
-                        </div> */}
+                        <div className="plp-filter-section">
+                            <div className="plp-filter-header">
+                                <h6 className="plp-filter-title">Filters</h6>
+                                <button 
+                                    className="plp-filter-button"
+                                    onClick={handleClearFilters}
+                                >
+                                    Clear All
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="plp-filter-section">
+                            <div className="plp-filter-header">
+                                <p className="plp-filter-title">Categories</p>
+                            </div>
+                            <div className="plp-filter-group">
+                                {['Cleanse', 'Protect', 'Treat'].map((category) => (
+                                    <label className="plp-filter-option" key={category}>
+                                        <input
+                                            type="checkbox"
+                                            className="plp-filter-checkbox"
+                                            checked={selectedCategory === category}
+                                            onChange={() => setSelectedCategory(
+                                                category === selectedCategory ? '' : category
+                                            )}
+                                        />
+                                        <span className="plp-filter-label">{category}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="plp-filter-section">
+                            <div className="plp-filter-header">
+                                <p className="plp-filter-title">Skin Type</p>
+                            </div>
+                            <div className="plp-filter-group">
+                                {['Dry', 'Oily'].map((skinType) => (
+                                    <label className="plp-filter-option" key={skinType}>
+                                        <input
+                                            type="checkbox"
+                                            className="plp-filter-checkbox"
+                                            checked={selectedSkinType === skinType}
+                                            onChange={() => setSelectedSkinType(
+                                                skinType === selectedSkinType ? '' : skinType
+                                            )}
+                                        />
+                                        <span className="plp-filter-label">{skinType}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="plp-filter-section">
+                            <div className="plp-filter-header">
+                                <p className="plp-filter-title">Minimum Rating</p>
+                            </div>
+                            <div className="plp-filter-group">
+                                {[
+                                    { value: '', label: 'All Ratings' },
+                                    { value: 4, label: '4+ Stars' },
+                                    { value: 4.5, label: '4.5+ Stars' },
+                                    { value: 5, label: '5 Stars' }
+                                ].map((rating) => (
+                                    <label className="plp-filter-option" key={rating.value}>
+                                        <input
+                                            type="radio"
+                                            className="plp-filter-checkbox"
+                                            name="rating"
+                                            checked={selectedRating === rating.value}
+                                            onChange={() => setSelectedRating(rating.value)}
+                                        />
+                                        <span className="plp-filter-label">{rating.label}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="pl-products-con">
+                    <div className="plp-products-grid">
                         {filteredProducts.map(product => (
-              
-                                <ProductCard product={product} key={product._id} />
-                          
+                            <ProductCard product={product} key={product._id} />
                         ))}
                     </div>
-
                 </div>
             </div>
         </div>

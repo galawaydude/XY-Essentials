@@ -1,12 +1,192 @@
-.shop-con {
+/* Main layout containers */
+.plp-main-container {
     display: flex;
-    gap: 1.5rem;
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
 }
 
-.pl-products-con {
+/* Products grid layout */
+.plp-products-grid {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: space-between;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
+    align-items: start;
+}
+
+/* Filter sidebar */
+.plp-filter-sidebar {
+    min-width: 280px;
+    flex-shrink: 0;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+/* Search input styling */
+.plp-search-container {
+    padding: 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.plp-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+}
+
+.plp-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+/* Filter sections */
+.plp-filter-section {
+    padding: 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.plp-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.plp-filter-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Filter groups */
+.plp-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Checkbox and radio styling */
+.plp-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.plp-filter-checkbox {
+    appearance: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.plp-filter-checkbox:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.plp-filter-label {
+    font-size: 0.875rem;
+    user-select: none;
+}
+
+/* Price range slider */
+.plp-price-range {
+    padding: 0 0.5rem;
+}
+
+.plp-range-slider {
+    width: 100%;
+    height: 0.25rem;
+    border-radius: 0.125rem;
+    appearance: none;
+}
+
+.plp-range-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.plp-range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.plp-price-display {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* Filter button */
+.plp-filter-button {
+    width: 50%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .plp-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 850px) {
+    .plp-main-container {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .plp-filter-sidebar {
+        position: static;
+        width: 100%;
+        min-width: auto;
+        order: 1; /* Makes filter appear first */
+    }
+
+    .plp-products-grid {
+        order: 2; /* Makes products appear second */
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+}
+
+@media (max-width: 650px) {
+    .plp-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .plp-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .plp-main-container {
+        padding: 0.75rem;
+        gap: 1rem;
+    }
 }
