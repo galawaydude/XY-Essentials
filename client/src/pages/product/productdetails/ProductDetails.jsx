@@ -1,9 +1,91 @@
 import React, { useEffect, useState } from 'react';
-import './productdetails.css';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
+const CustomImageSlider = ({ images }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [selectedThumb, setSelectedThumb] = useState(0);
+
+    const goToNext = () => {
+        setCurrentIndex((prevIndex) => 
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+        setSelectedThumb((prevThumb) => 
+            prevThumb === images.length - 1 ? 0 : prevThumb + 1
+        );
+    };
+
+    const goToPrevious = () => {
+        setCurrentIndex((prevIndex) => 
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+        setSelectedThumb((prevThumb) => 
+            prevThumb === 0 ? images.length - 1 : prevThumb - 1
+        );
+    };
+
+    const handleThumbClick = (index) => {
+        setCurrentIndex(index);
+        setSelectedThumb(index);
+    };
+
+    return (
+        <div className="custom-slider">
+            <div className="main-image-container">
+                <img
+                    src={images[currentIndex]}
+                    alt={`Product ${currentIndex + 1}`}
+                    className="main-image"
+                />
+                
+                <button 
+                    onClick={goToPrevious}
+                    className="nav-button prev-button"
+                    aria-label="Previous image"
+                >
+                    <i className="fas fa-chevron-left"></i>
+                </button>
+                
+                <button 
+                    onClick={goToNext}
+                    className="nav-button next-button"
+                    aria-label="Next image"
+                >
+                    <i className="fas fa-chevron-right"></i>
+                </button>
+
+                <div className="pagination-dots">
+                    {images.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => handleThumbClick(index)}
+                            className={`dot ${index === currentIndex ? 'active' : ''}`}
+                            aria-label={`Go to image ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <div className="thumbnails-container">
+                {images.map((img, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleThumbClick(index)}
+                        className={`thumbnail-button ${index === selectedThumb ? 'active' : ''}`}
+                    >
+                        <img
+                            src={img}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="thumbnail-image"
+                        />
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const ProductDetails = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +95,8 @@ const ProductDetails = () => {
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
     const [rating, setRating] = useState(1);
     const [comment, setComment] = useState('');
-    const [quantity, setQuantity] = useState(1); // State for quantity
+    const [quantity, setQuantity] = useState(1);
+    const [openDescItems, setOpenDescItems] = useState({});
     const { id: productId } = useParams();
 
     useEffect(() => {
@@ -67,24 +150,22 @@ const ProductDetails = () => {
 
             const newReview = await response.json();
             setReviews((prevReviews) => [...prevReviews, newReview]);
-            setRating(1); // Reset rating
-            setComment(''); // Reset comment
-            setReviewModalOpen(false); // Close the modal
+            setRating(1);
+            setComment('');
+            setReviewModalOpen(false);
         } catch (error) {
             console.error(error);
         }
     };
 
-
     const calculateAverageRating = (reviews) => {
-        if (reviews.length === 0) return 0; // Return 0 if no reviews
+        if (reviews.length === 0) return 0;
         const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
         const average = totalRating / reviews.length;
-        return parseFloat(average.toFixed(1)); // Return average with one decimal place
+        return parseFloat(average.toFixed(1));
     };
-    
+
     const averageRating = calculateAverageRating(reviews);
-    
 
     const handleOpenReviewModal = () => {
         setReviewModalOpen(true);
@@ -130,6 +211,12 @@ const ProductDetails = () => {
         }
     };
 
+    const handleToggleDescItem = (index) => {
+        setOpenDescItems((prev) => ({
+            ...prev,
+            [index]: !prev[index]
+        }));
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -139,8 +226,6 @@ const ProductDetails = () => {
         return <p>Product not found.</p>;
     }
 
-
-
     return (
         <div className="product-details">
             <div className="text-nav-con container">
@@ -148,15 +233,9 @@ const ProductDetails = () => {
             </div>
             <div className="product-details-con container section">
                 <div className="product-images-con">
-                    <div className="product-view-img">
-                        <img src={product.images[0]} alt={product.name} />
-                    </div>
-                    <div className="product-allimg-con">
-                        {product.images.map((img, index) => (
-                            <img key={index} src={img} alt={`${product.name} ${index + 1}`} />
-                        ))}
-                    </div>
+                    <CustomImageSlider images={product.images} />
                 </div>
+
                 <div className="product-desc-con">
                     <div className="pd-main-deets">
                         <h4 className='pd-title'>{product.name}</h4>
@@ -172,46 +251,26 @@ const ProductDetails = () => {
                         <p className='pd-desc'>{product.description}</p>
                     </div>
                     <div className="pd-desc-info">
-                        <div className="pd-desc-item">
-                            <div className="pd-desc-item-head">
-                                <h6>Sizes</h6>
-                                <i className="fas fa-angle-up"></i>
+                        {[
+                            { title: "Sizes", content: product.sizes.join(', ') },
+                            { title: "Suitable For", content: product.suitableFor.join(', ') },
+                            { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
+                            { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
+                            { title: "Claims", content: product.claims.join(', ') }
+                        ].map((item, index) => (
+                            <div key={index} className="pd-desc-item">
+                                <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
+                                    <h6>{item.title}</h6>
+                                    <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
+                                </div>
+                                <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
+                                    <p>{item.content}</p>
+                                </div>
                             </div>
-                            <p className='pd-desc'>{product.sizes.join(', ')}</p>
-                        </div>
-                        <div className="pd-desc-item">
-                            <div className="pd-desc-item-head">
-                                <h6>Suitable For</h6>
-                                <i className="fas fa-angle-up"></i>
-                            </div>
-                            <p className='pd-desc'>{product.suitableFor.join(', ')}</p>
-                        </div>
-                        <div className="pd-desc-item">
-                            <div className="pd-desc-item-head">
-                                <h6>What Makes It Worth Using</h6>
-                                <i className="fas fa-angle-up"></i>
-                            </div>
-                            <p className='pd-desc'>{product.whatMakesItWorthUsing}</p>
-                        </div>
-                        <div className="pd-desc-item">
-                            <div className="pd-desc-item-head">
-                                <h6>Key Ingredients</h6>
-                                <i className="fas fa-angle-up"></i>
-                            </div>
-                            <p className='pd-desc'>
-                                {product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ')}
-                            </p>
-                        </div>
-                        <div className="pd-desc-item">
-                            <div className="pd-desc-item-head">
-                                <h6>Claims</h6>
-                                <i className="fas fa-angle-up"></i>
-                            </div>
-                            <p className='pd-desc'>{product.claims.join(', ')}</p>
-                        </div>
+                        ))}
                     </div>
-
                 </div>
+
                 <div className="product-order-con">
                     <div className="pd-price">
                         <div className="pd-actual-price">
@@ -227,19 +286,12 @@ const ProductDetails = () => {
                         </div>
                     </div>
 
-                    {/* <div className="pd-divider"></div> */}
-
                     <div className="pd-btns">
                         <div className="pd-cart-btn">
                             <button onClick={handleAddToCart}>
                                 <span>Add to Cart</span>
                             </button>
                         </div>
-                        {/* <div className="pd-buy-btn">
-                                <button>
-                                    <span>Buy Now</span>
-                                </button>
-                            </div> */}
                     </div>
 
                     <div className="pd-service-features">
@@ -278,13 +330,11 @@ const ProductDetails = () => {
                 <hr />
                 <div className="home-products-con">
                     {products.map(product => (
-
                         <ProductCard product={product} key={product._id} />
-
-
                     ))}
                 </div>
             </div>
+
             <div className="section container">
                 <div className="home-pro-head">
                     <div className="section_left_title">
@@ -304,7 +354,6 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            {/* Review Modal */}
             {reviewModalOpen && (
                 <div className="review-modal">
                     <div className="modal-content">
@@ -331,6 +380,6 @@ const ProductDetails = () => {
             )}
         </div>
     );
-}
+};
 
 export default ProductDetails;
