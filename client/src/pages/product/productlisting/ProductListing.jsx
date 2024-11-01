@@ -159,7 +159,7 @@ const ProductListing = () => {
                             </div>
                         </div>
 
-                        <div className="plp-filter-section">
+                        {/* <div className="plp-filter-section">
                             <div className="plp-filter-header">
                                 <p className="plp-filter-title">Minimum Rating</p>
                             </div>
@@ -182,7 +182,7 @@ const ProductListing = () => {
                                     </label>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="plp-products-grid">
