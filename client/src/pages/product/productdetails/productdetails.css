@@ -300,8 +300,13 @@
     gap: 0.2rem;
 }
 
-.average-stars i {
+.average-stars i.fas,
+.average-stars i.fa-star-half-alt {
     color: var(--pri);
+}
+
+.average-stars i.far {
+    color: white;
 }
 
 .review-summary-bars {
@@ -367,7 +372,7 @@
 .modal-content select,
 .modal-content textarea {
     width: 100%;
- }
+}
 
 .modal-content textarea {
     height: 20vh;
