@@ -10,19 +10,19 @@ const CustomImageSlider = ({ images }) => {
     const [selectedThumb, setSelectedThumb] = useState(0);
 
     const goToNext = () => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             prevIndex === images.length - 1 ? 0 : prevIndex + 1
         );
-        setSelectedThumb((prevThumb) => 
+        setSelectedThumb((prevThumb) =>
             prevThumb === images.length - 1 ? 0 : prevThumb + 1
         );
     };
 
     const goToPrevious = () => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? images.length - 1 : prevIndex - 1
         );
-        setSelectedThumb((prevThumb) => 
+        setSelectedThumb((prevThumb) =>
             prevThumb === 0 ? images.length - 1 : prevThumb - 1
         );
     };
@@ -40,16 +40,16 @@ const CustomImageSlider = ({ images }) => {
                     alt={`Product ${currentIndex + 1}`}
                     className="main-image"
                 />
-                
-                <button 
+
+                <button
                     onClick={goToPrevious}
                     className="nav-button prev-button"
                     aria-label="Previous image"
                 >
                     <i className="fas fa-chevron-left"></i>
                 </button>
-                
-                <button 
+
+                <button
                     onClick={goToNext}
                     className="nav-button next-button"
                     aria-label="Next image"
@@ -345,7 +345,43 @@ const ProductDetails = () => {
                         <button onClick={handleOpenReviewModal}>Add Review</button>
                     </div>
                 </div>
-                <hr />
+                <div className="review-summary">
+                    <div className="review-summary-average">
+                        <span className="average-rating">{averageRating}</span>
+                        <div className="average-stars">
+                            {Array.from({ length: 5 }, (_, index) => (
+                                <i
+                                    key={index}
+                                    className={`fas fa-star ${index < Math.floor(averageRating)
+                                        ? ''
+                                        : index < averageRating
+                                            ? 'fas fa-star-half-alt'
+                                            : 'far fa-star'
+                                        }`}
+                                ></i>
+                            ))}
+                        </div>
+                        <span className="total-reviews">Based on {reviews.length} reviews</span>
+                    </div>
+                    <div className="review-summary-bars">
+                        {[5, 4, 3, 2, 1].map((stars) => {
+                            const count = reviews.filter(review => review.rating === stars).length;
+                            const percentage = (count / reviews.length) * 100 || 0;
+
+                            return (
+                                <div key={stars} className="rating-bar-row">
+                                    <span className="star-label">{stars} stars</span>
+                                    <div className="rating-bar-container">
+                                        <div
+                                            className="rating-bar-fill"
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
                 <div className="pd-reviews">
                     <div className="pd-reviews-con">
                         {reviews.map((review) => (
@@ -360,15 +396,20 @@ const ProductDetails = () => {
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseReviewModal}>&times;</span>
                         <h2>Add Your Review</h2>
-                        <div>
+                        <div className="modal-rating-container">
                             <label>Rating:</label>
-                            <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+                            <div className="star-rating">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                    <option key={star} value={star}>{star}</option>
+                                    <i
+                                        key={star}
+                                        className={`rating-star ${star <= rating ? 'fas fa-star' : 'far fa-star'
+                                            }`}
+                                        onClick={() => setRating(star)}
+                                    />
                                 ))}
-                            </select>
+                            </div>
                         </div>
-                        <div>
+                        <div className='modal-comment-con'>
                             <label>Comment:</label>
                             <textarea
                                 value={comment}
