@@ -306,7 +306,7 @@
 }
 
 .average-stars i.far {
-    color: white;
+    display: none;
 }
 
 .review-summary-bars {
