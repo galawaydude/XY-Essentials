@@ -237,82 +237,84 @@ const ProductDetails = () => {
                     <CustomImageSlider images={product.images} />
                 </div>
 
-                <div className="product-desc-con">
-                    <div className="pd-main-deets">
-                        <h4 className='pd-title'>{product.name}</h4>
-                        <p className='pd-star-rating'>
-                            {Array.from({ length: 5 }, (_, index) => (
-                                <i
-                                    key={index}
-                                    className={`fas fa-star ${index < Math.floor(averageRating) ? '' : (index < averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
-                                ></i>
+                <div className='prod-desc-order-con'>
+                    <div className="product-desc-con">
+                        <div className="pd-main-deets">
+                            <h4 className='pd-title'>{product.name}</h4>
+                            <p className='pd-star-rating'>
+                                {Array.from({ length: 5 }, (_, index) => (
+                                    <i
+                                        key={index}
+                                        className={`fas fa-star ${index < Math.floor(averageRating) ? '' : (index < averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
+                                    ></i>
+                                ))}
+                                <span>({product.reviews.length} reviews)</span>
+                            </p>
+                            <p className='pd-desc'>{product.description}</p>
+                        </div>
+                        <div className="pd-desc-info">
+                            {[
+                                { title: "Sizes", content: product.sizes.join(', ') },
+                                { title: "Suitable For", content: product.suitableFor.join(', ') },
+                                { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
+                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
+                                { title: "Claims", content: product.claims.join(', ') }
+                            ].map((item, index) => (
+                                <div key={index} className="pd-desc-item">
+                                    <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
+                                        <h6>{item.title}</h6>
+                                        <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
+                                    </div>
+                                    <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
+                                        <p>{item.content}</p>
+                                    </div>
+                                </div>
                             ))}
-                            <span>({product.reviews.length} reviews)</span>
-                        </p>
-                        <p className='pd-desc'>{product.description}</p>
+                        </div>
                     </div>
-                    <div className="pd-desc-info">
-                        {[
-                            { title: "Sizes", content: product.sizes.join(', ') },
-                            { title: "Suitable For", content: product.suitableFor.join(', ') },
-                            { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
-                            { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
-                            { title: "Claims", content: product.claims.join(', ') }
-                        ].map((item, index) => (
-                            <div key={index} className="pd-desc-item">
-                                <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
-                                    <h6>{item.title}</h6>
-                                    <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
+
+                    <div className="product-order-con">
+                        <div className="pd-price">
+                            <div className="pd-actual-price">
+                                ${product.price}
+                            </div>
+                        </div>
+                        <div className="pd-quantity">
+                            <div className='pd-quantity-head'>Quantity</div>
+                            <div className="pd-quantity-counter">
+                                <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                                <p className='pd-quantity-num'>{quantity}</p>
+                                <button onClick={() => handleQuantityChange('increment')}>+</button>
+                            </div>
+                        </div>
+
+                        <div className="pd-btns">
+                            <div className="pd-cart-btn">
+                                <button onClick={handleAddToCart}>
+                                    <span>Add to Cart</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="pd-service-features">
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-shipping-fast"></i>
                                 </div>
-                                <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
-                                    <p>{item.content}</p>
+                                <div className="pd-sf-text">Free Shipping</div>
+                            </div>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-money-check-alt"></i>
                                 </div>
+                                <div className="pd-sf-text">Money-back Guarantee</div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="product-order-con">
-                    <div className="pd-price">
-                        <div className="pd-actual-price">
-                            ${product.price}
-                        </div>
-                    </div>
-                    <div className="pd-quantity">
-                        <div className='pd-quantity-head'>Quantity</div>
-                        <div className="pd-quantity-counter">
-                            <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                            <p className='pd-quantity-num'>{quantity}</p>
-                            <button onClick={() => handleQuantityChange('increment')}>+</button>
-                        </div>
-                    </div>
-
-                    <div className="pd-btns">
-                        <div className="pd-cart-btn">
-                            <button onClick={handleAddToCart}>
-                                <span>Add to Cart</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="pd-service-features">
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-shipping-fast"></i>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-truck"></i>
+                                </div>
+                                <div className="pd-sf-text">Fast Delivery</div>
                             </div>
-                            <div className="pd-sf-text">Free Shipping</div>
-                        </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-money-check-alt"></i>
-                            </div>
-                            <div className="pd-sf-text">Money-back Guarantee</div>
-                        </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-truck"></i>
-                            </div>
-                            <div className="pd-sf-text">Fast Delivery</div>
                         </div>
                     </div>
                 </div>
