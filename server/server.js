@@ -8,9 +8,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middlewares/error.middleware.js');
 
-// dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
-dotenv.config({ path: path.resolve(__dirname, 'config/dev.env') });
-// dotenv.config({ path: path.resolve(__dirname, 'config/pro.env') });
+dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
 connectDB();
 
 // Route Imports

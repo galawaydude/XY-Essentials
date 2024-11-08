@@ -9,6 +9,6 @@ router.get('/product/:productId', getProductReviews);
 // Protected Routes
 router.post('/', addReview);
 router.put('/:id', protect, updateReview);
-router.delete('/:id', protect, admin, deleteReview);
+router.delete('/:id', protect, deleteReview);
 
 module.exports = router;

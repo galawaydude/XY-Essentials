@@ -1,5 +1,9 @@
 const asyncHandler = require('express-async-handler');
+const puppeteer = require('puppeteer');
+const ejs = require('ejs');
+const fs = require('fs');
 const Order = require('../models/order.model');
+const path = require('path');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
@@ -40,6 +44,81 @@ const placeOrder = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Failed to create order', error: error.message });
   }
 });
+
+const generateBill = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Fetch the order details from MongoDB
+    console.log(`Fetching order with ID: ${id}`);
+    const order = await Order.findById(id)
+    .populate('orderItems.product') // Populate product details
+    .populate('shippingAddress') // Populate address details
+    .populate('user') // Populate user with specific fields (name and phone)
+    .lean();
+    console.log('Fetched Order:', order);
+
+
+    // Check if order exists
+    if (!order) {
+      console.log(`Order not found for ID: ${id}`);
+      return res.status(404).send("Order not found");
+    }
+
+    // Render the HTML using EJS
+    console.log('Rendering HTML for the invoice...');
+    const html = await ejs.renderFile(
+      path.join(__dirname, '../views/invoiceTemplate.ejs'),
+      { order }
+    );
+
+    console.log('Rendered HTML:', html.substring(0, 200)); // Log the first 200 characters of the HTML for brevity
+
+    // Generate PDF using Puppeteer
+    console.log('Launching Puppeteer to generate PDF...');
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+    console.log('Setting page content...');
+    await page.setContent(html);
+    
+    console.log('Generating PDF...');
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      margin: {
+        top: '20px',
+        bottom: '20px',
+        left: '10px',
+        right: '10px',
+      },
+    });
+
+    console.log('PDF Buffer Size:', pdfBuffer.length);
+    
+    await browser.close();
+
+    // Check if pdfBuffer is valid
+    if (pdfBuffer.length === 0) {
+      console.log('Error: PDF buffer is empty. Unable to generate PDF.');
+      return res.status(500).send("Error generating PDF");
+    }
+
+    // Set the response headers for downloading the PDF
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="Order_${order._id}_Bill.pdf"`
+    });
+
+    // Send the PDF as a response
+    console.log('Sending PDF to client...');
+    res.send(pdfBuffer);
+    
+  } catch (error) {
+    console.error("Error generating bill:", error);
+    res.status(500).send("Error generating bill");
+  }
+};
+
+
 
 
 // Get order by ID
@@ -92,6 +171,7 @@ module.exports = {
   getUserOrders,
   getAllOrders,
   placeOrder,
+  generateBill,
   getOrderById,
   updateOrderStatus,
   cancelOrder,

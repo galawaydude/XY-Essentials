@@ -24,6 +24,16 @@ const createAddress = asyncHandler(async (req, res) => {
   // Log the incoming request body
   console.log('Incoming request body:', req.body);
 
+  const isDefault = req.body.isDefault;
+
+  if (isDefault) {
+    // If it's default, set all other addresses for this user to not default
+    await Address.updateMany(
+      { user: req.user._id, isDefault: true },
+      { $set: { isDefault: false } }
+    );
+  }
+
   // Create a new address object
   const newAddress = new Address({
     ...req.body,
@@ -45,15 +55,21 @@ const createAddress = asyncHandler(async (req, res) => {
 
 // Update an existing address
 const updateAddress = asyncHandler(async (req, res) => {
-  const { address, city, postalCode, country } = req.body;
+  const { isDefault, ...updateFields } = req.body; // Destructure isDefault and other fields
 
   const updatedAddress = await Address.findById(req.params.id);
 
   if (updatedAddress && updatedAddress.user.equals(req.user._id)) {
-    updatedAddress.address = address || updatedAddress.address;
-    updatedAddress.city = city || updatedAddress.city;
-    updatedAddress.postalCode = postalCode || updatedAddress.postalCode;
-    updatedAddress.country = country || updatedAddress.country;
+    // If isDefault is set to true, update others to not default
+    if (isDefault) {
+      await Address.updateMany(
+        { user: req.user._id, isDefault: true, _id: { $ne: updatedAddress._id } },
+        { $set: { isDefault: false } }
+      );
+    }
+
+    // Update the address fields, including the isDefault property
+    Object.assign(updatedAddress, updateFields, { isDefault });
 
     const savedAddress = await updatedAddress.save();
     res.json(savedAddress);
@@ -62,6 +78,7 @@ const updateAddress = asyncHandler(async (req, res) => {
     throw new Error('Address not found');
   }
 });
+
 
 // Delete an address
 const deleteAddress = asyncHandler(async (req, res) => {

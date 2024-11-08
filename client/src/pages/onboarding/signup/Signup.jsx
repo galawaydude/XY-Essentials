@@ -10,98 +10,68 @@ const Signup = () => {
     const [otp, setOtp] = useState(''); // Add OTP state
     const [error, setError] = useState('');
     const [otpSent, setOtpSent] = useState(false); // OTP sent flag
-
-
+  
     const handleSubmit = async (e) => {
       e.preventDefault(); // Prevent default form submission
       console.log('Registration form submitted with:', { name, email, password });
-
+  
       try {
           const response = await fetch('http://localhost:5000/api/auth/register', {
-              method: 'POST',
+              method: 'POST',                
               headers: {
                   'Content-Type': 'application/json',
               },
-              credentials: 'include',
+              credentials: 'include',  // Updated here
               body: JSON.stringify({ name, email, password }),
           });
-
+  
           const data = await response.json();
           console.log('Registration response:', data);
-
+  
           if (!response.ok) {
               throw new Error(data.message || 'Registration failed');
           }
-
-          // On successful registration, redirect or show success message
-          console.log('Registration successful, redirecting...');
-          navigate('/'); // Redirect to homepage or desired route
-
+  
+          setOtpSent(true); // OTP sent
+          console.log('OTP sent successfully, please check your email.');
+  
       } catch (error) {
           console.error('Error during registration:', error);
           setError(error.message);
       }
   };
   
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault(); // Prevent default form submission
-    //     console.log('Registration form submitted with:', { name, email, password });
-
-    //     try {
-    //         const response = await fetch('http://localhost:5000/api/auth/register', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             credentials: 'include',
-    //             body: JSON.stringify({ name, email, password }),
-    //         });
-
-    //         const data = await response.json();
-    //         console.log('Registration response:', data);
-
-    //         if (!response.ok) {
-    //             throw new Error(data.message || 'Registration failed');
-    //         }
-
-    //         setOtpSent(true); // OTP sent
-    //         console.log('OTP sent successfully, please check your email.');
-
-    //     } catch (error) {
-    //         console.error('Error during registration:', error);
-    //         setError(error.message);
-    //     }
-    // };
-
-    // const handleVerifyOtp = async (e) => {
-    //     e.preventDefault();
-    //     console.log('OTP verification submitted with:', { email, otp });
-
-    //     try {
-    //         const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ email, otp }),
-    //         });
-
-    //         const data = await response.json();
-    //         console.log('OTP verification response:', data);
-
-    //         if (!response.ok) {
-    //             throw new Error(data.message || 'OTP verification failed');
-    //         }
-
-    //         // On successful verification, redirect
-    //         console.log('OTP verified successfully, redirecting...');
-    //         navigate('/');
-
-    //     } catch (error) {
-    //         console.error('Error during OTP verification:', error);
-    //         setError(error.message);
-    //     }
-    // };
+    const handleVerifyOtp = async (e) => {
+      e.preventDefault();
+      console.log('OTP verification submitted with:', { email, otp });
+  
+      try {
+          const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+              method: 'POST',
+              credentials: 'include',  // Updated here
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email, otp }),
+          });
+  
+          const data = await response.json();
+          console.log('OTP verification response:', data);
+  
+          if (!response.ok) {
+              throw new Error(data.message || 'OTP verification failed');
+          }
+  
+          // On successful verification, redirect
+          console.log('OTP verified successfully, redirecting...');
+          navigate('/');
+  
+      } catch (error) {
+          console.error('Error during OTP verification:', error);
+          setError(error.message);
+      }
+  };
+  
 
 
   return (
@@ -111,7 +81,7 @@ const Signup = () => {
           <h3>Sign up</h3>
         </div>
         <div className="login-form-con">
-  
+        {!otpSent ? (
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-component">
               <label>Name</label>
@@ -150,7 +120,25 @@ const Signup = () => {
             <button className="btn btn-primary" type="submit">
               Sign up
             </button> 
-          </form> 
+          </form> ): (
+            <form className="otp-form" onSubmit={handleVerifyOtp}>
+              <div className="input-component">
+                <label>Enter OTP</label>
+                <input
+                  type="text"
+                  placeholder="Enter OTP sent to your email"
+                  id="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                />
+              </div>
+              {error && <p className="error-text">{error}</p>}
+              <button className="btn btn-primary" type="submit">
+                Verify OTP
+              </button>
+            </form>
+          )}
             <div className="using-google">
               <p>or</p>
               <OAuth />

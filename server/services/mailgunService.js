@@ -24,6 +24,31 @@ class EmailService {
     return true;
   }
 
+  static async sendWelcomeEmail(to, subject, content) {
+    try {
+      // Validate recipient for sandbox domain
+      this.validateRecipients([to]);
+  
+      const messageData = {
+        from: `XY Essentials <noreply@${domain}>`,
+        to: to,
+        subject: subject,
+        html: content
+      };
+  
+      const response = await mg.messages.create(domain, messageData);
+      return response;
+    } catch (error) {
+      if (error.status === 403) {
+        throw new Error(
+          `Welcome email sending failed: This domain (${domain}) is a sandbox domain. ` +
+          `Please authorize recipients or upgrade to a paid account.`
+        );
+      }
+      throw error;
+    }
+  }
+
   static async sendSingleEmail(to, templateName, data) {
     try {
       // Validate recipient for sandbox domain
