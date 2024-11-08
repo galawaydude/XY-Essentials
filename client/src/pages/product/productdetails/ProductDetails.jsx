@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
+import './productdetails.css';
 import { Link } from 'react-router-dom';
 import './productdetails.css'
 
@@ -10,19 +11,19 @@ const CustomImageSlider = ({ images }) => {
     const [selectedThumb, setSelectedThumb] = useState(0);
 
     const goToNext = () => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             prevIndex === images.length - 1 ? 0 : prevIndex + 1
         );
-        setSelectedThumb((prevThumb) => 
+        setSelectedThumb((prevThumb) =>
             prevThumb === images.length - 1 ? 0 : prevThumb + 1
         );
     };
 
     const goToPrevious = () => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? images.length - 1 : prevIndex - 1
         );
-        setSelectedThumb((prevThumb) => 
+        setSelectedThumb((prevThumb) =>
             prevThumb === 0 ? images.length - 1 : prevThumb - 1
         );
     };
@@ -40,16 +41,16 @@ const CustomImageSlider = ({ images }) => {
                     alt={`Product ${currentIndex + 1}`}
                     className="main-image"
                 />
-                
-                <button 
+
+                <button
                     onClick={goToPrevious}
                     className="nav-button prev-button"
                     aria-label="Previous image"
                 >
                     <i className="fas fa-chevron-left"></i>
                 </button>
-                
-                <button 
+
+                <button
                     onClick={goToNext}
                     className="nav-button next-button"
                     aria-label="Next image"
@@ -237,82 +238,84 @@ const ProductDetails = () => {
                     <CustomImageSlider images={product.images} />
                 </div>
 
-                <div className="product-desc-con">
-                    <div className="pd-main-deets">
-                        <h4 className='pd-title'>{product.name}</h4>
-                        <p className='pd-star-rating'>
-                            {Array.from({ length: 5 }, (_, index) => (
-                                <i
-                                    key={index}
-                                    className={`fas fa-star ${index < Math.floor(averageRating) ? '' : (index < averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
-                                ></i>
+                <div className='prod-desc-order-con'>
+                    <div className="product-desc-con">
+                        <div className="pd-main-deets">
+                            <h4 className='pd-title'>{product.name}</h4>
+                            <p className='pd-star-rating'>
+                                {Array.from({ length: 5 }, (_, index) => (
+                                    <i
+                                        key={index}
+                                        className={`fas fa-star ${index < Math.floor(averageRating) ? '' : (index < averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}`}
+                                    ></i>
+                                ))}
+                                <span>({product.reviews.length} reviews)</span>
+                            </p>
+                            <p className='pd-desc'>{product.description}</p>
+                        </div>
+                        <div className="pd-desc-info">
+                            {[
+                                { title: "Sizes", content: product.sizes.join(', ') },
+                                { title: "Suitable For", content: product.suitableFor.join(', ') },
+                                { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
+                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
+                                { title: "Claims", content: product.claims.join(', ') }
+                            ].map((item, index) => (
+                                <div key={index} className="pd-desc-item">
+                                    <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
+                                        <h6>{item.title}</h6>
+                                        <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
+                                    </div>
+                                    <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
+                                        <p>{item.content}</p>
+                                    </div>
+                                </div>
                             ))}
-                            <span>({product.reviews.length} reviews)</span>
-                        </p>
-                        <p className='pd-desc'>{product.description}</p>
+                        </div>
                     </div>
-                    <div className="pd-desc-info">
-                        {[
-                            { title: "Sizes", content: product.sizes.join(', ') },
-                            { title: "Suitable For", content: product.suitableFor.join(', ') },
-                            { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
-                            { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
-                            { title: "Claims", content: product.claims.join(', ') }
-                        ].map((item, index) => (
-                            <div key={index} className="pd-desc-item">
-                                <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
-                                    <h6>{item.title}</h6>
-                                    <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
+
+                    <div className="product-order-con">
+                        <div className="pd-price">
+                            <div className="pd-actual-price">
+                                ${product.price}
+                            </div>
+                        </div>
+                        <div className="pd-quantity">
+                            <div className='pd-quantity-head'>Quantity</div>
+                            <div className="pd-quantity-counter">
+                                <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                                <p className='pd-quantity-num'>{quantity}</p>
+                                <button onClick={() => handleQuantityChange('increment')}>+</button>
+                            </div>
+                        </div>
+
+                        <div className="pd-btns">
+                            <div className="pd-cart-btn">
+                                <button onClick={handleAddToCart}>
+                                    <span>Add to Cart</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="pd-service-features">
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-shipping-fast"></i>
                                 </div>
-                                <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
-                                    <p>{item.content}</p>
+                                <div className="pd-sf-text">Free Shipping</div>
+                            </div>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-money-check-alt"></i>
                                 </div>
+                                <div className="pd-sf-text">Money-back Guarantee</div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="product-order-con">
-                    <div className="pd-price">
-                        <div className="pd-actual-price">
-                            ${product.price}
-                        </div>
-                    </div>
-                    <div className="pd-quantity">
-                        <div className='pd-quantity-head'>Quantity</div>
-                        <div className="pd-quantity-counter">
-                            <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                            <p className='pd-quantity-num'>{quantity}</p>
-                            <button onClick={() => handleQuantityChange('increment')}>+</button>
-                        </div>
-                    </div>
-
-                    <div className="pd-btns">
-                        <div className="pd-cart-btn">
-                            <button onClick={handleAddToCart}>
-                                <span>Add to Cart</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="pd-service-features">
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-shipping-fast"></i>
+                            <div className="pd-sf-item">
+                                <div className="pd-sf-icon">
+                                    <i className="fas fa-truck"></i>
+                                </div>
+                                <div className="pd-sf-text">Fast Delivery</div>
                             </div>
-                            <div className="pd-sf-text">Free Shipping</div>
-                        </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-money-check-alt"></i>
-                            </div>
-                            <div className="pd-sf-text">Money-back Guarantee</div>
-                        </div>
-                        <div className="pd-sf-item">
-                            <div className="pd-sf-icon">
-                                <i className="fas fa-truck"></i>
-                            </div>
-                            <div className="pd-sf-text">Fast Delivery</div>
                         </div>
                     </div>
                 </div>
@@ -345,7 +348,43 @@ const ProductDetails = () => {
                         <button onClick={handleOpenReviewModal}>Add Review</button>
                     </div>
                 </div>
-                <hr />
+                <div className="review-summary">
+                    <div className="review-summary-average">
+                        <span className="average-rating">{averageRating}</span>
+                        <div className="average-stars">
+                            {Array.from({ length: 5 }, (_, index) => (
+                                <i
+                                    key={index}
+                                    className={`fas fa-star ${index < Math.floor(averageRating)
+                                        ? ''
+                                        : index < averageRating
+                                            ? 'fas fa-star-half-alt'
+                                            : 'far fa-star'
+                                        }`}
+                                ></i>
+                            ))}
+                        </div>
+                        <span className="total-reviews">Based on {reviews.length} reviews</span>
+                    </div>
+                    <div className="review-summary-bars">
+                        {[5, 4, 3, 2, 1].map((stars) => {
+                            const count = reviews.filter(review => review.rating === stars).length;
+                            const percentage = (count / reviews.length) * 100 || 0;
+
+                            return (
+                                <div key={stars} className="rating-bar-row">
+                                    <span className="star-label">{stars} stars</span>
+                                    <div className="rating-bar-container">
+                                        <div
+                                            className="rating-bar-fill"
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
                 <div className="pd-reviews">
                     <div className="pd-reviews-con">
                         {reviews.map((review) => (
@@ -360,15 +399,20 @@ const ProductDetails = () => {
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseReviewModal}>&times;</span>
                         <h2>Add Your Review</h2>
-                        <div>
+                        <div className="modal-rating-container">
                             <label>Rating:</label>
-                            <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+                            <div className="star-rating">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                    <option key={star} value={star}>{star}</option>
+                                    <i
+                                        key={star}
+                                        className={`rating-star ${star <= rating ? 'fas fa-star' : 'far fa-star'
+                                            }`}
+                                        onClick={() => setRating(star)}
+                                    />
                                 ))}
-                            </select>
+                            </div>
                         </div>
-                        <div>
+                        <div className='modal-comment-con'>
                             <label>Comment:</label>
                             <textarea
                                 value={comment}

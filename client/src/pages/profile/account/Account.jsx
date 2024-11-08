@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './account.css';
 import AddressModal from '../../../components/address/AddressModal';
+import './account.css';
 
 const Account = () => {
     const [profile, setProfile] = useState([]);
@@ -8,6 +8,7 @@ const Account = () => {
     const [orders, setOrders] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editAddressIndex, setEditAddressIndex] = useState(null);
+    const [defaultAddressId, setDefaultAddressId] = useState(null);
 
     useEffect(() => {
         // Fetch Profile, Addresses, and Orders
@@ -25,6 +26,10 @@ const Account = () => {
             });
             const data = await response.json();
             setAddresses(data);
+            // Set the first address as default if none is set
+            if (data.length > 0 && !defaultAddressId) {
+                setDefaultAddressId(data[0]._id);
+            }
         };
 
         const fetchOrders = async () => {
@@ -48,8 +53,13 @@ const Account = () => {
         } else {
             setAddresses([...addresses, newAddress]);
         }
-        setIsModalOpen(false); 
-        setEditAddressIndex(null); 
+        setIsModalOpen(false);
+        setEditAddressIndex(null);
+    };
+
+    const handleSetDefault = (addressId) => {
+        setDefaultAddressId(addressId);
+        // Here you would typically also make an API call to update the default address in the backend
     };
 
     const openAddModal = () => {
@@ -63,7 +73,7 @@ const Account = () => {
     };
 
     return (
-        <div className="acc-page">
+        <div className="acc-page con1">
             {/* Personal Details Section */}
             <section className="acc-section acc-personal-details">
                 <h2 className="acc-section-title">Account Information</h2>
@@ -89,9 +99,35 @@ const Account = () => {
                 <ul className="acc-addresses-list">
                     {addresses.length > 0 ? (
                         addresses.map((address, index) => (
-                            <li className="acc-address-item" key={index}>
-                                {`${address.fullName || 'Not available'}, ${address.addressLine1 || 'Not available'}, ${address.addressLine2 || 'Not available'}, ${address.landMark || 'Not available'}, ${address.city || 'Not available'}, ${address.state || 'Not available'}, ${address.postalCode || 'Not available'}, ${address.phoneNumber || 'Not available'}`}
-                                <button className="acc-btn acc-btn-edit-address" onClick={() => openEditModal(index)}>Edit</button>
+                            <li
+                                className={`acc-address-item ${address._id === defaultAddressId ? 'default-address' : ''}`}
+                                key={index}
+                            >
+                                <div className="acc-address-content">
+                                    <div className="acc-address-text">
+                                        {`${address.fullName || 'Not available'}, ${address.addressLine1 || 'Not available'}, ${address.addressLine2 || 'Not available'}, ${address.landMark || 'Not available'}, ${address.city || 'Not available'}, ${address.state || 'Not available'}, ${address.postalCode || 'Not available'}, ${address.phoneNumber || 'Not available'}`}
+                                        {address._id === defaultAddressId && (
+                                            <div className="text-sm text-blue-600 font-medium mt-2 def-label">Default</div>
+                                        )}
+                                    </div>
+                                    <div className="acc-address-actions">
+                                        {address._id !== defaultAddressId && (
+                                            <button
+                                                className="acc-btn acc-btn-default"
+                                                onClick={() => handleSetDefault(address._id)}
+                                            >
+                                                Set as Default
+                                            </button>
+                                        )}
+                                        <button
+                                            className="acc-btn acc-btn-edit-address"
+                                            onClick={() => openEditModal(index)}
+                                            aria-label="Edit address"
+                                        >
+                                            <i className="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </li>
                         ))
                     ) : (
@@ -101,28 +137,6 @@ const Account = () => {
                 <button className="acc-btn acc-btn-add-address" onClick={openAddModal}>
                     Add New Address
                 </button>
-            </section>
-
-            {/* Past Orders Section */}
-            <section className="acc-section acc-past-orders">
-                <h2 className="acc-section-title">Past Orders</h2>
-                <ul className="acc-orders-list">
-                    {orders.length > 0 ? (
-                        orders.map(order => (
-                            <li className="acc-order-item" key={order._id}>
-                                <p className="acc-order-detail"><strong>Order ID:</strong> {order._id}</p>
-                                <p className="acc-order-detail"><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
-                                <p className="acc-order-detail"><strong>Status:</strong> {order.paymentStatus}</p>
-                                <p className="acc-order-detail"><strong>Total:</strong> ${order.finalPrice.toFixed(2)}</p>
-                                <a href={`/order-details/${order._id}`}>
-                                    <button className="acc-btn acc-btn-view-order">View Order</button>
-                                </a>
-                            </li>
-                        ))
-                    ) : (
-                        <li className="acc-order-item"><p>No past orders available.</p></li>
-                    )}
-                </ul>
             </section>
 
             {/* Modal for Adding/Editing Address */}

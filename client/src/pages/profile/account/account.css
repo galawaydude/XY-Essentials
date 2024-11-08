@@ -1,195 +1,270 @@
 /* General Account Page Layout */
 .acc-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    color: #333;
-  }
-  
-  /* Section Styling */
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Section Styling */
+.acc-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--pri);
+  transition: all 0.3s ease;
+}
+
+.acc-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--pri);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--pri);
+}
+
+/* Personal Details */
+.acc-personal-details .acc-details-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.acc-detail-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+}
+
+/* Button Styling */
+.acc-btn-edit {
+  background-color: var(--pri);
+  color: white;
+}
+
+.acc-btn-edit:hover {
+  filter: brightness(110%);
+  transform: translateY(-1px);
+}
+
+/* Past Orders */
+/* .acc-orders-list {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.acc-order-item {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #eaeaea;
+  transition: all 0.3s ease;
+}
+
+.acc-order-item:hover {
+  border-color: var(--pri);
+  transform: translateY(-2px);
+}
+
+.acc-order-detail {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.acc-btn-view-order {
+  background-color: var(--pri);
+  color: white;
+  width: 100%;
+  margin-top: 1rem;
+} */
+
+
+/* Addresses Section */
+.acc-addresses-list {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.acc-address-item {
+  background-color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #eaeaea;
+  transition: border-color 0.3s ease;
+}
+
+.acc-address-item.default-address {
+  border: 2px solid var(--pri);
+  background-color: rgba(var(--pri-rgb), 0.02);
+}
+
+.acc-address-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.acc-address-text {
+  flex: 1;
+}
+
+.acc-address-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.acc-btn-edit-address {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: var(--pri);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+}
+
+.acc-btn-edit-address:hover {
+  background-color: rgba(var(--pri-rgb), 0.1);
+}
+
+.def-label{
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+.acc-btn-default {
+  background: none;
+  border: 1px solid var(--pri);
+  color: var(--pri);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.acc-btn-default:hover {
+  background-color: var(--pri);
+  color: white;
+}
+
+.acc-btn-add-address {
+  background-color: white;
+  color: var(--pri);
+  border: 2px solid var(--pri);
+  width: 100%;
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+.acc-btn-add-address:hover {
+  background-color: var(--pri);
+  color: white;
+}
+
+/* Modal Styling */
+.acc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.acc-modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.acc-modal-title {
+  font-size: 1.5rem;
+  color: var(--pri);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.acc-modal-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.acc-modal-input:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 3px rgba(var(--pri-rgb), 0.1);
+}
+
+.acc-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.acc-btn-cancel {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.acc-btn-submit {
+  background-color: var(--pri);
+  color: white;
+}
+
+@media (max-width: 768px) {
   .acc-section {
-    margin-bottom: 50px;
+    padding: 1.25rem;
   }
-  
-  .acc-section-title {
-    font-size: 24px;
-    color: #222;
-    margin-bottom: 20px;
-  }
-  
-  /* Personal Details */
+
   .acc-personal-details .acc-details-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
   }
-  
-  .acc-detail-item {
-    margin-bottom: 10px;
+
+  .acc-address-content {
+    flex-direction: column;
   }
-  
-  .acc-btn-edit {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
+
+  .acc-address-actions {
+    width: 100%;
+    margin-top: 1rem;
   }
-  
-  .acc-btn-edit:hover {
-    background-color: #0056b3;
+
+  .acc-btn-default {
+    flex: 1;
   }
-  
-  /* Past Orders */
-  .acc-orders-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .acc-order-item {
-    background-color: #f9f9f9;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .acc-order-detail {
-    margin-bottom: 8px;
-  }
-  
-  .acc-btn-view-order {
-    padding: 8px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .acc-btn-view-order:hover {
-    background-color: #218838;
-  }
-  
-  /* Addresses Section */
-  .acc-addresses-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
+
+
   .acc-address-item {
-    background-color: #f9f9f9;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
+
   .acc-btn-edit-address {
-    padding: 8px 15px;
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .acc-btn-edit-address:hover {
-    background-color: #138496;
-  }
-  
-  .acc-btn-add-address {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .acc-btn-add-address:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Modal Styling */
-  .acc-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .acc-modal-content {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    max-width: 500px;
     width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
   }
-  
-  .acc-modal-title {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .acc-modal-textarea {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .acc-modal-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .acc-btn {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .acc-btn-cancel {
-    background-color: #6c757d;
-  }
-  
-  .acc-btn-cancel:hover {
-    background-color: #5a6268;
-  }
-  
-  .acc-btn-submit {
-    background-color: #28a745;
-  }
-  
-  .acc-btn-submit:hover {
-    background-color: #218838;
-  }
-  
-  .acc-modal-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
+}
