@@ -18,6 +18,8 @@ import Account from './pages/profile/account/Account';
 import OrderDetails from './pages/profile/orderdetails/OrderDetails';
 import Combo from './pages/product/combos/Combo';
 import ProtectedRoute from './context/ProtectedRoute';
+import YourOrders from './pages/profile/yourorders/YourOrders';
+import Ordercard from './components/ordercard/Ordercard';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -41,8 +43,10 @@ const AppRoutes = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/account" element={<Account />} />
+                    <Route path="/orders" element={<YourOrders />} />
                     <Route path="/order-details" element={<OrderDetails />} />
                     <Route path="/order-details/:id" element={<OrderDetails />} />
+                    <Route path='/order' element={<Ordercard />}/>
                     {/* <Route path="/account" element={<ProtectedRoute element={<Account />} />} />
                     <Route path="/order-details" element={<ProtectedRoute element={<OrderDetails />} />} />
                     <Route path="/order-details/:id" element={<ProtectedRoute element={<OrderDetails />} />} /> */}

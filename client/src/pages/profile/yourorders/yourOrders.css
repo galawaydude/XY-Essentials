@@ -1,0 +1,35 @@
+.acc-orders-list {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  
+  .acc-order-item {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #eaeaea;
+    transition: all 0.3s ease;
+  }
+  
+  .acc-order-item:hover {
+    border-color: var(--pri);
+    transform: translateY(-2px);
+  }
+  
+  .acc-order-detail {
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .acc-btn-view-order {
+    background-color: var(--pri);
+    color: white;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  

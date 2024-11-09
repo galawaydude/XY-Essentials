@@ -1,5 +1,4 @@
 import React from 'react';
-import './reviewcard.css';
 
 const ReviewCard = ({ review }) => {
   const { author, rating, comment, updatedAt } = review;
@@ -27,8 +26,16 @@ const ReviewCard = ({ review }) => {
 
   return (
     <div className="review-card">
-      <div className="review-rating">
-        {renderStars()}
+      <div className="review-header">
+        <div className="review-rating">
+          {renderStars()}
+        </div>
+        <button 
+          className="review-delete-btn"
+          aria-label="Delete review"
+        >
+          <i className="fa-solid fa-trash"></i>
+        </button>
       </div>
       <div className="review-info">
         <h6>{author}</h6>

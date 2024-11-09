@@ -78,7 +78,7 @@ const Account = () => {
             <section className="acc-section acc-personal-details">
                 <h2 className="acc-section-title">Account Information</h2>
                 <div className="acc-details-grid">
-                    <div>
+                    <div className="acc-details-info">
                         <p className="acc-detail-item">
                             <strong>Name:</strong> {profile.name || 'Not available'}
                         </p>
@@ -89,7 +89,16 @@ const Account = () => {
                             <strong>Phone:</strong> {profile.mobileNumber || 'Not available'}
                         </p>
                     </div>
-                    <button className="acc-btn acc-btn-edit">Edit Profile</button>
+                    <div className="acc-buttons-container">
+                        <button className="acc-btn acc-btn-edit">
+                            <i className="fa-regular fa-user"></i>
+                            Edit Profile
+                        </button>
+                        <button className="acc-btn acc-btn-orders">
+                            <i className="fa-solid fa-clipboard-list"></i>
+                            Your Orders
+                        </button>
+                    </div>
                 </div>
             </section>
 
