@@ -19,7 +19,7 @@ class EmailController {
                 <p>Get started by exploring our features...</p>
             `;
 
-            const response = await EmailService.sendEmail(
+            const response = await EmailService.sendWelcomeEmail(
                 email,
                 'Welcome to Our Platform',
                 emailContent

@@ -16,9 +16,9 @@ router.post('/:id/reviews', protect, addReview);
 router.post('/:id/reviews/:id', protect, updateReview);
 
 // Admin Routes
-router.post('/', upload.fields([{ name: 'productImages' }]), createProduct);
-router.put('/:id', upload.fields([{ name: 'productImages' }]), updateProduct);
-router.delete('/:id', deleteProduct);
+router.post('/', protect, admin,upload.fields([{ name: 'productImages' }]), createProduct);
+router.put('/:id',protect, admin, upload.fields([{ name: 'productImages' }]), updateProduct);
+router.delete('/:id', protect, admin, deleteProduct);
 
 
 

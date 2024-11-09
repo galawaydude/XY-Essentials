@@ -8,8 +8,8 @@ router.post('/apply', protect, applyCoupon);
 
 // Admin Routes
 router.get('/', protect, getAllCoupons);
-router.post('/', protect, createCoupon);
+router.post('/', protect, admin, createCoupon);
 router.put('/:id', protect, admin, updateCoupon);
-router.delete('/:id', protect, deleteCoupon);
+router.delete('/:id', protect, admin, deleteCoupon);
 
 module.exports = router;

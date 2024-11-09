@@ -4,6 +4,7 @@ import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
 import './productdetails.css';
 import { Link } from 'react-router-dom';
+import './productdetails.css'
 
 const CustomImageSlider = ({ images }) => {
     const [currentIndex, setCurrentIndex] = useState(0);

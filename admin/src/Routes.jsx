@@ -10,6 +10,7 @@ import Inventory from './pages/inventory/Inventory';
 import AllOrders from './pages/orders/Allorders';
 import Blogs from './pages/blog/allblogs/allBlogs';
 import Coupons from './pages/coupons/Coupons';
+import Login from './pages/login/Login';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -30,6 +31,7 @@ const AppRoutes = () => {
                     <Route path="/admin/blogs" element={<Blogs />} />
                     <Route path="/admin/orders" element={<AllOrders />} />
                     <Route path="/admin/coupons" element={<Coupons />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </main>
       
