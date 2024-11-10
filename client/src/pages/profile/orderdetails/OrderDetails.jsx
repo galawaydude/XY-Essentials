@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './orderdetails.css';
 
 const OrderDetails = () => {
-  const { id } = useParams(); // Get the order ID from the URL
+  const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,6 +38,19 @@ const OrderDetails = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const formatAddress = (address) => {
+    const parts = [
+      address.fullName,
+      address.addressLine1,
+      address.addressLine2,
+      address.city,
+      address.state,
+      address.postalCode,
+      address.phoneNumber
+    ].filter(Boolean); // Remove empty or undefined values
+    return parts.join(', ');
+  };
+
   // Destructure order data
   const {
     _id,
@@ -56,63 +69,104 @@ const OrderDetails = () => {
   } = order;
 
   return (
-    <div className="order-details-container">
-      <h1 className="order-details-heading">Order ID: {_id}</h1>
+    <div className="ord-details-container con1 section">
+      <div className="ord-payment-item">
+        <div className="ord-payment-label">Order Date: </div>
+        <div className="ord-payment-value">{formatDate(createdAt)}</div>
+      </div>
+      <h1 className="ord-details-heading">Order ID: {_id}</h1>
+      {/* Order Status Section */}
+      <div className="ord-status-section">
+        {/* Info Sections */}
+        <div className="ord-info-sections">
+          {/* Shipping Section */}
+          <div className="ord-shipping-section">
+            <h2 className="ord-shipping-heading">Shipping Information</h2>
 
-      {/* Order Status */}
-      <div className="order-status-section">
-        <p><strong>Payment Status:</strong> {paymentStatus}</p>
-        <p><strong>Shipping Status:</strong> {shippingStatus}</p>
-        {trackingNumber && (
-          <p><strong>Tracking Number:</strong> {trackingNumber}</p>
-        )}
-        <p><strong>Delivery Date:</strong> {deliveryDate}</p>
+            <div className="ord-status-item">
+              <span className="ord-status-label">Shipping Status: </span>
+              <span className="ord-status-value">{shippingStatus}</span>
+            </div>
+            {trackingNumber && (
+              <div className="ord-status-item">
+                <span className="ord-status-label">Tracking Number: </span>
+                <span className="ord-status-value">{trackingNumber}</span>
+              </div>
+            )}
+
+            <div className="ord-shipping-item">
+              <span>
+                <span className='ord-status-label'>Shipping Address: </span>
+                {formatAddress(shippingAddress)}
+              </span>
+
+            </div>
+
+            <div className="ord-shipping-item">
+              <span className="ord-status-label">Delivery Date:</span>
+              <span className="ord-status-value">{deliveryDate}</span>
+            </div>
+          </div>
+
+
+          {/* Payment Section */}
+          <div className="ord-payment-section">
+            <h2 className="ord-payment-heading">Payment Information</h2>
+
+            <div className="ord-payment-item">
+              <span className="ord-status-label">Payment Status:</span>
+              <span className="ord-status-value">{paymentStatus}</span>
+            </div>
+
+            <div className="ord-payment-info">
+              <div className="ord-payment-item">
+                <div className="ord-payment-label">Payment Method: </div>
+                <div className="ord-payment-value">
+                  {paymentMethod === 'cod' ? "Pay On Delivery" : "Razorpay"}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Products Section */}
-      <div className="products-section">
-        <h2>Products in this order</h2>
+      <div className="ord-products-section">
+        <h2 className="ord-products-heading">Products in this order</h2>
         {orderItems.map((item, index) => (
-          <div key={index} className="product-item">
-            <img src={item.product.images[0]} alt={item.product.name} className="product-image" />
-            <div className="product-details">
-              <p><strong>Product Name:</strong> {item.product.name}</p>
-              <p><strong>Quantity:</strong> {item.quantity}</p>
-              <p><strong>Price:</strong> ₹{item.price}</p>
+          <div key={index} className="ord-product-item">
+            <img src={item.product.images[0]} alt={item.product.name} className="ord-product-image" />
+            <div className="ord-product-details">
+              <p className="ord-product-name">{item.product.name}</p>
+              <p className="ord-product-info">Quantity: {item.quantity}</p>
+              <p className="ord-product-info">Price: ₹{item.price}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Pricing Breakdown */}
-      <div className="pricing-breakdown">
-        <h2>Price Breakdown</h2>
-        <p><strong>Subtotal:</strong> ₹{subtotal}</p>
-        <p><strong>Shipping Price:</strong> ₹{shippingFee}</p>
-        {/* <p><strong>Tax:</strong> ₹{taxPrice}</p> */}
-        {discount > 0 && <p><strong>Discount:</strong> ₹{discount}</p>}
-        <p><strong>Total Amount:</strong> ₹{finalPrice}</p>
-      </div>
-
-      {/* Shipping Information */}
-      <div className="shipping-section">
-        <h2>Shipping Information</h2>
-        <p><strong>Full Name:</strong> {shippingAddress.fullName}</p>
-        <p><strong>Address Line 1:</strong> {shippingAddress.addressLine1}</p>
-        {shippingAddress.addressLine2 && (
-          <p><strong>Address Line 2:</strong> {shippingAddress.addressLine2}</p>
+      <div className="ord-pricing-breakdown">
+        <h2 className="ord-pricing-heading">Price Breakdown</h2>
+        <div className="ord-price-row">
+          <span className="ord-price-label">Subtotal</span>
+          <span className="ord-price-value">₹{subtotal}</span>
+        </div>
+        <div className="ord-price-row">
+          <span className="ord-price-label">Shipping Price</span>
+          <span className="ord-price-value">₹{shippingFee}</span>
+        </div>
+        {discount > 0 && (
+          <div className="ord-price-row">
+            <span className="ord-price-label">Discount</span>
+            <span className="ord-price-value">₹{discount}</span>
+          </div>
         )}
-        <p><strong>City:</strong> {shippingAddress.city}</p>
-        <p><strong>State:</strong> {shippingAddress.state}</p>
-        <p><strong>Postal Code:</strong> {shippingAddress.postalCode}</p>
-        <p><strong>Phone Number:</strong> {shippingAddress.phoneNumber}</p>
-      </div>
-
-      {/* Payment Information */}
-      <div className="payment-section">
-        <h2>Payment Information</h2>
-        <p><strong>Payment Method:</strong> {paymentMethod === 'cod'? "Pay On Delivery" : "Razorpay"}</p>
-        <p><strong>Order Date:</strong> {formatDate(createdAt)}</p>
+        <div className="ord-price-row">
+          <span className="ord-price-label">Total Amount</span>
+          <span className="ord-price-value">₹{finalPrice}</span>
+        </div>
       </div>
     </div>
   );
