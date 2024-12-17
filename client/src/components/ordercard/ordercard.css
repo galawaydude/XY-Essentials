@@ -72,3 +72,48 @@
 .order-view-btn:hover {
   opacity: 0.8;
 }
+
+/* Products list section */
+.order-products {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-product {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #eaeaea;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.order-product:hover {
+  border-color: var(--pri);
+  transform: translateY(-2px);
+}
+
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.product-details {
+  flex-grow: 1;
+}
+
+.product-name {
+  font-weight: bold;
+  display: block;
+}
+
+.product-quantity,
+.product-price {
+  display: block;
+  margin-top: 0.5rem;
+  color: #555;
+}
