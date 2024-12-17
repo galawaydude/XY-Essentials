@@ -12,6 +12,7 @@
 }
 
 .address-modal-main-con {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,6 +26,25 @@
     gap: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: auto;
+}
+
+.address-modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.address-modal-close i {
+    font-size: 1.5rem;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.address-modal-close:hover i {
+    color: red;
 }
 
 .address-modal-title {
@@ -103,16 +123,15 @@
 
 .address-modal-cancel {
     background: #ccc;
-    color: white;
 }
 
 .address-modal-cancel:hover {
-    background: #b3b3b3;
+    background: red;
 }
 
 .address-modal-save {
     background: #0A4834;
-    color: white;
+    
 }
 
 .address-modal-save:hover {

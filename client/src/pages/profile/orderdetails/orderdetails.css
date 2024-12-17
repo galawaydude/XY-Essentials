@@ -1,51 +1,180 @@
-.order-details-container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.ord-details-container {
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ord-details-heading {
+  font-size: 1.8rem;
+  color: var(--pri);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--pri);
+}
+
+/* Order Status Section - Parent container */
+.ord-status-section {
+  background-color: rgb(235, 252, 248);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Status Items */
+.ord-status-items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ord-status-label, .ord-payment-label {
+  font-weight: 600;
+}
+
+/* Info Sections Container */
+.ord-info-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* Shipping Section */
+.ord-shipping-section,
+.ord-payment-section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ord-shipping-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ord-shipping-item,
+.ord-payment-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ord-shipping-phone {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Payment Section */
+.ord-payment-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ord-payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Products Section */
+.ord-products-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ord-products-heading {
+  font-size: 1.4rem;
+}
+
+.ord-product-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgb(235, 252, 248);
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+  gap: 2rem;
+}
+
+.ord-product-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ord-product-image {
+  width: 8%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0.4rem;
+}
+
+.ord-product-details{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ord-product-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Pricing Breakdown */
+.ord-pricing-breakdown {
+  background-color: rgb(235, 252, 248);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.ord-pricing-heading {
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.ord-price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid;
+}
+
+.ord-price-label {
+  font-weight: 500;
+}
+
+.ord-price-value {
+  font-weight: 600;
+}
+
+.ord-price-row:last-child,
+.ord-price-row:last-child span {
+  border-bottom: none;
+  font-weight: 800;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ord-details-container {
+    padding: 1.5rem;
+    margin: 1rem;
   }
-  
-  .order-details-heading {
-    font-size: 24px;
-    margin-bottom: 20px;
+
+  .ord-product-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
   }
-  
-  .order-status-section, .products-section, .pricing-breakdown, .shipping-section, .payment-section {
-    margin-bottom: 20px;
+
+  .ord-product-image {
+    margin: 0 auto 1rem;
   }
-  
-  .product-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
+
+  .ord-shipping-grid,
+  .ord-payment-info {
+    grid-template-columns: 1fr;
   }
-  
-  .product-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    margin-right: 20px;
-  }
-  
-  .product-details p {
-    margin: 4px 0;
-  }
-  
-  .pricing-breakdown p, .shipping-section p, .payment-section p {
-    margin: 5px 0;
-  }
-  
-  .acc-modal-input {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .acc-modal-buttons {
-    margin-top: 20px;
-  }
-  
-  .acc-btn {
-    padding: 10px 20px;
-    margin-right: 10px;
-  }
-  
+}
