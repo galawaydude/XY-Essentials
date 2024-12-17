@@ -131,21 +131,6 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* Products Section */}
-      <div className="ord-products-section">
-        <h2 className="ord-products-heading">Products in this order</h2>
-        {orderItems.map((item, index) => (
-          <div key={index} className="ord-product-item">
-            <img src={item.product.images[0]} alt={item.product.name} className="ord-product-image" />
-            <div className="ord-product-details">
-              <p className="ord-product-name">{item.product.name}</p>
-              <p className="ord-product-info">Quantity: {item.quantity}</p>
-              <p className="ord-product-info">Price: ₹{item.price}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* Pricing Breakdown */}
       <div className="ord-pricing-breakdown">
         <h2 className="ord-pricing-heading">Price Breakdown</h2>
@@ -168,6 +153,22 @@ const OrderDetails = () => {
           <span className="ord-price-value">₹{finalPrice}</span>
         </div>
       </div>
+      
+      {/* Products Section */}
+      <div className="ord-products-section">
+        <h2 className="ord-products-heading">Products in this order</h2>
+        {orderItems.map((item, index) => (
+          <div key={index} className="ord-product-item">
+            <img src={item.product.images[0]} alt={item.product.name} className="ord-product-image" />
+            <div className="ord-product-details">
+              <p className="ord-product-name">{item.product.name}</p>
+              <p className="ord-product-quantity">Quantity: {item.quantity}</p>
+              <p className="ord-product-price">Price: ₹{item.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };
