@@ -130,8 +130,6 @@ const updateProductStock = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // Delete a product (Admin only)
 const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);

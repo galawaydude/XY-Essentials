@@ -18,6 +18,7 @@ function OrderCard({ order }) {
     try {
       const response = await fetch(`http://localhost:5000/api/orders/${order._id}/generate-bill`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/pdf',
         },

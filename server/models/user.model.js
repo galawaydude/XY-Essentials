@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt'); // Add this line
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  cuid: { type: String }, 
   mobileNumber: { type:Number },
   pfp: { type: String },
   password: { type: String },
@@ -29,3 +30,16 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+
+
+
+// const mongoose = require('mongoose');
+
+// const userSchema = new mongoose.Schema({
+//   clerkId: { type: String, required: true, unique: true }, 
+//   addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }], 
+//   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }], 
+// }, { timestamps: true });
+
+// const User = mongoose.model('User', userSchema);
+// module.exports = User;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './allorders.css';
 import OrderCard from "../../components/ordercard/OrderCard";
 
-function AllOrders() {
+function Allorders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,4 +48,4 @@ function AllOrders() {
   );
 }
 
-export default AllOrders;
+export default Allorders;

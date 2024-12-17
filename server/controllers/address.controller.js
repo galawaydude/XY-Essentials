@@ -52,7 +52,6 @@ const createAddress = asyncHandler(async (req, res) => {
   res.status(201).json(createdAddress);
 });
 
-
 // Update an existing address
 const updateAddress = asyncHandler(async (req, res) => {
   const { isDefault, ...updateFields } = req.body; // Destructure isDefault and other fields
@@ -78,7 +77,6 @@ const updateAddress = asyncHandler(async (req, res) => {
     throw new Error('Address not found');
   }
 });
-
 
 // Delete an address
 const deleteAddress = asyncHandler(async (req, res) => {

@@ -57,10 +57,25 @@ const Account = () => {
         setEditAddressIndex(null);
     };
 
-    const handleSetDefault = (addressId) => {
+    const handleSetDefault = async (addressId) => {
         setDefaultAddressId(addressId);
-        // Here you would typically also make an API call to update the default address in the backend
+        try {
+            const response = await fetch(`http://localhost:5000/api/addresses/${addressId}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ isDefault: true }),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update default address');
+            }
+        } catch (error) {
+            console.error('Error while setting default address:', error);
+        }
     };
+
 
     const openAddModal = () => {
         setIsModalOpen(true);
