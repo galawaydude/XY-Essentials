@@ -9,10 +9,13 @@ const Inventory = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
+    const apiUrl = import.meta.env.VITE_API_URL;
+    console.log("API URL:", apiUrl);
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products/');
+                const response = await fetch(`${apiUrl}/api/products/`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }

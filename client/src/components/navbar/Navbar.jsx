@@ -1,5 +1,6 @@
 import React from 'react'
 import './Navbar.css'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
 
 const Navbar = () => {
     return (
@@ -18,13 +19,19 @@ const Navbar = () => {
             </div>
             <div className="nav-icons">
                 <div className="nav-link-icons">
+                    <a className='nav-link-icon' href="/account">      <i className="nav-icon-item far fa-user"></i></a>
                     <a className='nav-link-icon' href="/cart"><i className="fas fa-shopping-cart" ></i></a>
                     {/* <i className="nav-icon-item fas fa-bell"></i> */}
-                    <a className='nav-link-icon' href="/account">      <i className="nav-icon-item far fa-user"></i></a>
-              
+                    {/* <SignedOut>
+                        <SignInButton />
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn> */}
                 </div>
             </div>
-       </div>
+
+        </div>
     )
 }
 
