@@ -4,6 +4,7 @@ const { getAllProducts, getProductById, createProduct, updateProduct, deleteProd
 const { protect, admin } = require('../middlewares/auth.middleware.js');
 const { productSchema } = require('../validations/product.validator.js');
 const validateRequest = require('../middlewares/validate.middleware.js');
+const clerkAuth = require('../middlewares/clerk.middleware.js');
 const { getProductReviews, addReview, updateReview, deleteReview,  } = require('../controllers/review.controller.js');
 const { upload } = require('../middlewares/multer.middleware.js');
 

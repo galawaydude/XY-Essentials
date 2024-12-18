@@ -7,7 +7,6 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middlewares/error.middleware.js');
-const { clerkMiddleware } = require('@clerk/express');
 
 dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
 connectDB();
@@ -33,8 +32,6 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(clerkMiddleware());
-
 
 const corsOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
