@@ -34,6 +34,8 @@ function Allorders() {
     fetchOrders();
   }, []);
 
+  console.log("Orders fetched:", orders);
+
   if (loading) return <div>Loading orders...</div>;
   if (error) return <div>Error fetching orders: {error}</div>;
 
