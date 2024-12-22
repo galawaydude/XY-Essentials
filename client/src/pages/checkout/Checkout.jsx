@@ -519,7 +519,7 @@ const Checkout = () => {
           </p>
           <hr />
           <div className="summary-row">
-            <p>Total Item(s) Cost:</p>
+            <p>Total Items Cost:</p>
             <p><span className="inr">₹</span><strong>{totalItems.toFixed(2)}</strong></p>
           </div>
           <div className="summary-row">

@@ -13,12 +13,18 @@
 
 }
 
+
 .navbar a {
     color: black;
 }
 .navbar a:hover {
     color: black;
 }
+.navbar .logo a img {
+    width: 160px;
+    margin-top: -0.5rem;
+}
+
 
 .nav-links{
     text-decoration: none;
