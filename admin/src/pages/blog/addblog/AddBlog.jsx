@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const AddBlog = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [title, setTitle] = useState('');
   const [imgFile, setImgFile] = useState(null);
   const [content, setContent] = useState('');

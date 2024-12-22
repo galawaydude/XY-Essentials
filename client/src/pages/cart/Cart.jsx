@@ -4,6 +4,7 @@ import CartProductCard from '../../components/cartproductcard/CartProductCard';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [cartItems, setCartItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState({});
     const navigate = useNavigate();

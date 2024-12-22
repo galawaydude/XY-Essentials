@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import './orderdetails.css';
 
 const OrderDetails = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);

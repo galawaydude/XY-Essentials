@@ -3,6 +3,7 @@ import './ordercard.css';
 
 
 function OrderCard({ order }) {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const { shippingAddress } = order;
 
   const fullAddress = `

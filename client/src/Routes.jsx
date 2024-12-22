@@ -51,7 +51,6 @@ const AppRoutes = () => {
                         <Route path="/orders" element={<YourOrders />} />
                         <Route path="/orders/:id" element={<OrderDetails />} />
                     </Route>
-
                 </Routes>
             </main>
             <Footer />

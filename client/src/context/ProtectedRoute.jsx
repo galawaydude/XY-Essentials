@@ -4,6 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const ProtectedRoute = ({ element }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const { isAuthenticated } = useAuth();
     const location = useLocation();
 

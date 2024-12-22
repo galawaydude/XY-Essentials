@@ -10,6 +10,8 @@ const statesOfIndia = [
 ];
 
 const AddressModal = ({ isOpen, onClose, onSave }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
     const [formData, setFormData] = useState({
       fullName: '',
       addressLine1: '',

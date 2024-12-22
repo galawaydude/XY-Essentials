@@ -3,6 +3,7 @@ import './allorders.css';
 import OrderCard from "../../components/ordercard/OrderCard";
 
 function Allorders() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

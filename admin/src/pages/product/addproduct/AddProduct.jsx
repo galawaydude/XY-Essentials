@@ -4,6 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate()
 
     const [product, setProduct] = useState({

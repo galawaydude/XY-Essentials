@@ -6,6 +6,7 @@ import './productdetails.css';
 import { Link } from 'react-router-dom';
 
 const CustomImageSlider = ({ images }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedThumb, setSelectedThumb] = useState(0);
 

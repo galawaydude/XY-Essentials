@@ -2,6 +2,7 @@ import React from 'react';
 import './about.css'; // Assuming you have a separate CSS file for styling
 
 const About = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     return (
         <div className="about-maincon">
             <div className="about-top-bg">

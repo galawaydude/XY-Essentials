@@ -2,6 +2,7 @@ import React from 'react';
 import './couponcard.css';
 
 function CouponCard({ coupon }) {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const { code, discountType, discountValue, expirationDate, minimumPurchaseAmount, maxDiscountAmount, usageLimit, isActive } = coupon;
 
   return (

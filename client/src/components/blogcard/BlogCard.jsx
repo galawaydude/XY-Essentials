@@ -2,6 +2,8 @@ import React from 'react';
 import './blogcard.css';
 
 const BlogCard = ({ blog }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
     return (
         <div className="home-blog-card">
             <div className="home-blog-img">

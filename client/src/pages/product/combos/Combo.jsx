@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './combo.css'; // You can create a CSS file for styling if needed
 
 const Combo = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [combos, setCombos] = useState([]);
   const [loading, setLoading] = useState(true);
 

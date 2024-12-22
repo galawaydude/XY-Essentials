@@ -4,6 +4,7 @@ import './allblogs.css';
 import { Link } from 'react-router-dom';
 
 const Blogs = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

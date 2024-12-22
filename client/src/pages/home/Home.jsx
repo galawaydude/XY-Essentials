@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './home.css';
 
 const Home = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [products, setProducts] = useState([]);
   const [blogs, setBlogs] = useState([]);
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './dashboard.css';
 
 const Dashboard = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   return (

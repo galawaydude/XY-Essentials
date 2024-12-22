@@ -5,6 +5,7 @@ import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
 
 const Account = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [profile, setProfile] = useState([]);
     const [addresses, setAddresses] = useState([]);
     const [orders, setOrders] = useState([]);

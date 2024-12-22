@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './editprofile.css';
 
 const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',

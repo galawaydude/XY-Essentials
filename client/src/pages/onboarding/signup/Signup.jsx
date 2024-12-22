@@ -3,6 +3,7 @@ import OAuth from '../../../components/oauth/OAuth';
 import {useNavigate} from 'react-router-dom';
 
 const Signup = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

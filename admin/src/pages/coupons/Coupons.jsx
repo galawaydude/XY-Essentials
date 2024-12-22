@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import CouponCard from '../../components/couponcard/CouponCard';
 
 const Coupons = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [coupons, setCoupons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

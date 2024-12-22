@@ -3,6 +3,8 @@ import './Navbar.css'
 import XYNavLogo from './../../assets/xy essentials_wordmark TR.png'
 
 const Navbar = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
     return (
         <div className='navbar'>
             <div className="logo">

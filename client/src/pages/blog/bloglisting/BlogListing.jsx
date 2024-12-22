@@ -3,6 +3,7 @@ import './bloglisting.css';
 import BlogCard from '../../../components/blogcard/BlogCard';
 
 const BlogListing = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     return (
         <div className="blog-maincon ">
             <div className="blog-top-bg">

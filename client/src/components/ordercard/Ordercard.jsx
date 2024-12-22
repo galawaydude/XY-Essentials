@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './ordercard.css';
 
 const OrderCard = ({ order }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

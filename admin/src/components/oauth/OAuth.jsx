@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function OAuth() {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
     const [user, setUser] = useState(null);

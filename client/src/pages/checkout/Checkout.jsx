@@ -5,6 +5,7 @@ import AddressModal from '../../components/address/AddressModal';
 
 
 const Checkout = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState([]);

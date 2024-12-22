@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import './blogdetails.css';
 
 const BlogDetails = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const { id } = useParams(); // Get the blog ID from the URL
     const [blog, setBlog] = useState(null);
     const [error, setError] = useState(null);
