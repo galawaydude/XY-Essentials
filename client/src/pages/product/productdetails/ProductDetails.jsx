@@ -4,7 +4,6 @@ import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
 import './productdetails.css';
 import { Link } from 'react-router-dom';
-import './productdetails.css'
 
 const CustomImageSlider = ({ images }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -220,9 +219,9 @@ const ProductDetails = () => {
         }));
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    // if (loading) {
+    //     return <p>Loading...</p>;
+    // }
 
     if (!product) {
         return <p>Product not found.</p>;
@@ -231,7 +230,9 @@ const ProductDetails = () => {
     return (
         <div className="product-details">
             <div className="text-nav-con container">
-                <p>Home &gt; Shop &gt; {product.category}</p>
+                <a href="/">Home </a>&nbsp;&nbsp;&gt;
+                &nbsp;&nbsp;<a href="/shop"> Shop</a>&nbsp;&nbsp;&gt;
+                &nbsp;&nbsp;<a > {product.category}</a>
             </div>
             <div className="product-details-con container section">
                 <div className="product-images-con">

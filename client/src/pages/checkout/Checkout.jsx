@@ -59,7 +59,11 @@ const Checkout = () => {
       const data = await response.json();
       setAddresses(data);
 
-      if (data.length > 0) {
+      const defaultAddress = data.find(address => address.isDefault);
+      console.log('Default Address:', defaultAddress);
+      if (defaultAddress) {
+        setSelectedAddress(defaultAddress);
+      } else if (data.length > 0) {
         setSelectedAddress(data[0]);
       }
     };
@@ -263,7 +267,7 @@ const Checkout = () => {
           });
         }
         alert("Order placed successfully with Cash on Delivery!");
-        navigate(`/order-details/${createdOrder._id}`);
+        navigate(`/orders/${createdOrder._id}`);
       } catch (error) {
         console.error("Error during Cash on Delivery processing:", error);
       }
@@ -368,7 +372,7 @@ const Checkout = () => {
           }
 
           alert("Order placed successfully with Cash on Delivery!");
-          navigate(`/order-details/${createdOrder._id}`);
+          navigate(`/orders/${createdOrder._id}`);
         },
         prefill: {
           name: profile.name || "Customer Name",
@@ -423,7 +427,7 @@ const Checkout = () => {
             >
               {addresses.length > 0 ? (
                 addresses.map((addr, index) => (
-                  <option key={addr._id} value={index}>
+                  <option key={addr._id} value={index} selected={addr.isDefault}>
                     {`${addr.fullName}, ${addr.addressLine1}, ${addr.addressLine2 ? `${addr.addressLine2}, ` : ''}${addr.landMark ? `${addr.landMark}, ` : ''}${addr.city}, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
                   </option>
                 ))

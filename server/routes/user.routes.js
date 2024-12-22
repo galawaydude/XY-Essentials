@@ -9,6 +9,7 @@ const userValidator = require('../validations/user.validator.js');
 
 // Protected Routes
 router.get('/profile', protect, getUserProfile);
+router.post('/profile', protect, updateUserProfile);
 router.get('/user/orders', protect, getUserOrders);
 router.get('/user/addresses', protect, getUserAddresses);
 router.get('/user/cart', protect, getCart);

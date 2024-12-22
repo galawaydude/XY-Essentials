@@ -1,7 +1,4 @@
-/* Text navigation styles */
-.text-nav-con {
-    margin: 2rem auto -1rem;
-}
+
 
 /* Main product details container */
 .product-details-con {
@@ -409,6 +406,17 @@
 .star-rating .rating-star.fas:hover {
     scale: 1.01;
     transition: 0.3s;
+}
+
+/* Text navigation styles */
+.text-nav-con.container {
+    margin: 2rem auto -1rem;
+    color: black;
+    font-size: 0.9rem;
+}
+.text-nav-con.container a {
+    color: black;
+    font-size: 0.9rem;
 }
 
 /* Responsive adjustments */

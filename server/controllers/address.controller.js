@@ -78,6 +78,30 @@ const updateAddress = asyncHandler(async (req, res) => {
   }
 });
 
+const setDefaultAddress = asyncHandler(async (req, res) => {
+  console.log('Setting default address:', req.params.id);
+
+  const address = await Address.findById(req.params.id);
+
+  if (address && address.user.equals(req.user._id)) {
+    console.log('Updating non-default addresses');
+    await Address.updateMany(
+      { user: req.user._id, isDefault: true, _id: { $ne: address._id } },
+      { $set: { isDefault: false } }
+    );
+
+    console.log('Setting default address');
+    address.isDefault = true;
+    const savedAddress = await address.save();
+    console.log('Default address saved:', savedAddress);
+    res.json(savedAddress);
+  } else {
+    res.status(404);
+    throw new Error('Address not found');
+  }
+});
+
+
 // Delete an address
 const deleteAddress = asyncHandler(async (req, res) => {
   const address = await Address.findById(req.params.id);
@@ -96,5 +120,6 @@ module.exports = {
   getAddressById,
   createAddress,
   updateAddress,
+  setDefaultAddress,
   deleteAddress,
 };

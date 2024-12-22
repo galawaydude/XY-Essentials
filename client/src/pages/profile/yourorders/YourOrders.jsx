@@ -1,48 +1,66 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './yourorders.css';
 
 const YourOrders = () => {
-  // Dummy data for testing
-  const dummyOrders = [
-    {
-      _id: '64a1db450d4c3d370f5c896e',
-      createdAt: '2024-12-15T12:34:56Z',
-      shippingStatus: 'Shipped',
-      finalPrice: 1500.5,
-      orderItems: [
-        {
-          product: 'Wireless Headphone', 
-          quantity: 2,
-          price: 5499.5,
-        },
-        {
-          product: 'Smart Watch', 
-          quantity: 3,
-          price: 3300.5,
-        },
-      ],
-    },
-    {
-      _id: '64a1db450d4c3d370f5c897f',
-      createdAt: '2024-12-16T14:20:34Z',
-      shippingStatus: 'Pending',
-      finalPrice: 1000.0,
-      orderItems: [
-        {
-          product: 'Bluetooth Speaker', 
-          quantity: 3,
-          price: 300,
-        },
-        {
-          product: 'Phone Case', 
-          quantity: 2,
-          price: 200,
-        },
-      ],
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 10;
 
-  const [orders, setOrders] = useState(dummyOrders);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/users/user/orders', {
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          const sortedOrders = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setOrders(sortedOrders);
+        } else {
+          console.error("Expected an array but got:", data);
+          setOrders([]); // Handle non-array data
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        setError(error.message || 'An unknown error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(orders.length / ordersPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  console.log("Orders fetched:", orders);
+
+  if (loading) return <div>Loading orders...</div>;
+  if (error) return <div>Error fetching orders: {error}</div>;
+
+
 
   // Format date to a more readable format
   const formatDate = (dateString) => {
@@ -60,14 +78,35 @@ const YourOrders = () => {
 
   return (
     <div className="ol-orders-container">
-      {orders?.length > 0 ? (
-        <div className="ol-orders-grid">
-          {orders.map((order) => (
+                      <div className="home-pro-head con2">
+                    <div className="section_left_title">Your Orders</div>
+                    {/* <div className="items-count">{orders.length} orders in your bag.</div> */}
+                </div>
+      {/* <div className="text-nav-con container">
+        <a href="/profile">Profile </a>&nbsp;&nbsp;&gt;
+        &nbsp;&nbsp;<a href="/orders"> Your Orders</a>
+      </div> */}
+      <div className="pagination con2">
+        <button onClick={prevPage} disabled={currentPage === 1}>&laquo; Previous</button>
+        {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => paginate(index + 1)}
+            className={currentPage === index + 1 ? 'active' : ''}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button onClick={nextPage} disabled={currentPage === Math.ceil(orders.length / ordersPerPage)}>Next &raquo;</button>
+      </div>
+      {currentOrders.length > 0 ? (
+        <div className="ol-orders-grid con2">
+          {currentOrders.map((order) => (
             <div key={order._id} className="ol-order-card">
               <div className="ol-order-details-left">
                 <div className="ol-order-detail">
                   <span className="ol-order-detail-label">Order ID:</span>
-                  <p className="ol-order-detail-value">{order._id.slice(-8)}</p>
+                  <p className="ol-order-detail-value">{order._id}</p>
                 </div>
                 <div className="ol-order-detail">
                   <span className="ol-order-detail-label">Status:</span>
@@ -86,16 +125,13 @@ const YourOrders = () => {
                 <h4 className="ol-order-items-title">Order Items</h4>
                 {order.orderItems.map((item, index) => (
                   <div key={index} className="ol-order-item">
-                    <span className="ol-item-name">{item.product}</span>
+                    <span className="ol-item-name">{item.product?.name}</span>
                     <span className="ol-item-quantity">Qty: {item.quantity}</span>
                   </div>
                 ))}
-                <button 
-                  className="ol-view-details-btn"
-                  onClick={() => handleViewDetails(order._id)}
-                >
-                  View Details
-                </button>
+                <Link to={`/orders/${order._id}`}>
+                  <button className="ol-view-details-btn">View Details</button>
+                </Link>
               </div>
             </div>
           ))}
@@ -103,6 +139,7 @@ const YourOrders = () => {
       ) : (
         <p className="ol-no-orders">No orders found.</p>
       )}
+
     </div>
   );
 };

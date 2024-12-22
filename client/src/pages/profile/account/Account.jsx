@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AddressModal from '../../../components/address/AddressModal';
 import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
@@ -13,7 +14,6 @@ const Account = () => {
     const [defaultAddressId, setDefaultAddressId] = useState(null);
 
     useEffect(() => {
-        // Fetch Profile, Addresses, and Orders
         const fetchProfile = async () => {
             const response = await fetch(`http://localhost:5000/api/users/profile/`, {
                 credentials: 'include',
@@ -29,8 +29,9 @@ const Account = () => {
             const data = await response.json();
             setAddresses(data);
             // Set the first address as default if none is set
-            if (data.length > 0 && !defaultAddressId) {
-                setDefaultAddressId(data[0]._id);
+            const defaultAddress = data.find(address => address.isDefault);
+            if (defaultAddress) {
+                setDefaultAddressId(defaultAddress._id);
             }
         };
 
@@ -60,24 +61,22 @@ const Account = () => {
     };
 
     const handleSetDefault = async (addressId) => {
-        setDefaultAddressId(addressId);
+        console.log('Setting default address to:', addressId);
+        
         try {
-            const response = await fetch(`http://localhost:5000/api/addresses/${addressId}`, {
+            const response = await fetch(`http://localhost:5000/api/addresses/${addressId}/set-default`, {
                 method: 'PUT',
                 credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ isDefault: true }),
             });
             if (!response.ok) {
                 throw new Error('Failed to update default address');
             }
+            console.log('Default address updated successfully');
+            setDefaultAddressId(addressId);
         } catch (error) {
             console.error('Error while setting default address:', error);
         }
     };
-
 
     const openAddModal = () => {
         setIsModalOpen(true);
@@ -120,7 +119,7 @@ const Account = () => {
                         </button>
                         <button
                             className="acc-btn acc-btn-orders"
-                            onClick={() => window.location.href = '/orders'}
+                            onClick={() => window.location.href = "/orders"}
                         >
                             <i className="fa-solid fa-clipboard-list"></i>
                             Your Orders
