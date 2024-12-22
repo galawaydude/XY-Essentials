@@ -24,6 +24,7 @@ function OrderCard({ order }) {
         },
       });
 
+
       // Check if response is okay
       if (response.ok) {
         const blob = await response.blob();
@@ -42,6 +43,8 @@ function OrderCard({ order }) {
     }
   };
 
+  console.log('Order:', order);
+
   return (
     <div className="order-card-main-con">
       <div className="order-card-con">
@@ -56,7 +59,7 @@ function OrderCard({ order }) {
         {order.orderItems.map((item, index) => (
           <div className="order-item-con" key={index}>
             <div className="order-card-details-con">
-            <div className="order-card-product"> <i className="fa-regular fa-circle-dot bullet-pt"></i>{item.quantity} * {item.product.name}</div>
+            <div className="order-card-product"> <i className="fa-regular fa-circle-dot bullet-pt"></i>{item.quantity} * {item.product?.name}</div>
             </div>
           </div>
         ))}

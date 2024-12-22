@@ -17,9 +17,10 @@ import Checkout from './pages/checkout/Checkout';
 import Account from './pages/profile/account/Account';
 import OrderDetails from './pages/profile/orderdetails/OrderDetails';
 import Combo from './pages/product/combos/Combo';
-import ProtectedRoute from './context/ProtectedRoute';
+import ProtectedRoutes from './utils/ProtectedRoutes';
 import YourOrders from './pages/profile/yourorders/YourOrders';
 import Ordercard from './components/ordercard/Ordercard';
+import PreLoader from './components/preloader/PreLoader';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -33,8 +34,7 @@ const AppRoutes = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/shop" element={<ProductListing />} />
                     <Route path="/products/:id" element={<ProductDetails />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/combos" element={<Combo />} />
+                    {/* <Route path="/combos" element={<Combo />} /> */}
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/blogs" element={<BlogListing />} />
                     <Route path="/blogs/:id" element={<BlogDetails />} />
@@ -42,14 +42,15 @@ const AppRoutes = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/account" element={<Account />} />
-                    <Route path="/orders" element={<YourOrders />} />
-                    <Route path="/order-details" element={<OrderDetails />} />
-                    <Route path="/order-details/:id" element={<OrderDetails />} />
-                    <Route path='/order' element={<Ordercard />}/>
-                    {/* <Route path="/account" element={<ProtectedRoute element={<Account />} />} />
-                    <Route path="/order-details" element={<ProtectedRoute element={<OrderDetails />} />} />
-                    <Route path="/order-details/:id" element={<ProtectedRoute element={<OrderDetails />} />} /> */}
+                    <Route path="/loader" element={<PreLoader />} />
+                    {/* <Route path='/order' element={<Ordercard />}/> */}
+
+                    <Route element={<ProtectedRoutes/>}>
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/account" element={<Account />} />
+                        <Route path="/orders" element={<YourOrders />} />
+                        <Route path="/order-details/:id" element={<OrderDetails />} />
+                    </Route>
 
                 </Routes>
             </main>
