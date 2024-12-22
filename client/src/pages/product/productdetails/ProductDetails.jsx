@@ -95,7 +95,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
-    const [rating, setRating] = useState(1);
+    const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [openDescItems, setOpenDescItems] = useState({});
