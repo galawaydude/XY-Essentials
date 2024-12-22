@@ -187,4 +187,20 @@
         padding: 0.75rem;
         gap: 1rem;
     }
+    
+    .section hr {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 417px) {
+
+    .h-p-price{
+        font-weight: 500;
+    }
+
+
+    .h-p-cart-btn button{
+        font-size: 0.9rem;
+    }
 }

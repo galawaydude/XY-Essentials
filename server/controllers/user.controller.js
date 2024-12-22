@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const generateToken = require('../utils/generateToken.js');
-const passport = require('passport');
+//  
 
 // Get user profile
 const getUserProfile = asyncHandler(async (req, res) => {

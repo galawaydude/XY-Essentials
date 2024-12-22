@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AddressModal from '../../../components/address/AddressModal';
+import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
 
 const Account = () => {
     const [profile, setProfile] = useState([]);
     const [addresses, setAddresses] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editAddressIndex, setEditAddressIndex] = useState(null);
     const [defaultAddressId, setDefaultAddressId] = useState(null);
@@ -87,6 +89,10 @@ const Account = () => {
         setIsModalOpen(true);
     };
 
+    const handleProfileUpdate = (updatedProfile) => {
+        setProfile(updatedProfile);
+    };
+
     return (
         <div className="acc-page con1">
             {/* Personal Details Section */}
@@ -105,11 +111,17 @@ const Account = () => {
                         </p>
                     </div>
                     <div className="acc-buttons-container">
-                        <button className="acc-btn acc-btn-edit">
+                        <button
+                            className="acc-btn acc-btn-edit"
+                            onClick={() => setIsProfileModalOpen(true)} // Add onClick handler
+                        >
                             <i className="fa-regular fa-user"></i>
                             Edit Profile
                         </button>
-                        <button className="acc-btn acc-btn-orders">
+                        <button
+                            className="acc-btn acc-btn-orders"
+                            onClick={() => window.location.href = '/orders'}
+                        >
                             <i className="fa-solid fa-clipboard-list"></i>
                             Your Orders
                         </button>
@@ -162,6 +174,14 @@ const Account = () => {
                     Add New Address
                 </button>
             </section>
+
+            {/*EditProfileModal */}
+            <EditProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+                onSave={handleProfileUpdate}
+                currentUser={profile}
+            />
 
             {/* Modal for Adding/Editing Address */}
             <AddressModal

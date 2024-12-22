@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
+//  
 const { registerUser, authUser, authAdmin, googleLogin, adminGoogleLogin, sendOTP, verifyOTP } = require('../controllers/auth.controller.js');
 const { protect, admin } = require('../middlewares/auth.middleware.js');
 
