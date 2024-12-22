@@ -1,0 +1,71 @@
+svg {
+    width: 200px;
+    height: auto;
+}
+
+path {
+    fill: none;
+    stroke: #0078d7;
+    stroke-width: 5;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw 3s ease-in-out infinite, fade 3s ease-in-out infinite alternate;
+}
+
+@keyframes draw {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+
+    50% {
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes fade {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.preloader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.preloader-svg {
+    width: 200px;
+    height: auto;
+}
+
+.loader-circle {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 5px dashed #0078d7;
+    border-radius: 50%;
+    animation: rotate 14s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
