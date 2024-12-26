@@ -34,7 +34,7 @@ const Sidebar = () => {
         {
             name: 'Overview',
             items: [
-                { path: '/admin', name: 'Dashboard', icon: <FaTachometerAlt /> },
+                { path: '/', name: 'Dashboard', icon: <FaTachometerAlt /> },
                 // { path: '/admin/analytics', name: 'Analytics', icon: <FaChartLine /> },
             ]
         },

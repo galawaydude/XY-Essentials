@@ -72,7 +72,10 @@ const Dashboard = () => {
   const paymentMethodChart = {
     labels: ['Pay on Delivery', 'Razorpay'],
     datasets: [{
-      data: [stats.paymentStats[1].count, stats.paymentStats[0].count],
+      data: [
+        stats.paymentStats[0] ? stats.paymentStats[0].count : 0,
+        stats.paymentStats[1] ? stats.paymentStats[1].count : 0
+      ],
       backgroundColor: ['#20c997', '#fd7e14']
     }]
   };
