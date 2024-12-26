@@ -150,7 +150,7 @@ const AddProduct = () => {
 
     return (
         <div className="add-product-maincon">
-            <div className="add-product-content container">
+            <div className="add-product-content">
                 <h2 className="add-product-head">Add New Product</h2>
                 <form className="add-product-form" onSubmit={handleSubmit}>
                     <label htmlFor="name">Name</label>

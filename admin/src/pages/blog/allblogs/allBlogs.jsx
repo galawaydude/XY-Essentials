@@ -55,7 +55,7 @@ const Blogs = () => {
     }
 
     return (
-        <div className="inventory-maincon container">
+        <div className="inventory-maincon ">
             <div className="inventory-header">
                 <h2>Blogs</h2>
                 <div className="inventory-actions">

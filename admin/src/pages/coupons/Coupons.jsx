@@ -114,7 +114,7 @@ const Coupons = () => {
     }
 
     return (
-        <div className="coupons-maincon container">
+        <div className="coupons-maincon">
             <div className="coupons-header">
                 <h2>Coupons</h2>
                 <div className="coupons-actions">

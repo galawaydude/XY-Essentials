@@ -7,15 +7,17 @@ const path = require('path');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
+  console.log('Fetching orders for user:', req.user._id);
   const orders = await Order.find({ user: req.user._id })
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
+  console.log('Orders found:', orders);
   res.json(orders);
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find()
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
   res.json(orders);
 });
@@ -124,11 +126,25 @@ const generateBill = async (req, res) => {
 // Get order by ID
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email')
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
 
   if (order) {
     res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+// Update waybill number 
+const updateWaybillNumber = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.waybillNumber = req.body.waybillNumber || order.waybillNumber;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
   } else {
     res.status(404);
     throw new Error('Order not found');
@@ -175,4 +191,5 @@ module.exports = {
   getOrderById,
   updateOrderStatus,
   cancelOrder,
+  updateWaybillNumber
 };

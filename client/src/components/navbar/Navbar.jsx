@@ -15,9 +15,10 @@ const Navbar = () => {
                 <div className="nav-link-items">
                     <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/' ? 'bold' : 'normal'}} href='/'>Home</a>
                     <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/shop' ? 'bold' : 'normal'}} href="/shop">Shop</a>
+                    <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/blogs' ? 'bold' : 'normal'}} href="/blogs">Blogs</a>
                     <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/about' ? 'bold' : 'normal'}} href="/about">About</a>
                     {/* <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/combos' ? 'bold' : 'normal'}} href="/combos">Combo</a> */}
-                    <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/contact' ? 'bold' : 'normal'}} href="/contact">Contact</a>
+                    {/* <a className='nav-link-item' style={{fontWeight: window.location.pathname === '/contact' ? 'bold' : 'normal'}} href="/contact">Contact</a> */}
                 </div>
             </div>
             <div className="nav-icons">
@@ -28,7 +29,6 @@ const Navbar = () => {
            
                 </div>
             </div>
-
         </div>
     )
 }

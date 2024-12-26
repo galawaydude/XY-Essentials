@@ -124,7 +124,7 @@
 
 .prod-desc-order-con{
     flex: 2.3;
-    align-items: center;
+    /* align-items: center; */
     display: flex;
     gap: 2rem;
 }

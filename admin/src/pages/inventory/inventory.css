@@ -2,12 +2,51 @@
     padding: 20px;
 }
 
+.inventory-container {
+    /* padding: 0.5rem; */
+    background: #f8f9fa;
+}
 
 .inventory-header {
     display: flex;
     justify-content: space-between; /* Aligns items on the ends */
     align-items: center; /* Vertically centers items */
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-box {
+    position: relative;
+    width: 300px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.filter-select {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: white;
+    min-width: 150px;
 }
 
 .inventory-actions {
@@ -24,17 +63,23 @@
 }
 
 .add-product-btn {
-    padding: 10px 15px; /* Button padding */
-    background-color: #007bff; /* Button color */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #0d6efd;
     color: white; /* Button text color */
     border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
+    border-radius: 0.5rem; /* Rounded corners */
+    text-decoration: none;
+    transition: background-color 0.2s;
     cursor: pointer; /* Pointer cursor on hover */
 }
 
 .add-product-btn:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background: #0b5ed7;
 }
+
 .inven-cards {
     /* display: flex;
     flex-direction: column; */
@@ -123,4 +168,318 @@
 
 .modal-actions button {
     margin: 0 10px;
+}
+
+.inventory-table-container {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: auto;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.inventory-table th {
+    background: #f8f9fa;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.inventory-table th:hover {
+    background: #e9ecef;
+}
+
+/* Updated table cell styling */
+.inventory-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+    height: 72px; /* Fixed height for consistent rows */
+}
+
+/* Action buttons styling */
+.actions-cell {
+    width: 120px; /* Fixed width for actions column */
+    padding: 0 0.5rem !important;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: #6c757d;
+    transition: all 0.2s;
+    padding: 0;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: #f8f9fa;
+}
+
+.action-btn.view:hover {
+    color: #0d6efd;
+}
+
+.action-btn.edit:hover {
+    color: #198754;
+}
+
+.action-btn.delete:hover {
+    color: #dc3545;
+}
+
+/* Ensure consistent row appearance */
+.inventory-table tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.inventory-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Adjust checkbox column width */
+.inventory-table th:first-child,
+.inventory-table td:first-child {
+    width: 48px;
+    text-align: center;
+}
+
+/* Product info column width */
+.product-info {
+    min-width: 250px;
+}
+
+.inventory-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.product-info img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.product-info h4 {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.product-info span {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.stock-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+.stock-badge.low {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.stock-badge.normal {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.in-stock {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-badge.out-of-stock {
+    background: #f8d7da;
+}
+
+/* Responsive Layout Styles */
+.inventory-header-wrapper {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.search-filter-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1px; /* Prevent horizontal scrollbar from cutting off */
+    padding: 0 1px;
+}
+
+/* Ensure table doesn't break on mobile */
+.inventory-table {
+    min-width: 800px; /* Minimum width before horizontal scroll */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .inventory-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-filter-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .search-box, .filter-select {
+        width: 100%;
+    }
+
+    .add-product-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .inventory-container {
+        padding: 0;
+    }
+
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        min-width: 200px;
+    }
+
+    .product-info img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .action-buttons {
+        flex-direction: row;
+        gap: 4px;
+    }
+
+    .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .stock-badge, .status-badge {
+        padding: 0.15rem 0.35rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Make table more readable on mobile */
+@media (max-width: 480px) {
+    .inventory-table td, 
+    .inventory-table th {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-text {
+        display: none; /* Hide text on very small screens, show only icon */
+    }
+
+    .add-product-btn {
+        padding: 0.75rem;
+        justify-content: center;
+    }
+
+    .add-product-btn svg {
+        margin: 0;
+    }
+}
+
+/* Improve horizontal scrolling experience */
+.table-responsive-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Sticky header */
+.inventory-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1;
+}
+
+/* Loading state improvements */
+.loading-spinner {
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Error state improvements */
+.error-message {
+    padding: 2rem;
+    text-align: center;
+    color: #dc3545;
+    background: #f8d7da;
+    border-radius: 0.5rem;
+    margin: 1rem;
 }

@@ -12,17 +12,17 @@ const Cart = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users/user/cart', {   
+                const response = await fetch('http://localhost:5000/api/users/user/cart', {
                     credentials: 'include',
                 });
-    
+
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Fetched cart items:', data.cartItems); 
+                    console.log('Fetched cart items:', data.cartItems);
                     setCartItems(data.cartItems);
                     const initialSelectedItems = {};
                     data.cartItems.forEach(item => {
-                        initialSelectedItems[item.product._id] = true; 
+                        initialSelectedItems[item.product._id] = true;
                     });
                     setSelectedItems(initialSelectedItems);
                 } else {
@@ -33,7 +33,7 @@ const Cart = () => {
                 console.error('Error fetching cart:', error);
             }
         };
-    
+
         fetchCart();
     }, []);
 
@@ -96,6 +96,7 @@ const Cart = () => {
         }));
     };
 
+
     return (
         <div className="cart">
             <div className="con2">
@@ -119,8 +120,8 @@ const Cart = () => {
                                     checked={!!selectedItems[item.product._id]}
                                     onChange={() => handleCheckboxChange(item.product._id)}
                                 />
-                                <CartProductCard 
-                                    product={item.product} 
+                                <CartProductCard
+                                    product={item.product}
                                     quantity={item.quantity}
                                     onUpdateQuantity={updateQuantity}
                                     onRemoveFromCart={removeFromCart}
