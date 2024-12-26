@@ -175,7 +175,7 @@ const Inventory = () => {
                                 </td>
                                 <td className="actions-cell">
                                     <div className="action-buttons">
-                                        <Link to={`/products/${product._id}`} className="action-btn view" title="View Product">
+                                        <Link to={`http://localhost:5173/products/${product._id}`} className="action-btn view" title="View Product">
                                             <FaEye />
                                         </Link>
                                         <Link to={`/admin/edit-product/${product._id}`} className="action-btn edit" title="Edit Product">

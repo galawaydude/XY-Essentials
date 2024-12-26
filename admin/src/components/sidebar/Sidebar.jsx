@@ -83,7 +83,7 @@ const Sidebar = () => {
             <nav className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="sidebar-header">
                     <h2 className="sidebar-title">
-                        {isCollapsed ? 'XY' : 'XY Essentials'}
+                        {isCollapsed ? '' : 'XY Essentials'}
                     </h2>
                     <button className="collapse-btn" onClick={toggleSidebar}>
                         <FaBars />

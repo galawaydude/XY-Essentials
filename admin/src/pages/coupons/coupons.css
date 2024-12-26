@@ -1,12 +1,13 @@
 .coupons-maincon {
-    padding-top: 2rem;
+    /* padding-top: 2rem; */
 }
 
-.coupons-header {
+.coupons-container .coupons-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 3rem;
+    margin-bottom: 2rem;
 }
 
 .coupons-actions {
@@ -68,7 +69,7 @@
     transition: color 0.3s;
 }
 
-.modal {
+.coupons-container .modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -81,7 +82,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.coupons-container .modal-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,7 +97,7 @@
     padding: 1.5rem; /* Slightly reduced padding */
 }
 
-.form-group {
+.coupons-container .form-group {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -104,14 +105,14 @@
 }
 
 
-.form-group label {
+.coupons-container .form-group label {
     font-weight: bold;
     margin-bottom: 0.5rem;
     color: black;
 }
 
-.form-group input,
-.form-group select {
+.coupons-container .form-group input,
+.coupons-container .form-group select {
     width: 100%;
     padding: 0.7rem;
     border-radius: 0.4rem;
@@ -119,7 +120,7 @@
     font-size: 1rem;
 }
 
-.form-group input[type="checkbox"] {
+.coupons-container .form-group input[type="checkbox"] {
     width: auto;
     margin-top: 0.5rem;
 }
@@ -154,9 +155,160 @@
     color: darkgreen;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.coupons-container .form-group input:focus,
+.coupons-container .form-group select:focus {
     border-color: darkgreen;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 128, 0, 0.3);
+}
+
+.coupons-container {
+    padding: 2rem;
+    background: #f8f9fa;
+}
+
+.coupons-container .header-title h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #212529;
+}
+
+.coupons-container .header-title p {
+    margin: 0.5rem 0 0;
+    color: #6c757d;
+}
+
+.coupons-container .filters-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.coupons-container .search-box, .coupons-container .filter-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.coupons-container .search-box input {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    width: 300px;
+}
+
+.coupons-container .search-box svg, .coupons-container .filter-box svg {
+    position: absolute;
+    left: 0.8rem;
+    color: #6c757d;
+}
+
+.coupons-container .filter-box select {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    background: white;
+    min-width: 150px;
+}
+
+.coupons-container .coupons-table-container {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.coupons-container .coupons-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.coupons-container .coupons-table th,
+.coupons-container .coupons-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.coupons-container .coupons-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.coupons-container .coupon-code-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.coupons-container .copy-icon {
+    color: #6c757d;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.coupons-container .copy-icon:hover {
+    color: #0d6efd;
+}
+
+.coupons-container .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    text-transform: capitalize;
+}
+
+.coupons-container .status-badge.active {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.coupons-container .status-badge.inactive {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.coupons-container .status-badge.expired {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.coupons-container .status-badge.exhausted {
+    background: #e2e3e5;
+    color: #41464b;
+}
+
+.coupons-container .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.coupons-container .action-btn {
+    /* padding: 0.5rem; */
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.coupons-container .action-btn.edit {
+    background: #e9ecef;
+    color: #0d6efd;
+}
+
+.coupons-container .action-btn.delete {
+    background: #e9ecef;
+    color: #dc3545;
+}
+
+.coupons-container .action-btn:hover {
+    opacity: 0.8;
+}
+
+.expired-date {
+    color: #dc3545;
 }
