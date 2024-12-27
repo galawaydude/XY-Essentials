@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import '../../inventory/inventory.css';
-import './allblogs.css';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaSearch, FaPlus, FaEdit, FaTrash, FaEye, FaFilter, FaTags } from 'react-icons/fa';
+import './allblogs.css';
 
 const Blogs = () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [blogToDelete, setBlogToDelete] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterTag, setFilterTag] = useState('all');
+    const [sortBy, setSortBy] = useState('recent');
+    const [selectedBlog, setSelectedBlog] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [allTags, setAllTags] = useState([]);
 
     useEffect(() => {
         const fetchBlogs = async () => {
@@ -30,87 +33,128 @@ const Blogs = () => {
         fetchBlogs();
     }, []);
 
-    const handleDelete = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/api/admin/blogs/${blogToDelete}`, {
-                method: 'DELETE',
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete blog');
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this blog?')) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    setBlogs(blogs.filter(blog => blog._id !== id));
+                }
+            } catch (error) {
+                console.error('Error deleting blog:', error);
             }
-            setBlogs(blogs.filter(blog => blog._id !== blogToDelete));
-            setModalVisible(false);
-            setBlogToDelete(null);
-        } catch (error) {
-            setError(error.message);
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // Extract all unique tags from blogs
+    useEffect(() => {
+        const tags = new Set();
+        blogs.forEach(blog => {
+            blog.tags?.forEach(tag => tags.add(tag));
+        });
+        setAllTags(Array.from(tags));
+    }, [blogs]);
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const filteredBlogs = blogs
+        .filter(blog => {
+            const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                blog.content.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesTag = filterTag === 'all' || blog.tags?.includes(filterTag);
+            return matchesSearch && matchesTag;
+        })
+        .sort((a, b) => {
+            switch (sortBy) {
+                case 'recent': return new Date(b.createdAt) - new Date(a.createdAt);
+                case 'oldest': return new Date(a.createdAt) - new Date(b.createdAt);
+                case 'title': return a.title.localeCompare(b.title);
+                default: return 0;
+            }
+        });
 
     return (
-        <div className="inventory-maincon ">
-            <div className="inventory-header">
-                <h2>Blogs</h2>
-                <div className="inventory-actions">
-                    <input type="text" className="search-bar" placeholder="Search..." />
-                    <Link to={'/admin/add-blog'}>
-                        <button className="add-product-btn">Add Blog</button>
-                    </Link>
+        <div className="blogs-container">
+            <div className="blogs-header">
+                <div className="header-title">
+                    <h1>Blog Management</h1>
+                    <p>Create and manage your blog posts</p>
+                </div>
+                <Link to="/admin/add-blog" className="add-blog-btn">
+                    <FaPlus /> New Blog Post
+                </Link>
+            </div>
+
+            <div className="blog-filters">
+                <div className="search-box">
+                    <FaSearch />
+                    <input
+                        type="text"
+                        placeholder="Search blogs..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="filter-group">
+                    <select 
+                        value={filterTag}
+                        onChange={(e) => setFilterTag(e.target.value)}
+                    >
+                        <option value="all">All Tags</option>
+                        {allTags.map(tag => (
+                            <option key={tag} value={tag}>{tag}</option>
+                        ))}
+                    </select>
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="recent">Most Recent</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="title">Title A-Z</option>
+                    </select>
                 </div>
             </div>
 
-            <div className="inven-cards">
-                {blogs.map((blog) => (
-                    <div className="inven-card" key={blog._id}>
-                        <div className="ic-img">
-                            <img
-                                src={blog.img} // Changed to blog image
-                                alt={blog.title} // Changed to blog title
-                            />
+            <div className="blogs-grid">
+                {filteredBlogs.map(blog => (
+                    <div key={blog._id} className="blog-card">
+                        <div className="blog-image">
+                            <img src={blog.img} alt={blog.title} />
+                            <div className="blog-actions">
+                                <Link to={`/admin/edit-blog/${blog._id}`} className="edit-btn">
+                                    <FaEdit />
+                                </Link>
+                                <button onClick={() => handleDelete(blog._id)} className="delete-btn">
+                                    <FaTrash />
+                                </button>
+                                <Link to={`/blogs/${blog._id}`} className="view-btn">
+                                    <FaEye />
+                                </Link>
+                            </div>
                         </div>
-                        <div className="ic-deets">
-                            <p>{blog.title}</p> {/* Changed to blog title */}
-                        </div>
-                        <div className="ic-actions">
-                            <Link to={`/blogs/${blog._id}`}>
-                                <i className="fas fa-eye ic-action-icon" title="View"></i>
-                            </Link>
-                            <Link to={`/admin/edit-blog/${blog._id}`}>
-                                <i className="fas fa-edit ic-action-icon" title="Edit"></i>
-                            </Link>
-                            <i
-                                className="fas fa-trash-alt ic-action-icon"
-                                title="Delete"
-                                onClick={() => {
-                                    setBlogToDelete(blog._id);
-                                    setModalVisible(true);
-                                }}
-                            />
+                        <div className="blog-content">
+                            <h3>{blog.title}</h3>
+                            <div className="blog-tags">
+                                {blog.tags?.map(tag => (
+                                    <span key={tag} className="tag">
+                                        <FaTags /> {tag}
+                                    </span>
+                                ))}
+                            </div>
+                            <p className="blog-excerpt">
+                                {blog.content.substring(0, 150)}...
+                            </p>
+                            <div className="blog-meta">
+                                <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
-
-            {modalVisible && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>Are you sure you want to delete this blog?</h3>
-                        <div className="modal-actions">
-                            <button onClick={handleDelete}>Yes, Delete</button>
-                            <button onClick={() => setModalVisible(false)}>Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
-}
+};
 
 export default Blogs;
