@@ -47,7 +47,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 // Get all users (Admin only)
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({})
+  .populate('orders')
+  .populate('addresses');
   res.json(users);
 });
 

@@ -17,7 +17,7 @@ const Sidebar = () => {
         'Orders',
         'Blogs',
         'Marketing',
-        // 'Administration',
+        'Administration',
     ]);
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
@@ -71,14 +71,12 @@ const Sidebar = () => {
                 { path: '/admin/reviews', name: 'Reviews', icon: <FaComments /> }
             ]
         },
-        // {
-        //     name: 'Administration',
-        //     items: [
-        //         { path: '/admin/users', name: 'Users', icon: <FaUsers /> },
-        //         { path: '/admin/roles', name: 'Roles', icon: <FaUserCog /> },
-        //         { path: '/admin/settings', name: 'Settings', icon: <FaCog /> }
-        //     ]
-        // }
+        {
+            name: 'Administration',
+            items: [
+                { path: '/admin/users', name: 'Users', icon: <FaUsers /> },
+            ]
+        }
     ];
 
     return (
