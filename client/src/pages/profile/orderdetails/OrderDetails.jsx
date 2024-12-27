@@ -43,6 +43,7 @@ const OrderDetails = () => {
   // ITL: ORDER DETAILS 
   useEffect(() => {
     const getItlOrderDetails = async () => {
+      console.log(order.waybill);
       if (!order || !order.waybill) {
         console.error("Order waybill is not accessible");
         return;
@@ -54,9 +55,9 @@ const OrderDetails = () => {
       const payload = {
         data: {
           awb_number_list: order.waybill,
-          order_no: "GK0033",
-          start_date: "2022-04-01",
-          end_date: "2022-05-12",
+          order_no: order._id,
+          start_date: new Date().toISOString().split('T')[0],
+          end_date: new Date().toISOString().split('T')[0],
           access_token: ITL_ACCESS_TOKEN,
           secret_key: ITL_SECRET_KEY,
         },
@@ -77,8 +78,9 @@ const OrderDetails = () => {
 
         // Parsing the response JSON
         const result = await response.json();
-        console.log("Order Details Response:", result);
-        setItlOrderDetails(result.data);
+        const orderWaybill = order.waybill;
+        console.log("Order Details Response:", result.data[orderWaybill]);
+        setItlOrderDetails(result.data[orderWaybill]);
       } catch (error) {
         console.error("Error fetching order details:", error);
       }
@@ -152,24 +154,24 @@ const OrderDetails = () => {
             {/* Shipping Section */}
             <div className="ord-shipping-section">
               <h2 className="ord-shipping-heading">Shipping Information</h2>
-              {/* {itlOrderDetails.latest_courier_status && (
+              {itlOrderDetails.latest_courier_status && (
                 <div className="ord-status-item">
                   <span className="ord-status-label">Shipping Status: </span>
-                  <span className="ord-status-value">{itlOrderDetails.latest_courier_status}</span>
+                  <span className="ord-status-value">{itlOrderDetails.latest_courier_status.charAt(0).toUpperCase() + itlOrderDetails.latest_courier_status.slice(1)}.</span>
                 </div>
-              )} */}
+              )}
               {order.trackingNumber && (
                 <div className="ord-status-item">
                   <span className="ord-status-label">Tracking Number: </span>
                   <span className="ord-status-value">{order.trackingNumber}</span>
                 </div>
               )}
-              {/* {itlOrderDetails.expected_delivery_date && (
+              {itlOrderDetails.expected_delivery_date && (
                 <div className="ord-shipping-item">
                   <span className="ord-status-label">Delivery Date:</span>
-                  <span className="ord-status-value">{itlOrderDetails.expected_delivery_date}</span>
+                  <span className="ord-status-value">{formatDate(itlOrderDetails.expected_delivery_date)}</span>
                 </div>
-              )} */}
+              )}
               <div className="ord-shipping-item">
                 <span>
                   <span className="ord-status-label">Shipping Address: </span>

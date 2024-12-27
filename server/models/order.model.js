@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
   discount: { type: Number, required: true },
   shippingFee: { type: Number, required: true },
   finalPrice: { type: Number, required: true },
-  waybill: { type: String },
+  waybill: { type: Number },
   shippingStatus: { type: String, required: true, default: 'Not yet shipped' },
   deliveredAt: { type: Date },
 }, { timestamps: true });

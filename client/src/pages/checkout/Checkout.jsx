@@ -404,7 +404,7 @@ const Checkout = () => {
             const result = await response.json();
             console.log("Result:", result);
 
-            const waybill = result.data[0].waybill;
+            const waybill = result.data[0]? result.data[0].waybill : "";
             console.log("Waybill:", waybill);
             const responsewb = await fetch(`http://localhost:5000/api/orders/${createdOrder._id}/waybill`, {
               method: "PUT",
