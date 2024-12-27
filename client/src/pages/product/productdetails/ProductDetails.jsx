@@ -171,7 +171,7 @@ const ProductDetails = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rating, comment }),
+                body: JSON.stringify({ rating, comment}),
             });
 
             if (!response.ok) {

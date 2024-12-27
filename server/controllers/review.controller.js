@@ -20,10 +20,12 @@ const getProductReviews = asyncHandler(async (req, res) => {
 // Add a review
 const addReview = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const user = await User.findById(req.user._id);
 
   // Create a new review with the productId included
   const review = new Review({
     ...req.body,        // Spread the existing body data
+    user: user._id,     // Set the user field
     product: id  // Set the product field
   });
 
