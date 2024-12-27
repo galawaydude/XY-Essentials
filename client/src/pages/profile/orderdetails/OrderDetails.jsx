@@ -154,19 +154,19 @@ const OrderDetails = () => {
             {/* Shipping Section */}
             <div className="ord-shipping-section">
               <h2 className="ord-shipping-heading">Shipping Information</h2>
-              {itlOrderDetails.latest_courier_status && (
+              {itlOrderDetails?.latest_courier_status && (
                 <div className="ord-status-item">
                   <span className="ord-status-label">Shipping Status: </span>
                   <span className="ord-status-value">{itlOrderDetails.latest_courier_status.charAt(0).toUpperCase() + itlOrderDetails.latest_courier_status.slice(1)}.</span>
                 </div>
               )}
-              {order.trackingNumber && (
+              {order?.trackingNumber && (
                 <div className="ord-status-item">
                   <span className="ord-status-label">Tracking Number: </span>
                   <span className="ord-status-value">{order.trackingNumber}</span>
                 </div>
               )}
-              {itlOrderDetails.expected_delivery_date && (
+              {itlOrderDetails?.expected_delivery_date && (
                 <div className="ord-shipping-item">
                   <span className="ord-status-label">Delivery Date:</span>
                   <span className="ord-status-value">{formatDate(itlOrderDetails.expected_delivery_date)}</span>

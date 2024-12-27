@@ -296,9 +296,9 @@ const ProductDetails = () => {
     itlRateCheck();
     // ITL: RATE CHECK END
 
-    // if (loading) {
-    //     return <PreLoader />;
-    // }
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     if (!product) {
         return <p>Product not found.</p>;

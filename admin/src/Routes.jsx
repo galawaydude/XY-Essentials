@@ -8,7 +8,7 @@ import AddBlog from './pages/blog/addblog/AddBlog';
 import EditBlog from './pages/blog/editblog/EditBlog';
 import Inventory from './pages/inventory/Inventory';
 import AllOrders from './pages/orders/Allorders';
-import Blogs from './pages/blog/allblogs/allBlogs';
+import Blogs from './pages/blog/allblogs/AllBlogs.jsx';
 import Coupons from './pages/coupons/Coupons';
 import Login from './pages/login/Login';
 import Reviews from './pages/reviews/Reviews';
