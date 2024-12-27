@@ -13,6 +13,7 @@ import Coupons from './pages/coupons/Coupons';
 import Login from './pages/login/Login';
 import Reviews from './pages/reviews/Reviews';
 import Users from './pages/Users/Users.jsx';
+import UserDetails from './pages/Users/UserDetails.jsx';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -32,6 +33,7 @@ const AppRoutes = () => {
                     <Route path="/admin/edit-blog/:id" element={<EditBlog />} />
                     <Route path="/admin/blogs" element={<Blogs />} />
                     <Route path="/admin/users" element={<Users />} />
+                    <Route path="/admin/users/:id" element={<UserDetails />} />
                     <Route path="/admin/orders" element={<AllOrders />} />
                     <Route path="/admin/reviews" element={<Reviews />} />
                     <Route path="/admin/coupons" element={<Coupons />} />

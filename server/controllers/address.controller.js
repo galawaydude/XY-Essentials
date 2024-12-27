@@ -46,6 +46,10 @@ const createAddress = asyncHandler(async (req, res) => {
   // Save the address
   const createdAddress = await newAddress.save();
 
+  // Add the address to the user's addresses array
+  req.user.addresses.push(createdAddress._id);
+  await req.user.save();
+
   // Log the created address
   console.log('Created address:', createdAddress);
 
@@ -56,22 +60,22 @@ const createAddress = asyncHandler(async (req, res) => {
 const updateAddress = asyncHandler(async (req, res) => {
   const { isDefault, ...updateFields } = req.body; // Destructure isDefault and other fields
 
-  const updatedAddress = await Address.findById(req.params.id);
+  const address = await Address.findById(req.params.id);
 
-  if (updatedAddress && updatedAddress.user.equals(req.user._id)) {
+  if (address && address.user.equals(req.user._id)) {
     // If isDefault is set to true, update others to not default
     if (isDefault) {
       await Address.updateMany(
-        { user: req.user._id, isDefault: true, _id: { $ne: updatedAddress._id } },
+        { user: req.user._id, isDefault: true, _id: { $ne: address._id } },
         { $set: { isDefault: false } }
       );
     }
 
     // Update the address fields, including the isDefault property
-    Object.assign(updatedAddress, updateFields, { isDefault });
-
-    const savedAddress = await updatedAddress.save();
-    res.json(savedAddress);
+    address.set(updateFields);
+    address.isDefault = isDefault;
+    await address.save();
+    res.json(address);
   } else {
     res.status(404);
     throw new Error('Address not found');
@@ -100,7 +104,6 @@ const setDefaultAddress = asyncHandler(async (req, res) => {
     throw new Error('Address not found');
   }
 });
-
 
 // Delete an address
 const deleteAddress = asyncHandler(async (req, res) => {

@@ -39,6 +39,10 @@ const placeOrder = asyncHandler(async (req, res) => {
 
     const createdOrder = await order.save();
 
+    // Update user with the new order ID
+    req.user.orders.push(createdOrder._id);
+    await req.user.save();
+
     console.log('Created Order:', createdOrder); // Log the created order
     res.status(201).json(createdOrder); // Respond with the created order
   } catch (error) {

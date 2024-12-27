@@ -49,74 +49,81 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
   .populate('orders')
-  .populate('addresses');
+  .populate('addresses'); 
   res.json(users);
+});
+
+// Get user by ID (Admin only)
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  .populate('orders')
+  .populate('addresses');
+  res.json(user);
 });
 
 
 // Clerk
 
 // Fetch all users
-const getAllUsers = async (req, res) => {
-  try {
-    // Fetch all users from Clerk
-    const clerkUsers = await clerkClient.users.getUserList();
+// const getAllUsers = async (req, res) => {
+//   try {
+//     // Fetch all users from Clerk
+//     const clerkUsers = await clerkClient.users.getUserList();
 
-    // Fetch custom data from MongoDB
-    const mongoUsers = await User.find();
+//     // Fetch custom data from MongoDB
+//     const mongoUsers = await User.find();
 
-    // Combine Clerk data with MongoDB data
-    const combinedUsers = clerkUsers.map(clerkUser => {
-      const mongoUser = mongoUsers.find(user => user.clerkId === clerkUser.id);
-      return {
-        id: clerkUser.id,
-        name: clerkUser.firstName + ' ' + clerkUser.lastName,
-        email: clerkUser.emailAddresses[0]?.emailAddress,
-        addresses: mongoUser?.addresses || [],
-        orders: mongoUser?.orders || [],
-        createdAt: clerkUser.createdAt,
-      };
-    });
+//     // Combine Clerk data with MongoDB data
+//     const combinedUsers = clerkUsers.map(clerkUser => {
+//       const mongoUser = mongoUsers.find(user => user.clerkId === clerkUser.id);
+//       return {
+//         id: clerkUser.id,
+//         name: clerkUser.firstName + ' ' + clerkUser.lastName,
+//         email: clerkUser.emailAddresses[0]?.emailAddress,
+//         addresses: mongoUser?.addresses || [],
+//         orders: mongoUser?.orders || [],
+//         createdAt: clerkUser.createdAt,
+//       };
+//     });
 
-    res.status(200).json(combinedUsers);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).send('Error fetching users');
-  }
-};
+//     res.status(200).json(combinedUsers);
+//   } catch (error) {
+//     console.error('Error fetching users:', error);
+//     res.status(500).send('Error fetching users');
+//   }
+// };
 
 // Fetch a particular user by clerkId
-const getUserById = async (req, res) => {
-  const { clerkId } = req.params;
+// const getUserById = async (req, res) => {
+//   const { clerkId } = req.params;
 
-  try {
-    // Fetch user from Clerk
-    const clerkUser = await clerkClient.users.getUser(clerkId);
+//   try {
+//     // Fetch user from Clerk
+//     const clerkUser = await clerkClient.users.getUser(clerkId);
 
-    // Fetch custom data from MongoDB
-    const mongoUser = await User.findOne({ clerkId }).populate('orders addresses');
+//     // Fetch custom data from MongoDB
+//     const mongoUser = await User.findOne({ clerkId }).populate('orders addresses');
 
-    // Combine Clerk data with MongoDB data
-    const user = {
-      id: clerkUser.id,
-      name: clerkUser.firstName + ' ' + clerkUser.lastName,
-      email: clerkUser.emailAddresses[0]?.emailAddress,
-      addresses: mongoUser?.addresses || [],
-      orders: mongoUser?.orders || [],
-      createdAt: clerkUser.createdAt,
-    };
+//     // Combine Clerk data with MongoDB data
+//     const user = {
+//       id: clerkUser.id,
+//       name: clerkUser.firstName + ' ' + clerkUser.lastName,
+//       email: clerkUser.emailAddresses[0]?.emailAddress,
+//       addresses: mongoUser?.addresses || [],
+//       orders: mongoUser?.orders || [],
+//       createdAt: clerkUser.createdAt,
+//     };
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    res.status(404).send('User not found');
-  }
-};
+//     res.status(200).json(user);
+//   } catch (error) {
+//     console.error('Error fetching user:', error);
+//     res.status(404).send('User not found');
+//   }
+// };
 
 module.exports = {
   getUserProfile,
   updateUserProfile,
-  getUsers,
-  getAllUsers, 
+  getUsers, 
   getUserById
 };

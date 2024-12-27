@@ -162,7 +162,7 @@ const Dashboard = () => {
 
       {/* Charts Section */}
       <div className="charts-grid">
-        <div className="chart-card wide">
+        <div className="chart-card ">
           <h3>Revenue Trend</h3>
           <Line data={revenueChartData} options={revenueChartOptions} />
         </div>
@@ -170,7 +170,7 @@ const Dashboard = () => {
           <h3>Order Status Distribution</h3>
           <Pie data={orderStatusChart} options={{ responsive: true }} />
         </div> */}
-        <div className="chart-card">
+        <div className="chart-card max-w-96">
           <h3>Payment Methods</h3>
           <Pie data={paymentMethodChart} options={{ responsive: true }} />
         </div>
