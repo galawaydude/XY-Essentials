@@ -30,6 +30,13 @@ const Checkout = () => {
   // console.log(selectedAddress)
 
   useEffect(() => {
+    if (checkoutItems.length === 0) {
+      navigate('/cart');
+      return;
+    }
+  }, [checkoutItems, navigate]);
+
+  useEffect(() => {
     // ITL: RATE CHECK
     const itlRateCheck = async () => {
       const url = "https://pre-alpha.ithinklogistics.com/api_v3/rate/check.json";
@@ -717,13 +724,16 @@ const Checkout = () => {
             <p className='total-row'>Total Amount:</p>
             <p><span className="inr">₹</span><strong>{totalAmount.toFixed(2)}</strong></p>
           </div>
-          <button
-            onClick={handlePayment}
-            disabled={isPlacingOrder}
-            className="place-order-button"
-          >
-            {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
-          </button>
+          {checkoutItems.length > 0 && (
+            <button
+              onClick={handlePayment}
+              disabled={isPlacingOrder}
+              className="place-order-button"
+            >
+              {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+            </button>
+          )}
+
         </div>
       </div>
 
