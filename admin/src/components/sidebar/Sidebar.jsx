@@ -61,7 +61,7 @@ const Sidebar = () => {
             items: [
                 { path: '/admin/coupons', name: 'Coupons', icon: <FaTicketAlt /> },
                 { path: '/admin/blogs', name: 'Blogs', icon: <FaBlog /> },
-                // { path: '/admin/reviews', name: 'Reviews', icon: <FaComments /> }
+                { path: '/admin/reviews', name: 'Reviews', icon: <FaComments /> }
             ]
         },
         // {

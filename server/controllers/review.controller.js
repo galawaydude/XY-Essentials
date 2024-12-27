@@ -1,6 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const Review = require('../models/review.model');
+const User = require('../models/user.model');
 const Product = require('../models/product.model');
+
+// Get all reviews
+const getAllReviews = asyncHandler(async (req, res) => {
+  const reviews = await Review.find({})
+  .populate('product', 'name')
+  .populate('user', 'name');
+  res.json(reviews);
+});
 
 // Get all reviews for a product
 const getProductReviews = asyncHandler(async (req, res) => {
@@ -64,4 +73,5 @@ module.exports = {
   addReview,
   updateReview,
   deleteReview,
+  getAllReviews
 };

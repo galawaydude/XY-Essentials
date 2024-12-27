@@ -34,7 +34,7 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/', {
+      const response = await fetch('http://localhost:5000/api/admin/dashboard', {
         credentials: 'include'
       });
       const data = await response.json();
