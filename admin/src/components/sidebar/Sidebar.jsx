@@ -13,11 +13,7 @@ const Sidebar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [expandedGroups, setExpandedGroups] = useState([
         'Overview',
-        'Products',
         'Orders',
-        'Blogs',
-        'Marketing',
-        'Administration',
     ]);
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
@@ -40,6 +36,14 @@ const Sidebar = () => {
             ]
         },
         {
+            name: 'Orders',
+            items: [
+                { path: '/admin/orders', name: 'All Orders', icon: <FaShoppingCart /> },
+                // { path: '/admin/pending-orders', name: 'Pending', icon: <FaClipboardList /> },
+                // { path: '/admin/shipping', name: 'Shipping', icon: <FaShippingFast /> }
+            ]
+        },
+        {
             name: 'Products',
             items: [
                 { path: '/admin/inventory', name: 'All Products', icon: <FaBox /> },
@@ -47,14 +51,6 @@ const Sidebar = () => {
                 // { path: '/admin/edit-product', name: 'Edit Product', icon: <FaPlus /> },
                 // { path: '/admin/categories', name: 'Categories', icon: <FaTags /> },
                 // { path: '/admin/combos', name: 'Combos', icon: <FaClipboardList /> }
-            ]
-        },
-        {
-            name: 'Orders',
-            items: [
-                { path: '/admin/orders', name: 'All Orders', icon: <FaShoppingCart /> },
-                // { path: '/admin/pending-orders', name: 'Pending', icon: <FaClipboardList /> },
-                // { path: '/admin/shipping', name: 'Shipping', icon: <FaShippingFast /> }
             ]
         },
         {

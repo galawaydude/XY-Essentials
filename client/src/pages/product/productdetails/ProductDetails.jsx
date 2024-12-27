@@ -334,11 +334,10 @@ const ProductDetails = () => {
                         </div>
                         <div className="pd-desc-info">
                             {[
-                                // { title: "Sizes", content: product.sizes.join(', ') },
-                                { title: "Suitable For", content: product.suitableFor.join(', ') },
-                                { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
-                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
-                                { title: "Claims", content: product.claims.join(', ') }
+                                { title: "Suitable For", content: product.suitableFor },
+                                { title: "What Makes It Worth Using", content: [product.whatMakesItWorthUsing] },
+                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`) },
+                                { title: "Claims", content: product.claims }
                             ].map((item, index) => (
                                 <div key={index} className="pd-desc-item">
                                     <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
@@ -346,7 +345,11 @@ const ProductDetails = () => {
                                         <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
                                     </div>
                                     <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
-                                        <p>{item.content}</p>
+                                        <ul>
+                                            {item.content.map((point, i) => (
+                                                <p key={i}><i className="fas fa-check"></i> {point}</p>
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             ))}
@@ -357,7 +360,7 @@ const ProductDetails = () => {
                         <div className="product-order-con">
                             <div className="pd-price">
                                 <div className="pd-actual-price">
-                                    ${product.price}
+                                    ₹{product.price}
                                 </div>
                             </div>
                             <div className="pd-quantity">
@@ -381,7 +384,7 @@ const ProductDetails = () => {
                                 <div className="pd-delivery-info">
                                     <div className="pd-delivery-charge">
                                         <span>Delivery Charge: </span>
-                                        <span>${deliveryCharges}</span>
+                                        <span>₹{deliveryCharges}</span>
                                     </div>
                                     <div className="pd-expected-delivery">
                                         <span>Expected Delivery Date: </span>

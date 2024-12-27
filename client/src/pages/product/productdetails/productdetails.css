@@ -186,8 +186,15 @@
     padding: 0;
 }
 
+.pd-desc-content ul p {
+    margin-bottom: 0.5rem;
+}
+.pd-desc-content ul p i {
+    margin-right: 0.3rem;
+}
+
 .pd-desc-content.open {
-    max-height: 200px;
+    max-height: 500px;
     padding: 8px 0;
 }
 
