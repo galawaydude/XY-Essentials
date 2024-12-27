@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch, FaStar, FaFilter, FaTrash, FaCheck, FaTimes, FaExclamationTriangle } from 'react-icons/fa';
+import { FaSearch, FaStar, FaFilter, FaTrash, FaBox } from 'react-icons/fa';
 import './reviews.css';
 
 const Reviews = () => {
@@ -10,9 +10,13 @@ const Reviews = () => {
     const [filterRating, setFilterRating] = useState('all');
     const [sortBy, setSortBy] = useState('recent');
     const [selectedReviews, setSelectedReviews] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState('all');
+    const [viewMode, setViewMode] = useState('all'); // 'all' or 'product'
 
     useEffect(() => {
         fetchReviews();
+        fetchProducts();
     }, []);
 
     const fetchReviews = async () => {
@@ -27,6 +31,19 @@ const Reviews = () => {
             setError(error.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/products', {
+                credentials: 'include'
+            });
+            if (!response.ok) throw new Error('Failed to fetch products');
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
         }
     };
 
@@ -68,10 +85,11 @@ const Reviews = () => {
     const filteredReviews = reviews
         .filter(review => {
             const matchesSearch = review.comment.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                review.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                review.product?.name?.toLowerCase().includes(searchTerm.toLowerCase());
+                                review.user?.name?.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesRating = filterRating === 'all' || review.rating === parseInt(filterRating);
-            return matchesSearch && matchesRating;
+            const matchesProduct = selectedProduct === 'all' || review.product?._id === selectedProduct;
+            return matchesSearch && matchesRating && 
+                   (viewMode === 'all' ? true : matchesProduct);
         })
         .sort((a, b) => {
             switch (sortBy) {
@@ -86,6 +104,15 @@ const Reviews = () => {
         return [...Array(5)].map((_, index) => (
             <FaStar key={index} className={index < rating ? 'star-filled' : 'star-empty'} />
         ));
+    };
+
+    const getProductStats = (productId) => {
+        const productReviews = reviews.filter(r => r.product?._id === productId);
+        const totalReviews = productReviews.length;
+        const avgRating = totalReviews > 0 
+            ? (productReviews.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1)
+            : 0;
+        return { totalReviews, avgRating };
     };
 
     if (loading) return <div className="loading">Loading reviews...</div>;
@@ -108,6 +135,56 @@ const Reviews = () => {
                     </div>
                 </div>
             </div>
+
+            <div className="view-mode-selector">
+                <button 
+                    className={`mode-btn ${viewMode === 'all' ? 'active' : ''}`}
+                    onClick={() => setViewMode('all')}
+                >
+                    All Reviews
+                </button>
+                <button 
+                    className={`mode-btn ${viewMode === 'product' ? 'active' : ''}`}
+                    onClick={() => setViewMode('product')}
+                >
+                    Product Reviews
+                </button>
+            </div>
+
+            {viewMode === 'product' && (
+                <div className="product-selector">
+                    <div className="product-dropdown">
+                        <FaBox />
+                        <select 
+                            value={selectedProduct}
+                            onChange={(e) => setSelectedProduct(e.target.value)}
+                        >
+                            <option value="all">All Products</option>
+                            {products.map(product => (
+                                <option key={product._id} value={product._id}>
+                                    {product.name} ({getProductStats(product._id).totalReviews} reviews)
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {selectedProduct !== 'all' && (
+                        <div className="product-stats">
+                            <div className="stat-card">
+                                <h3>Average Rating</h3>
+                                <div className="rating-display">
+                                    {renderStars(parseFloat(getProductStats(selectedProduct).avgRating))}
+                                    <span>{getProductStats(selectedProduct).avgRating}</span>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <h3>Total Reviews</h3>
+                                <p>{getProductStats(selectedProduct).totalReviews}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
 
             <div className="filters-section">
                 <div className="search-box">
