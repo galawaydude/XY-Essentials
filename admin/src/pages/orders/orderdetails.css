@@ -1,0 +1,273 @@
+.admin-order-details {
+    padding: 2rem;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.admin-order-details > .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.admin-order-details > .order-header > h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.admin-order-details > .order-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-order-details > .order-actions > .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #f8f9fa;
+    color: #1a1a1a;
+}
+
+.admin-order-details > .order-actions > .action-btn:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.admin-order-details > .order-actions > .action-btn > svg {
+    font-size: 1.1rem;
+}
+
+.admin-order-details > .order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-order-details > .order-grid > .order-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.admin-order-details > .order-grid > .order-section > h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: #1a1a1a;
+}
+
+.admin-order-details > .order-grid > .order-section > .info-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.admin-order-details > .order-grid > .order-section > .info-grid > .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.admin-order-details > .order-grid > .order-section > .info-grid > .info-item:last-child {
+    border-bottom: none;
+}
+
+/* Order Items Table */
+.admin-order-details > .order-items {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.admin-order-details > .order-items > .items-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-order-details > .order-items > .items-table > th {
+    background: #f8f9fa;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.admin-order-details > .order-items > .items-table > td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.admin-order-details > .order-items > .items-table > .product-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-order-details > .order-items > .items-table > .product-cell > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+/* Order Summary */
+.admin-order-details > .order-summary {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    width: 300px;
+    margin-left: auto;
+}
+
+.admin-order-details > .order-summary > .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.admin-order-details > .order-summary > .summary-item.total {
+    margin-top: 1rem;
+    border-bottom: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Modal */
+.admin-order-details > .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.admin-order-details > .modal > .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    width: 90%;
+    max-width: 500px;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-body {
+    margin: 1.5rem 0;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-body > label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-body > input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-actions > .update-btn {
+    padding: 0.75rem 1.5rem;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-actions > .update-btn:hover {
+    background: #0b5ed7;
+}
+
+.admin-order-details > .modal > .modal-content > .modal-actions > .cancel-btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: white;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-order-details {
+        padding: 1rem;
+    }
+
+    .admin-order-details > .order-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .admin-order-details > .order-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .admin-order-details > .order-actions > .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-order-details > .order-summary {
+        width: 100%;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .admin-order-details {
+        padding: 0;
+        background: white;
+    }
+
+    .admin-order-details > .order-actions,
+    .admin-order-details > .edit-icon,
+    .admin-order-details > .modal {
+        display: none;
+    }
+
+    .admin-order-details > .order-section {
+        break-inside: avoid;
+        box-shadow: none;
+    }
+}
+
+

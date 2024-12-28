@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './ordertable.css';
 
 const OrderTable = ({ orders, refreshOrders }) => {
@@ -104,9 +105,9 @@ const OrderTable = ({ orders, refreshOrders }) => {
                 </td>
                 <td>
                   <div className="btn-group">
-                    <button className="btn btn-sm btn-outline-success">
+                    <Link to={`/admin/orders/${order._id}`} className="btn btn-sm btn-outline-success">
                       View
-                    </button>
+                    </Link>
                     <button className="btn btn-sm btn-outline-success">
                       Invoice
                     </button>
