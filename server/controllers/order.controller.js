@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const fs = require('fs');
 const Order = require('../models/order.model');
 const path = require('path');
+const { sendOrderConfirmation, sendOrderStatusUpdate } = require('../utils/resend');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
@@ -49,6 +50,12 @@ const placeOrder = asyncHandler(async (req, res) => {
     console.error('Error creating order:', error); // Log any errors that occur
     res.status(500).json({ message: 'Failed to create order', error: error.message });
   }
+});
+
+const createOrder = asyncHandler(async (req, res) => {
+    const order = await Order.create(req.body);
+    await sendOrderConfirmation(req.user, order);
+    res.status(201).json(order);
 });
 
 const generateBill = async (req, res) => {
@@ -164,6 +171,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
     order.deliveredAt = req.body.orderStatus === 'Delivered' ? Date.now() : order.deliveredAt;
 
     const updatedOrder = await order.save();
+    await sendOrderStatusUpdate(req.user, updatedOrder);
     res.json(updatedOrder);
   } else {
     res.status(404);
@@ -195,5 +203,6 @@ module.exports = {
   getOrderById,
   updateOrderStatus,
   cancelOrder,
-  updateWaybillNumber
+  updateWaybillNumber,
+  createOrder
 };

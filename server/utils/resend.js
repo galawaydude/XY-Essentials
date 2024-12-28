@@ -63,7 +63,7 @@ const sendWelcomeEmail = async (name) => {
     }
 };
 
-sendWelcomeEmail("Aakarsh");
+// sendWelcomeEmail("Aakarsh");
 
 const sendPasswordResetEmail = async (user, resetToken) => {
     try {

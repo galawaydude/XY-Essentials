@@ -59,11 +59,11 @@ const Dashboard = () => {
     labels: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
     datasets: [{
       data: [
-        stats.orderStats.pending,
-        stats.orderStats.processing,
-        stats.orderStats.shipped,
-        stats.orderStats.delivered,
-        stats.orderStats.cancelled
+        stats?.orderStats?.pending ?? 0,
+        stats?.orderStats?.processing ?? 0,
+        stats?.orderStats?.shipped ?? 0,
+        stats?.orderStats?.delivered ?? 0,
+        stats?.orderStats?.cancelled ?? 0
       ],
       backgroundColor: ['#ffc107', '#17a2b8', '#007bff', '#28a745', '#dc3545']
     }]
@@ -73,8 +73,8 @@ const Dashboard = () => {
     labels: ['Pay on Delivery', 'Razorpay'],
     datasets: [{
       data: [
-        stats.paymentStats[0] ? stats.paymentStats[0].count : 0,
-        stats.paymentStats[1] ? stats.paymentStats[1].count : 0
+        stats?.paymentStats?.[0]?.count ?? 0,
+        stats?.paymentStats?.[1]?.count ?? 0
       ],
       backgroundColor: ['#20c997', '#fd7e14']
     }]

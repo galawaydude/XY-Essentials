@@ -137,6 +137,7 @@ const AddProduct = () => {
         try {
             const response = await fetch('http://localhost:5000/api/products', {
                 method: 'POST',
+                credentials: 'include',
                 body: formData,
             });
             const data = await response.json();

@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const generateToken = require('../utils/generateToken.js');
+const { sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/resend');
 
 // Get user profile
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -44,6 +45,40 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// Register user
+const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
+    const user = await User.create({ name, email, password });
+    
+    // Send welcome email
+    await sendWelcomeEmail(user);
+
+    res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id)
+    });
+});
+
+// Request password reset
+const requestPasswordReset = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user) {
+        const resetToken = generateResetToken();
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        await user.save();
+
+        await sendPasswordResetEmail(user, resetToken);
+        res.json({ message: 'Password reset email sent' });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
 
 // Get all users (Admin only)
 const getUsers = asyncHandler(async (req, res) => {
@@ -60,7 +95,6 @@ const getUserById = asyncHandler(async (req, res) => {
   .populate('addresses');
   res.json(user);
 });
-
 
 // Clerk
 
@@ -125,5 +159,7 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   getUsers, 
-  getUserById
+  getUserById,
+  registerUser,
+  requestPasswordReset
 };
