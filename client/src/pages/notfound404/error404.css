@@ -1,0 +1,46 @@
+.err-main-con {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--pri);
+    gap: 5rem;
+}
+
+.err-head-con h1{
+    font-size: 4rem;
+    
+}
+
+.err-img-con{
+    height: 60vh;
+    aspect-ratio: 1/1;
+}
+
+@media  (max-width: 768px) {
+    .err-head-con h1{
+        font-size: 3rem;
+    }
+    .err-main-con{
+        gap: 3rem;
+    }
+    .err-img-con{
+        height: 40vh;
+    }
+}
+
+@media  (max-width: 570px) {
+    .err-head-con h1{
+        font-size: 2.5rem;
+        text-align: center;
+    }
+    .err-img-con{
+        width: 50%;
+        height: auto;
+    }
+    .err-main-con{
+        gap: 2rem;
+        height: 60vh;
+    }
+}

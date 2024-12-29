@@ -21,6 +21,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import YourOrders from './pages/profile/yourorders/YourOrders';
 import Ordercard from './components/ordercard/Ordercard';
 import PreLoader from './components/preloader/PreLoader';
+import Error404 from './pages/notfound404/error404';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -64,6 +65,8 @@ const AppRoutes = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/loader" element={<PreLoader />} />
+                    <Route path="*" element={<Error404 />} />
+                    
                     {/* <Route path='/order' element={<Ordercard />}/> */}
 
                     <Route element={<ProtectedRoutes />}>
