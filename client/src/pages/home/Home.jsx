@@ -162,10 +162,10 @@ const Home = () => {
           <div className="section_left_title">
             Browse Our <strong>Products</strong>
           </div>
-          <div className="view-all-btn">
+          <Link to="/shop" className="view-all-btn">
             <span>View All</span>
             <i className="fas fa-arrow-right"></i>
-          </div>
+          </Link>
         </div>
         <hr />
         <div className="home-products-con">
@@ -180,10 +180,10 @@ const Home = () => {
           <div className="section_left_title">
             Explore More About  <strong>Skincare</strong>
           </div>
-          <div className="view-all-btn">
+          <Link to="/blogs" className="view-all-btn">
             <span>View All</span>
             <i className="fas fa-arrow-right"></i>
-          </div>
+          </Link>
         </div>
         <hr />
         <div className="home-blog-con">
