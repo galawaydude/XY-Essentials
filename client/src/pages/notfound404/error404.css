@@ -5,12 +5,10 @@
     align-items: center;
     height: 100vh;
     color: var(--pri);
-    gap: 5rem;
 }
 
 .err-head-con h1{
     font-size: 4rem;
-    
 }
 
 .err-img-con{
@@ -18,12 +16,14 @@
     aspect-ratio: 1/1;
 }
 
+.err-txt-con{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
 @media  (max-width: 768px) {
     .err-head-con h1{
         font-size: 3rem;
-    }
-    .err-main-con{
-        gap: 3rem;
     }
     .err-img-con{
         height: 40vh;
@@ -40,7 +40,6 @@
         height: auto;
     }
     .err-main-con{
-        gap: 2rem;
-        height: 60vh;
+        height: 80vh;
     }
 }
