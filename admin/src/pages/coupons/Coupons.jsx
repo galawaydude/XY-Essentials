@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaSearch, FaPlus, FaCopy, FaEdit, FaTrash, FaFilter } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import './coupons.css';
 import { Link } from 'react-router-dom';
 import CouponCard from '../../components/couponcard/CouponCard';
 
+
 const Coupons = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [coupons, setCoupons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -42,10 +46,10 @@ const Coupons = () => {
         fetchCoupons();
     }, []);
 
-    const handleDelete = async () => {
+    const handleDelete = async (id) => {
         try {
             // Send DELETE request to the API
-            const response = await fetch(`http://localhost:5000/api/coupons/${couponToDelete}`, {
+            const response = await fetch(`http://localhost:5000/api/coupons/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -55,14 +59,13 @@ const Coupons = () => {
             }
     
             // Update the state to remove the deleted coupon
-            setCoupons(coupons.filter(coupon => coupon._id !== couponToDelete));
+            setCoupons(coupons.filter(coupon => coupon._id !== id));
             setModalVisible(false);
             setCouponToDelete(null);
         } catch (error) {
             setError(error.message);
         }
     };
-    
 
     const handleAddCoupon = async () => {
         // Logic to add the new coupon (e.g., API call)
@@ -104,6 +107,29 @@ const Coupons = () => {
         }));
     };
 
+    const handleCopyCode = (code) => {
+        navigator.clipboard.writeText(code);
+        toast.success('Coupon code copied to clipboard!', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
+    const getStatusBadge = (coupon) => {
+        const now = new Date();
+        const expiryDate = new Date(coupon.expirationDate);
+        
+        if (!coupon.isActive) return 'inactive';
+        if (expiryDate < now) return 'expired';
+        if (coupon.usageCount >= coupon.usageLimit) return 'exhausted';
+        return 'active';
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -113,42 +139,106 @@ const Coupons = () => {
     }
 
     return (
-        <div className="coupons-maincon container">
+        <div className="coupons-container">
             <div className="coupons-header">
-                <h2>Coupons</h2>
-                <div className="coupons-actions">
-                    <input type="text" className="search-bar" placeholder="Search..." />
-                    <button 
-                        className="add-coupon-btn"
-                        onClick={() => {
-                            setModalType('add');
-                            setModalVisible(true);
-                        }}
-                    >
-                        Add Coupon
-                    </button>
+                <div className="header-title">
+                    <h1>Coupon Management</h1>
+                    <p>Create and manage discount coupons</p>
+                </div>
+                <button className="add-coupon-btn" onClick={() => setModalVisible(true)}>
+                    <FaPlus /> New Coupon
+                </button>
+            </div>
+
+            <div className="filters-section">
+                <div className="search-box">
+                    <FaSearch />
+                    <input
+                        type="text"
+                        placeholder="Search coupons..."
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="filter-box">
+                    <FaFilter />
+                    <select onChange={(e) => setFilterStatus(e.target.value)}>
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="expired">Expired</option>
+                    </select>
                 </div>
             </div>
 
-            <div className="coupons-cards">
-                {coupons.map((coupon) => (
-                    <div className="coupon-card" key={coupon._id}>
-                        <CouponCard coupon={coupon} />
-                        <div className="ic-actions">
-                            <i
-                                className="fas fa-trash-alt ic-action-icon"
-                                title="Delete"
-                                onClick={() => {
-                                    setCouponToDelete(coupon._id);
-                                    setModalType('delete');
-                                    setModalVisible(true);
-                                }}
-                            />
-                        </div>
-                    </div>
-                ))}
+            <div className="coupons-table-container">
+                <table className="coupons-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Discount</th>
+                            <th>Minimum Purchase</th>
+                            <th>Usage</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {coupons.map((coupon) => (
+                            <tr key={coupon._id}>
+                                <td className="coupon-code-cell">
+                                    <span>{coupon.code}</span>
+                                    <FaCopy 
+                                        className="copy-icon"
+                                        onClick={() => handleCopyCode(coupon.code)}
+                                    />
+                                </td>
+                                <td>
+                                    {coupon.discountType === 'percentage' 
+                                        ? `${coupon.discountValue}%` 
+                                        : `₹${coupon.discountValue}`
+                                    }
+                                    {coupon.maxDiscountAmount && 
+                                        <small> (Max: ₹{coupon.maxDiscountAmount})</small>
+                                    }
+                                </td>
+                                <td>₹{coupon.minimumPurchaseAmount}</td>
+                                <td>
+                                    {coupon.usageCount || 0}/{coupon.usageLimit || '∞'}
+                                </td>
+                                <td>
+                                    <span className={
+                                        new Date(coupon.expirationDate) < new Date() ? 'expired-date' : ''
+                                    }>
+                                        {new Date(coupon.expirationDate).toLocaleDateString()}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className={`status-badge ${getStatusBadge(coupon)}`}>
+                                        {getStatusBadge(coupon)}
+                                    </span>
+                                </td>
+                                <td className="actions-cell">
+                                    <button 
+                                        className="action-btn edit"
+                                        onClick={() => handleEdit(coupon)}
+                                    >
+                                        <FaEdit />
+                                    </button>
+                                    <button 
+                                        className="action-btn delete"
+                                        onClick={() => handleDelete(coupon._id)}
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
+            {/* Add/Edit Modal */}
             {modalVisible && (
                 <div className="modal">
                     <div className="modal-content">

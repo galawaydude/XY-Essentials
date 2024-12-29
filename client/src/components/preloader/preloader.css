@@ -1,71 +1,113 @@
-svg {
-    width: 200px;
-    height: auto;
-}
-
-path {
-    fill: none;
-    stroke: #0078d7;
-    stroke-width: 5;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: draw 3s ease-in-out infinite, fade 3s ease-in-out infinite alternate;
-}
-
-@keyframes draw {
-    0% {
-        stroke-dashoffset: 1000;
-    }
-
-    50% {
-        stroke-dashoffset: 0;
-    }
-
-    100% {
-        stroke-dashoffset: -1000;
-    }
-}
-
-@keyframes fade {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-}
-
-.preloader {
-    position: relative;
+/* .preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     background-color: #fff;
 }
 
 .preloader-svg {
-    width: 200px;
+    width: 8vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
     height: auto;
 }
 
 .loader-circle {
     position: absolute;
-    width: 250px;
-    height: 250px;
-    border: 5px dashed #0078d7;
+    width: 15vmax;
+    height: 15vmax;
+    border: 5px solid transparent;
+    border-top: 5px solid var(--pri);
     border-radius: 50%;
-    animation: rotate 14s linear infinite;
+    animation: spin 1s linear infinite;
 }
 
-@keyframes rotate {
+@keyframes spin {
     0% {
         transform: rotate(0deg);
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+ */
+
+
+svg {
+    /* width: 25rem; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loader-text {
+    font-size: 4vmax;
+    font-weight: 600;
+    stroke-width: 1;
+    /* letter-spacing: -6px; */
+}
+
+@media (max-width: 1200px) {
+    .loader-text {
+        font-size: 9vmax;
+    }
+}
+
+@media (max-width: 768px) {
+    .loader-text {
+        font-size: 10vmax;
+    }
+}
+
+@media (max-width: 480px) {
+    .loader-text {
+        font-size: 13vmax;
+    }
+}
+
+.loader-container {
+    /* background-color: rgb(0, 0, 17); */
+    width: 100vw;
+    height: 100vh;
+    z-index: 100000000000000000000000000000;
+}
+
+.site-name {
+    text-anchor: middle;
+    stroke: var(--pri);
+    animation: 2s infinite alternate animate-stroke;
+}
+
+@keyframes animate-stroke {
+    0% {
+        fill: transparent;
+        stroke: var(--pri);
+        stroke-width: 1;
+        stroke-dashoffset: 25%;
+        stroke-dasharray: 0 32%;
+    }
+
+    50% {
+        fill: transparent;
+        stroke: var(--pri);
+        stroke-width: 3;
+    }
+
+    80%,
+    100% {
+        fill: var(--pri);
+        stroke: transparent;
+        stroke-width: 0%;
+        stroke-dashoffset: -25%;
+        stroke-dasharray: 32% 0;
+
     }
 }

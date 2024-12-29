@@ -4,6 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate()
 
     const [product, setProduct] = useState({
@@ -136,6 +137,7 @@ const AddProduct = () => {
         try {
             const response = await fetch('http://localhost:5000/api/products', {
                 method: 'POST',
+                credentials: 'include',
                 body: formData,
             });
             const data = await response.json();
@@ -149,7 +151,7 @@ const AddProduct = () => {
 
     return (
         <div className="add-product-maincon">
-            <div className="add-product-content container">
+            <div className="add-product-content">
                 <h2 className="add-product-head">Add New Product</h2>
                 <form className="add-product-form" onSubmit={handleSubmit}>
                     <label htmlFor="name">Name</label>

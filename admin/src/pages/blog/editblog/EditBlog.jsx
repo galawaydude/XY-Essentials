@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditBlog = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const { id } = useParams(); // Get the blog post ID from the URL
   const navigate = useNavigate(); // For navigation after editing
   const [title, setTitle] = useState('');

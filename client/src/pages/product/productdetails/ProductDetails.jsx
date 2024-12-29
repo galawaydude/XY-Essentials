@@ -4,9 +4,10 @@ import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
 import './productdetails.css';
 import { Link } from 'react-router-dom';
-import './productdetails.css'
+import PreLoader from '../../../components/preloader/PreLoader';
 
 const CustomImageSlider = ({ images }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedThumb, setSelectedThumb] = useState(0);
 
@@ -95,11 +96,20 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
-    const [rating, setRating] = useState(1);
+    const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [openDescItems, setOpenDescItems] = useState({});
+    const [addresses, setAddresses] = useState([]);
+    const [defaultAddress, setDefaultAddress] = useState(null);
+    const [defaultAddressId, setDefaultAddressId] = useState(null);
+    const [deliveryCharges, setDeliveryCharges] = useState(null);
+    const [deliveryPeriod, setDeliveryPeriod] = useState(null);
     const { id: productId } = useParams();
+
+    //ITL: ACCESS CODES
+    const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
+    const ITL_SECRET_KEY = import.meta.env.VITE_ITL_SECRET_KEY;
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -135,6 +145,24 @@ const ProductDetails = () => {
         fetchProductDetails();
     }, [productId]);
 
+    useEffect(() => {
+
+        const fetchAddresses = async () => {
+            const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
+                credentials: 'include',
+            });
+            const data = await response.json();
+            setAddresses(data);
+            // Set the first address as default if none is set
+            const defaultAddress = data.find(address => address.isDefault);
+            if (defaultAddress) {
+                setDefaultAddressId(defaultAddress._id);
+                setDefaultAddress(defaultAddress);
+            }
+        };
+        fetchAddresses();
+    }, []);
+
     const handleAddReview = async () => {
         try {
             const response = await fetch(`http://localhost:5000/api/products/${productId}/reviews`, {
@@ -143,7 +171,7 @@ const ProductDetails = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rating, comment }),
+                body: JSON.stringify({ rating, comment}),
             });
 
             if (!response.ok) {
@@ -220,6 +248,54 @@ const ProductDetails = () => {
         }));
     };
 
+
+
+    // ITL: RATE CHECK
+    const itlRateCheck = async () => {
+        const url = "https://pre-alpha.ithinklogistics.com/api_v3/rate/check.json";
+
+        console.log(ITL_ACCESS_TOKEN)
+
+        const payload = {
+            data: {
+                from_pincode: "400092",
+                to_pincode: defaultAddress ? defaultAddress.postalCode : "",
+                shipping_length_cms: "22",
+                shipping_width_cms: "12",
+                shipping_height_cms: "12",
+                shipping_weight_kg: "2",
+                order_type: "forward",
+                payment_method: "cod",
+                product_mrp: "1200.00",
+                access_token: ITL_ACCESS_TOKEN,
+                secret_key: ITL_SECRET_KEY,
+            },
+        };
+
+        const headers = {
+            "Content-Type": "application/json",
+          };
+        
+          try {
+            const response = await fetch(url, {
+              method: "POST",
+              headers: headers,
+              body: JSON.stringify(payload),
+            });
+        
+            const result = await response.json();
+            console.log("Rate Check Result:", result);
+            setDeliveryCharges(result.data[0].rate);
+            setDeliveryPeriod(result.expected_delivery_date);
+          } catch (error) {
+            console.error("Error during rate check:", error);
+            // alert("Failed to check rates at ITL!");
+          }
+        };
+
+    itlRateCheck();
+    // ITL: RATE CHECK END
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -231,7 +307,10 @@ const ProductDetails = () => {
     return (
         <div className="product-details">
             <div className="text-nav-con container">
-                <p>Home &gt; Shop &gt; {product.category}</p>
+                <a href="/">Home </a>&nbsp;&nbsp;&gt;
+                &nbsp;&nbsp;<a href="/shop"> Shop</a>&nbsp;&nbsp;&gt;
+                &nbsp;&nbsp;<a href={`/shop?category=${product.category}`}> {product.category}</a>&nbsp;&nbsp;&gt;
+                &nbsp;&nbsp;<a > {product.name}</a>
             </div>
             <div className="product-details-con container section">
                 <div className="product-images-con">
@@ -255,11 +334,10 @@ const ProductDetails = () => {
                         </div>
                         <div className="pd-desc-info">
                             {[
-                                { title: "Sizes", content: product.sizes.join(', ') },
-                                { title: "Suitable For", content: product.suitableFor.join(', ') },
-                                { title: "What Makes It Worth Using", content: product.whatMakesItWorthUsing },
-                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`).join(', ') },
-                                { title: "Claims", content: product.claims.join(', ') }
+                                { title: "Suitable For", content: product.suitableFor },
+                                { title: "What Makes It Worth Using", content: [product.whatMakesItWorthUsing] },
+                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`) },
+                                { title: "Claims", content: product.claims }
                             ].map((item, index) => (
                                 <div key={index} className="pd-desc-item">
                                     <div className="pd-desc-item-head" onClick={() => handleToggleDescItem(index)}>
@@ -267,57 +345,76 @@ const ProductDetails = () => {
                                         <i className={`fas ${openDescItems[index] ? 'fa-angle-up' : 'fa-angle-down'}`}></i>
                                     </div>
                                     <div className={`pd-desc-content ${openDescItems[index] ? 'open' : ''}`}>
-                                        <p>{item.content}</p>
+                                        <ul>
+                                            {item.content.map((point, i) => (
+                                                <p key={i}><i className="fas fa-check"></i> {point}</p>
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="product-order-con">
-                        <div className="pd-price">
-                            <div className="pd-actual-price">
-                                ${product.price}
+                    {product.packaging !== "Sachet" && (
+                        <div className="product-order-con">
+                            <div className="pd-price">
+                                <div className="pd-actual-price">
+                                    ₹{product.price}
+                                </div>
                             </div>
-                        </div>
-                        <div className="pd-quantity">
-                            <div className='pd-quantity-head'>Quantity</div>
-                            <div className="pd-quantity-counter">
-                                <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                                <p className='pd-quantity-num'>{quantity}</p>
-                                <button onClick={() => handleQuantityChange('increment')}>+</button>
+                            <div className="pd-quantity">
+                                <div className='pd-quantity-head'>Quantity</div>
+                                <div className="pd-quantity-counter">
+                                    <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                                    <p className='pd-quantity-num'>{quantity}</p>
+                                    <button onClick={() => handleQuantityChange('increment')}>+</button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="pd-btns">
-                            <div className="pd-cart-btn">
-                                <button onClick={handleAddToCart}>
-                                    <span>Add to Cart</span>
-                                </button>
+                            <div className="pd-btns">
+                                <div className="pd-cart-btn">
+                                    <button onClick={handleAddToCart}>
+                                        <span>Add to Cart</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="pd-service-features">
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-shipping-fast"></i>
+                            {deliveryCharges && deliveryPeriod && (
+                                <div className="pd-delivery-info">
+                                    <div className="pd-delivery-charge">
+                                        <span>Delivery Charge: </span>
+                                        <span>₹{deliveryCharges}</span>
+                                    </div>
+                                    <div className="pd-expected-delivery">
+                                        <span>Expected Delivery Date: </span>
+                                        <span>{deliveryPeriod}</span>
+                                    </div>
                                 </div>
-                                <div className="pd-sf-text">Free Shipping</div>
-                            </div>
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-money-check-alt"></i>
+                            )}
+
+                            {/* <div className="pd-service-features">
+                                <div className="pd-sf-item">
+                                    <div className="pd-sf-icon">
+                                        <i className="fas fa-shipping-fast"></i>
+                                    </div>
+                                    <div className="pd-sf-text">Free Shipping</div>
                                 </div>
-                                <div className="pd-sf-text">Money-back Guarantee</div>
-                            </div>
-                            <div className="pd-sf-item">
-                                <div className="pd-sf-icon">
-                                    <i className="fas fa-truck"></i>
+                                <div className="pd-sf-item">
+                                    <div className="pd-sf-icon">
+                                        <i className="fas fa-money-check-alt"></i>
+                                    </div>
+                                    <div className="pd-sf-text">Money-back Guarantee</div>
                                 </div>
-                                <div className="pd-sf-text">Fast Delivery</div>
-                            </div>
+                                <div className="pd-sf-item">
+                                    <div className="pd-sf-icon">
+                                        <i className="fas fa-truck"></i>
+                                    </div>
+                                    <div className="pd-sf-text">Fast Delivery</div>
+                                </div>
+                            </div> */}
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
 

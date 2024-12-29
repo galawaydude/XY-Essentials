@@ -1,90 +1,175 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaUpload, FaTimes, FaSpinner } from 'react-icons/fa';
+import './addblog.css';
 
 const AddBlog = () => {
-  const [title, setTitle] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    tags: ''
+  });
   const [imgFile, setImgFile] = useState(null);
-  const [content, setContent] = useState('');
-  const [tags, setTags] = useState('');
+  const [imgPreview, setImgPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImgFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImgPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const validateForm = () => {
+    if (!formData.title.trim()) {
+      setError('Title is required');
+      return false;
+    }
+    if (!formData.content.trim()) {
+      setError('Content is required');
+      return false;
+    }
+    if (!imgFile) {
+      setError('Cover image is required');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('img', imgFile);
-    formData.append('content', content);
-    formData.append('tags', tags.split(',').map(tag => tag.trim()));
+    setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/blogs', {
-        method: 'POST',
-        body: formData,
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
       });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to create blog post');
+      if (imgFile) {
+        formDataToSend.append('img', imgFile);
       }
 
+      const response = await fetch('http://localhost:5000/api/blogs', {
+        method: 'POST',
+        credentials: 'include',
+        body: formDataToSend
+      });
+
+      if (!response.ok) throw new Error('Failed to create blog post');
+
       setSuccess('Blog post created successfully!');
-      // Clear form fields only after successful submission
-      setTitle('');
-      setImgFile(null);
-      setContent('');
-      setTags('');
-    } catch (error) {
-      setError(error.message);
+      setTimeout(() => navigate('/admin/blogs'), 1500);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="add-blog-container">
-      <h2>Add Blog</h2>
-      {error && <p className="error-text">{error}</p>}
-      {success && <p className="success-text">{success}</p>}
+      <div className="add-blog-header">
+        <h1>Create New Blog Post</h1>
+        <button onClick={() => navigate('/admin/blogs')} className="back-btn">
+          <FaTimes /> Cancel
+        </button>
+      </div>
+
+      {error && <div className="alert alert-error">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
+
       <form className="add-blog-form" onSubmit={handleSubmit}>
-        <div className="input-component">
-          <label>Title</label>
+        <div className="form-group">
+          <label>Blog Title</label>
           <input
             type="text"
-            placeholder="Enter blog title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Enter an engaging title"
             required
           />
         </div>
-        <div className="input-component">
-          <label>Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImgFile(e.target.files[0])}
-            required
-          />
+
+        <div className="form-group image-upload">
+          <label>Cover Image</label>
+          <div className="image-upload-area">
+            {imgPreview ? (
+              <div className="image-preview">
+                <img src={imgPreview} alt="Preview" />
+                <button type="button" onClick={() => {
+                  setImgFile(null);
+                  setImgPreview(null);
+                }}>
+                  <FaTimes />
+                </button>
+              </div>
+            ) : (
+              <div className="upload-placeholder">
+                <FaUpload />
+                <span>Click or drag to upload image</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  required
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <div className="input-component">
+
+        <div className="form-group">
           <label>Content</label>
           <textarea
-            placeholder="Enter blog content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            name="content"
+            value={formData.content}
+            onChange={handleChange}
+            placeholder="Write your blog content here..."
+            rows="10"
             required
           />
         </div>
-        <div className="input-component">
-          <label>Tags (comma-separated)</label>
+
+        <div className="form-group">
+          <label>Tags</label>
           <input
             type="text"
-            placeholder="Enter tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
+            name="tags"
+            value={formData.tags}
+            onChange={handleChange}
+            placeholder="Enter tags separated by commas"
           />
+          <small>Separate tags with commas (e.g., fashion, lifestyle, tips)</small>
         </div>
-        <button className="btn btn-primary" type="submit">
-          Add Blog
-        </button>
+
+        <div className="form-actions">
+          <button type="button" onClick={() => navigate('/admin/blogs')} className="cancel-btn">
+            Cancel
+          </button>
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? <><FaSpinner className="spinner" /> Publishing...</> : 'Publish Blog'}
+          </button>
+        </div>
       </form>
     </div>
   );

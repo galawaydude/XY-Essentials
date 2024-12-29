@@ -1,6 +1,8 @@
 import React from 'react';
 
 const ReviewCard = ({ review }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   const { author, rating, comment, updatedAt } = review;
 
   // Create star elements based on rating

@@ -1,12 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './editprofile.css';
 
 const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   const [formData, setFormData] = useState({
-    name: currentUser?.name || '',
-    email: currentUser?.email || '',
-    phoneNumber: currentUser?.mobileNumber || '',
+    name: '',
+    email: '',
+    mobileNumber: '',
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/users/profile', {
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile');
+        }
+
+        const profile = await response.json();
+        setFormData({
+          name: profile.name,
+          email: profile.email,
+          mobileNumber: profile.mobileNumber,
+        });
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,9 +45,10 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Updating profile with data:', formData);
     try {
       const response = await fetch('http://localhost:5000/api/users/profile', {
-        method: 'PUT',
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +68,7 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
       console.error('Error during profile update:', error);
     }
   };
+
 
   if (!isOpen) return null;
 
@@ -79,13 +108,13 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="phoneNumber">Phone Number</label>
+            <label htmlFor="mobileNumber">Phone Number</label>
             <input
-              id="phoneNumber"
-              name="phoneNumber"
+              id="mobileNumber"
+              name="mobileNumber"
               type="tel"
               placeholder="Your Phone Number"
-              value={formData.phoneNumber}
+              value={formData.mobileNumber}
               onChange={handleChange}
               required
             />

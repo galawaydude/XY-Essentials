@@ -3,6 +3,8 @@ import './productcard.css';
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
   const [buttonVisible, setButtonVisible] = useState(true);
   const [message, setMessage] = useState('');
 

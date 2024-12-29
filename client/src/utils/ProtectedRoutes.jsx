@@ -2,6 +2,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 const ProtectedRoutes = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [cookies] = useCookies();
     const userInfo = JSON.parse(localStorage.getItem('user-info'));
     const token = userInfo?.token;

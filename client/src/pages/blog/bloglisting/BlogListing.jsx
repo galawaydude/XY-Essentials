@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './bloglisting.css';
 import BlogCard from '../../../components/blogcard/BlogCard';
 
 const BlogListing = () => {
+    const [blogs, setBlogs] = useState([]);
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            const response = await fetch(`${apiUrl}/api/blogs`);
+            const data = await response.json();
+            setBlogs(data);
+        };
+
+        fetchBlogs();
+    }, [apiUrl]);
+
     return (
         <div className="blog-maincon ">
             <div className="blog-top-bg">
@@ -12,12 +25,9 @@ const BlogListing = () => {
 
             <div className="blog-con container">
                 <div className="blog-cards-con">
-                    <BlogCard />
-                    <BlogCard />
-                    <BlogCard />
-                    <BlogCard />
-                    <BlogCard />
-                    <BlogCard />
+                    {blogs.map((blog) => (
+                        <BlogCard key={blog._id} blog={blog} />
+                    ))}
                 </div>
             </div>
         </div>
@@ -25,3 +35,4 @@ const BlogListing = () => {
 };
 
 export default BlogListing;
+

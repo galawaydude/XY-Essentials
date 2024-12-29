@@ -1,59 +1,143 @@
 .dashboard-container {
-    padding: 20px;
-    text-align: center;
-    background-color: #f9f9f9; /* Light background for better contrast */
+  padding: 1.5rem;
+  background: #f8f9fa;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-details h3 {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.stat-details p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.stat-details small {
+  color: #28a745;
+  font-size: 0.8rem;
+}
+
+/* Color Variants */
+.stat-card.primary .stat-icon { background: #cfe2ff; color: #0d6efd; }
+.stat-card.success .stat-icon { background: #d1e7dd; color: #198754; }
+.stat-card.warning .stat-icon { background: #fff3cd; color: #ffc107; }
+.stat-card.danger .stat-icon { background: #f8d7da; color: #dc3545; }
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.chart-card.wide {
+  grid-column: 1 / -1;
+}
+
+.chart-card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #343a40;
+}
+
+/* Recent Orders Table */
+.recent-orders-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.orders-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  text-align: left;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.pending { background: #fff3cd; color: #664d03; }
+.status-badge.processing { background: #cff4fc; color: #055160; }
+.status-badge.shipped { background: #cfe2ff; color: #084298; }
+.status-badge.delivered { background: #d1e7dd; color: #0f5132; }
+.status-badge.cancelled { background: #f8d7da; color: #842029; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
   }
   
-  h1 {
-    margin-bottom: 20px;
-    color: black; /* Darker text for better readability */
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
   
-  .dashboard-group {
-    margin-bottom: 40px; /* Space between groups */
-    padding: 10px;
-    border: 1px solid #e0e0e0; /* Light border around each group */
-    border-radius: 8px;
-    background-color: #fff; /* White background for groups */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  .chart-card.wide {
+    grid-column: auto;
   }
-  
-  h2 {
-    margin-bottom: 15px; /* Space below section titles */
-    /* color: #007bff;  */
-  }
-  
-  .dashboard-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid layout */
-    gap: 20px; /* Space between buttons */
-  }
-  
-  .button-card {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 20px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  }
-  
-  .button-card:hover {
-    transform: translateY(-3px); /* Lift effect on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-  }
-  
-  .button-card h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: normal; /* Normal weight for button text */
-    color: #fff; /* White text for button */
-  }
-  
+}

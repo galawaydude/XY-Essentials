@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  
   orderItems: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, 
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, 
+    productName: { type: String, required: true },
+    packaging: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
   }],
@@ -16,6 +18,7 @@ const orderSchema = new mongoose.Schema({
   discount: { type: Number, required: true },
   shippingFee: { type: Number, required: true },
   finalPrice: { type: Number, required: true },
+  waybill: { type: Number },
   shippingStatus: { type: String, required: true, default: 'Not yet shipped' },
   deliveredAt: { type: Date },
 }, { timestamps: true });

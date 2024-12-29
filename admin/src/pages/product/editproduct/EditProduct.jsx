@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import {Link, useNavigate} from 'react-router-dom'
 
 const EditProduct = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const { id } = useParams(); // Assuming the product ID is in the URL
     const [product, setProduct] = useState({

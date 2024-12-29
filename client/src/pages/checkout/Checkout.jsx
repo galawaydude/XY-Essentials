@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './checkout.css';
 import AddressModal from '../../components/address/AddressModal';
 
-
 const Checkout = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState([]);
@@ -15,11 +15,73 @@ const Checkout = () => {
   const [couponCode, setCouponCode] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
-  const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
+  // const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
   const [discount, setDiscount] = useState(0);
   const [addresses, setAddresses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAddressIndex, setEditAddressIndex] = useState(null);
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+  //ITL: ACCESS CODES
+  const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
+  const ITL_SECRET_KEY = import.meta.env.VITE_ITL_SECRET_KEY;
+
+  // console.log(selectedAddress)
+
+  useEffect(() => {
+    if (checkoutItems.length === 0) {
+      navigate('/cart');
+      return;
+    }
+  }, [checkoutItems, navigate]);
+
+  useEffect(() => {
+    // ITL: RATE CHECK
+    const itlRateCheck = async () => {
+      const url = "https://pre-alpha.ithinklogistics.com/api_v3/rate/check.json";
+
+      // console.log(ITL_ACCESS_TOKEN)
+
+      const payload = {
+        data: {
+          from_pincode: "400092",
+          to_pincode: "121004",
+          shipping_length_cms: "22",
+          shipping_width_cms: "12",
+          shipping_height_cms: "12",
+          shipping_weight_kg: "2",
+          order_type: "forward",
+          payment_method: "cod",
+          product_mrp: "1200.00",
+          access_token: ITL_ACCESS_TOKEN,
+          secret_key: ITL_SECRET_KEY,
+        },
+      };
+
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        console.log("Rate Check Result:", result);
+        setDeliveryCharge(result.data[0].rate);
+      } catch (error) {
+        console.error("Error during rate check:", error);
+        // alert("Failed to check rates at ITL!");
+      }
+    };
+
+    itlRateCheck();
+    // ITL: RATE CHECK END
+  }, []);
 
   const handleAddAddress = (newAddress) => {
     if (editAddressIndex !== null) {
@@ -59,7 +121,11 @@ const Checkout = () => {
       const data = await response.json();
       setAddresses(data);
 
-      if (data.length > 0) {
+      const defaultAddress = data.find(address => address.isDefault);
+      console.log('Default Address:', defaultAddress);
+      if (defaultAddress) {
+        setSelectedAddress(defaultAddress);
+      } else if (data.length > 0) {
         setSelectedAddress(data[0]);
       }
     };
@@ -205,11 +271,14 @@ const Checkout = () => {
   };
 
   const handlePayment = async () => {
+    setIsPlacingOrder(true);
     const amount = totalAmount;
     console.log("Total amount to be paid:", amount);
 
     const orderItems = checkoutItems.map(item => ({
-      product: item.product._id,
+      productId: item.product._id,
+      productName: item.product.name,
+      packaging: item.product.packaging,
       quantity: item.quantity,
       price: item.product.price
     }));
@@ -242,6 +311,126 @@ const Checkout = () => {
 
         const createdOrder = await response.json();
 
+        //ITL: CREATE ORDER
+        const itlAddOrder = async () => {
+          const url = "https://pre-alpha.ithinklogistics.com/api_v3/order/add.json";
+
+          const payload = {
+            data: {
+              shipments: [
+                {
+                  waybill: "",
+                  order: createdOrder._id,
+                  sub_order: "",
+                  order_date: createdOrder.createdAt,
+                  total_amount: parseFloat(createdOrder.finalPrice.toFixed(2)),
+                  name: selectedAddress.fullName,
+                  company_name: "XY Essentials",
+                  add: selectedAddress.addressLine1,
+                  add2: selectedAddress.addressLine2,
+                  add3: "",
+                  pin: selectedAddress.postalCode,
+                  city: selectedAddress.city,
+                  state: selectedAddress.state,
+                  country: "India",
+                  phone: selectedAddress.phoneNumber,
+                  alt_phone: "",
+                  email: profile.email,
+                  is_billing_same_as_shipping: "yes",
+                  billing_name: selectedAddress.fullName,
+                  billing_company_name: selectedAddress.companyName || "",
+                  billing_add: selectedAddress.addressLine1,
+                  billing_add2: selectedAddress.addressLine2,
+                  billing_add3: "",
+                  billing_pin: selectedAddress.postalCode,
+                  billing_city: selectedAddress.city,
+                  billing_state: selectedAddress.state,
+                  billing_country: "India",
+                  billing_phone: selectedAddress.phoneNumber,
+                  billing_alt_phone: "",
+                  billing_email: profile.email,
+                  products: createdOrder.orderItems
+                    .filter(item => item.packaging !== 'Sachet')
+                    .map(item => ({
+                      product_name: item.productName,
+                      product_sku: "",
+                      product_quantity: item.quantity,
+                      product_price: item.price,
+                      product_tax_rate: "",
+                      product_hsn_code: "",
+                      product_discount: "",
+                    })),
+                  shipment_length: "10",
+                  shipment_width: "10",
+                  shipment_height: "5",
+                  weight: "90.00",
+                  shipping_charges: "",
+                  giftwrap_charges: "",
+                  transaction_charges: "",
+                  total_discount: "",
+                  first_attemp_discount: "",
+                  cod_amount: "",
+                  payment_mode: paymentMethod,
+                  reseller_name: "",
+                  eway_bill_number: "",
+                  gst_number: "",
+                  what3words: "",
+                  return_address_id: "1293",
+                },
+              ],
+              pickup_address_id: "1293",
+              access_token: ITL_ACCESS_TOKEN,
+              secret_key: ITL_SECRET_KEY,
+              logistics: "",
+              s_type: "",
+              order_type: "",
+            },
+          };
+
+          console.log("Payload:", payload);
+
+
+          const headers = {
+            "Content-Type": "application/json",
+          };
+
+          try {
+            const response = await fetch(url, {
+              method: "POST",
+              headers: headers,
+              body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+            console.log("Result:", result);
+
+            const waybill = result.data[0]? result.data[0].waybill : "";
+            console.log("Waybill:", waybill);
+            const responsewb = await fetch(`http://localhost:5000/api/orders/${createdOrder._id}/waybill`, {
+              method: "PUT",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ waybill }),
+            });
+            const responsewbjson = await responsewb.json();
+            console.log("Updated Order:", responsewbjson);
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to create order at ITL!");
+          }
+
+          // Save the ITL awb_number in the order schema as waybill
+
+        };
+
+        itlAddOrder();
+        //ITL: CREATE ORDER END
+
+
+
+
         for (const item of checkoutItems) {
           await fetch('http://localhost:5000/api/products/update-stock', {
             method: 'PUT',
@@ -263,9 +452,11 @@ const Checkout = () => {
           });
         }
         alert("Order placed successfully with Cash on Delivery!");
-        navigate(`/order-details/${createdOrder._id}`);
+        navigate(`/orders/${createdOrder._id}`);
       } catch (error) {
         console.error("Error during Cash on Delivery processing:", error);
+      } finally {
+        setIsPlacingOrder(false); // End loading
       }
       return;
     }
@@ -368,7 +559,7 @@ const Checkout = () => {
           }
 
           alert("Order placed successfully with Cash on Delivery!");
-          navigate(`/order-details/${createdOrder._id}`);
+          navigate(`/orders/${createdOrder._id}`);
         },
         prefill: {
           name: profile.name || "Customer Name",
@@ -398,6 +589,8 @@ const Checkout = () => {
       rzp.open();
     } catch (error) {
       console.error("Payment failed:", error);
+    } finally {
+      setIsPlacingOrder(false); // End loading
     }
   };
 
@@ -423,7 +616,7 @@ const Checkout = () => {
             >
               {addresses.length > 0 ? (
                 addresses.map((addr, index) => (
-                  <option key={addr._id} value={index}>
+                  <option key={addr._id} value={index} selected={addr.isDefault}>
                     {`${addr.fullName}, ${addr.addressLine1}, ${addr.addressLine2 ? `${addr.addressLine2}, ` : ''}${addr.landMark ? `${addr.landMark}, ` : ''}${addr.city}, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
                   </option>
                 ))
@@ -515,7 +708,7 @@ const Checkout = () => {
           </p>
           <hr />
           <div className="summary-row">
-            <p>Total Item(s) Cost:</p>
+            <p>Total Items Cost:</p>
             <p><span className="inr">₹</span><strong>{totalItems.toFixed(2)}</strong></p>
           </div>
           <div className="summary-row">
@@ -531,7 +724,16 @@ const Checkout = () => {
             <p className='total-row'>Total Amount:</p>
             <p><span className="inr">₹</span><strong>{totalAmount.toFixed(2)}</strong></p>
           </div>
-          <button onClick={handlePayment}>Place Order</button>
+          {checkoutItems.length > 0 && (
+            <button
+              onClick={handlePayment}
+              disabled={isPlacingOrder}
+              className="place-order-button"
+            >
+              {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+            </button>
+          )}
+
         </div>
       </div>
 

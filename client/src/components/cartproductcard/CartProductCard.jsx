@@ -2,6 +2,8 @@ import React from 'react';
 import './cartproductcard.css';
 
 const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
     const handleIncrease = () => {
         onUpdateQuantity(product._id, quantity + 1);
     };

@@ -4,18 +4,21 @@ const ejs = require('ejs');
 const fs = require('fs');
 const Order = require('../models/order.model');
 const path = require('path');
+const { sendOrderConfirmation, sendOrderStatusUpdate } = require('../utils/resend');
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
+  console.log('Fetching orders for user:', req.user._id);
   const orders = await Order.find({ user: req.user._id })
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
+  console.log('Orders found:', orders);
   res.json(orders);
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find()
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
   res.json(orders);
 });
@@ -37,12 +40,22 @@ const placeOrder = asyncHandler(async (req, res) => {
 
     const createdOrder = await order.save();
 
+    // Update user with the new order ID
+    req.user.orders.push(createdOrder._id);
+    await req.user.save();
+
     console.log('Created Order:', createdOrder); // Log the created order
     res.status(201).json(createdOrder); // Respond with the created order
   } catch (error) {
     console.error('Error creating order:', error); // Log any errors that occur
     res.status(500).json({ message: 'Failed to create order', error: error.message });
   }
+});
+
+const createOrder = asyncHandler(async (req, res) => {
+    const order = await Order.create(req.body);
+    await sendOrderConfirmation(req.user, order);
+    res.status(201).json(order);
 });
 
 const generateBill = async (req, res) => {
@@ -124,11 +137,25 @@ const generateBill = async (req, res) => {
 // Get order by ID
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email')
-    .populate('orderItems.product')
+    .populate('orderItems.productId')
     .populate('shippingAddress');
 
   if (order) {
     res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+// Update waybill number 
+const updateWaybillNumber = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.waybillNumber = req.body.waybillNumber || order.waybillNumber;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
   } else {
     res.status(404);
     throw new Error('Order not found');
@@ -144,6 +171,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
     order.deliveredAt = req.body.orderStatus === 'Delivered' ? Date.now() : order.deliveredAt;
 
     const updatedOrder = await order.save();
+    await sendOrderStatusUpdate(req.user, updatedOrder);
     res.json(updatedOrder);
   } else {
     res.status(404);
@@ -175,4 +203,6 @@ module.exports = {
   getOrderById,
   updateOrderStatus,
   cancelOrder,
+  updateWaybillNumber,
+  createOrder
 };

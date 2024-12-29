@@ -2,6 +2,7 @@ import React from 'react';
 import './contact.css'; // Assuming you have a separate CSS file for styling
 
 const Contact = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     return (
         <div className="contact-maincon">
             {/* <div className="contact-top-bg">

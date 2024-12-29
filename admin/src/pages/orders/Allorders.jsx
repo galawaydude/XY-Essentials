@@ -1,51 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import './allorders.css';
-import OrderCard from "../../components/ordercard/OrderCard";
+import OrderTable from "../../components/ordercard/OrderTable";
 
 function Allorders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/orders', {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setOrders(data);
-        } else {
-          console.error("Expected an array but got:", data);
-          setOrders([]); // Handle non-array data
-        }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
 
-  console.log("Orders fetched:", orders);
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/orders', {
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setOrders(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) return <div>Loading orders...</div>;
-  if (error) return <div>Error fetching orders: {error}</div>;
+  const filteredOrders = orders.filter(order => {
+    const matchesStatus = filterStatus === 'all' || order.shippingStatus === filterStatus;
+    const matchesSearch = order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.shippingAddress?.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesStatus && matchesSearch;
+  });
+
+  if (loading) return <div className="loading-spinner">Loading orders...</div>;
+  if (error) return <div className="error-message">Error: {error}</div>;
 
   return (
-    <div className="allorders-maincon">
-      {orders.map(order => (
-        <div key={order._id} className="order-row">
-          <OrderCard order={order} />
-        </div>
-      ))}
+    <div className="orders-container p-2">
+         <h2>Orders</h2>
+      <div className="filters-section mb-4 d-flex gap-3 align-items-center">
+        <input
+          type="text"
+          className="form-control w-25"
+          placeholder="Search by Order ID or Customer"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select
+          className="form-select w-auto"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="all">All Orders</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <span className="ms-3">
+          Total Orders: {filteredOrders.length}
+        </span>
+      </div>
+
+      <OrderTable orders={filteredOrders} refreshOrders={fetchOrders} />
     </div>
   );
 }

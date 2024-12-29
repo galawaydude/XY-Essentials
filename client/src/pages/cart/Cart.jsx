@@ -4,6 +4,7 @@ import CartProductCard from '../../components/cartproductcard/CartProductCard';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [cartItems, setCartItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState({});
     const navigate = useNavigate();
@@ -11,17 +12,17 @@ const Cart = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users/user/cart', {   
+                const response = await fetch('http://localhost:5000/api/users/user/cart', {
                     credentials: 'include',
                 });
-    
+
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Fetched cart items:', data.cartItems); 
+                    console.log('Fetched cart items:', data.cartItems);
                     setCartItems(data.cartItems);
                     const initialSelectedItems = {};
                     data.cartItems.forEach(item => {
-                        initialSelectedItems[item.product._id] = true; 
+                        initialSelectedItems[item.product._id] = true;
                     });
                     setSelectedItems(initialSelectedItems);
                 } else {
@@ -32,7 +33,7 @@ const Cart = () => {
                 console.error('Error fetching cart:', error);
             }
         };
-    
+
         fetchCart();
     }, []);
 
@@ -81,8 +82,13 @@ const Cart = () => {
 
     const handleCheckout = () => {
         const checkoutItems = cartItems.filter(item => selectedItems[item.product._id]);
+        const totalItems = checkoutItems.reduce((total, item) => total + item.quantity, 0);
         if (checkoutItems.length === 0) {
             alert("Please select at least one item to proceed to checkout.");
+            return;
+        }
+        if (totalItems > 10) {
+            alert("You can only checkout with a maximum of 10 items (considering quantities).");
             return;
         }
         navigate('/checkout', { state: { checkoutItems } });
@@ -94,6 +100,7 @@ const Cart = () => {
             [productId]: !prev[productId],
         }));
     };
+
 
     return (
         <div className="cart">
@@ -118,8 +125,8 @@ const Cart = () => {
                                     checked={!!selectedItems[item.product._id]}
                                     onChange={() => handleCheckboxChange(item.product._id)}
                                 />
-                                <CartProductCard 
-                                    product={item.product} 
+                                <CartProductCard
+                                    product={item.product}
                                     quantity={item.quantity}
                                     onUpdateQuantity={updateQuantity}
                                     onRemoveFromCart={removeFromCart}
