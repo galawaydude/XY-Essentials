@@ -21,7 +21,7 @@ const Footer = () => {
 
         {/* Navigation Links */}
         <nav className="footer-nav">
-          <div className="nav-links">
+          <div className="fnav-links">
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/disclaimer">Disclaimer</Link>

@@ -1,15 +1,29 @@
-
-.cart {
-    background-color: #fff;
+.empty-cart-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    min-height: 100vh;
+    justify-content: center;
+    text-align: center;
 }
 
+.empty-cart-message h2 {
+    font-size: 1.5rem;
+}
 
-/* .cart .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-} */
+.shop-now-btn {
+    padding: 0.8rem 2rem;
+    background-color: var(--pri);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
+.shop-now-btn:hover {
+    opacity: 0.9;
+}
 
 .cart .home-pro-head {
     padding: 1rem 0;
@@ -24,7 +38,6 @@
     display: flex;
     gap: 2rem;
     padding: 2rem 0;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 /* Responsive grid for the cart products container */
@@ -45,11 +58,23 @@
 
 /* Cart header remains the same */
 .cart-header {
-    display: grid;
-    grid-template-columns: 2.35fr 1.1fr 1fr 1fr;
+    display: flex;
+    align-items: center;
     padding: 1rem 0;
     border-bottom: 1px solid #eee;
     font-weight: 500;
+    width: 100%;
+    
+}
+
+/* Match these widths in both header and product card */
+.cart-header > span:nth-child(1) {
+    width: 27rem; /* Product */
+}
+.cart-header > span:nth-child(2),
+.cart-header > span:nth-child(3),
+.cart-header > span:nth-child(4) {
+    width: 8rem; /* Price */
 }
 
 .cart-summary-con {
@@ -142,23 +167,10 @@
     color: var(--pri);
 }
 
-/* Media queries for responsiveness */
-
 /* Mobile devices (up to 600px wide) */
-@media (max-width: 600px) {
-    .cart-product-summary {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center align the contents */
-    }
-
+@media (max-width: 918px) {
     .cart-header {
         display: none; /* Hide the header on small screens for better layout */
-    }
-
-    .cart-item-container {
-        flex-direction: column; /* Stack the product details */
-        align-items: center; /* Center-align product details */
-        text-align: center; /* Center-align text */
     }
 
     .cart-summary-con {
@@ -168,7 +180,7 @@
 }
 
 /* Tablets (up to 900px wide) */
-@media (max-width: 900px) {
+@media (max-width: 1072px) {
     .cart-product-summary {
         flex-direction: column; /* Stack items vertically for tablets */
         align-items: center; /* Center-align the contents */
@@ -176,15 +188,12 @@
 
     .cart-products-con, 
     .cart-summary-con {
-        flex: 1; /* Equal width for both containers */
         margin-bottom: 1rem;
         margin-left: auto; /* Center align horizontally */
         margin-right: auto; /* Center align horizontally */
     }
-
     .cart-header {
-        grid-template-columns: 2fr 1fr 1fr; /* Adjust columns for tablets */
-        justify-items: center; /* Center the grid items */
+        width: 100%;
     }
 }
 
@@ -199,10 +208,5 @@
     .cart-summary-con {
         margin-left: auto; /* Center align horizontally */
         margin-right: auto; /* Center align horizontally */
-    }
-
-    .cart-header {
-        grid-template-columns: 2fr 1fr 1fr; /* Adjust grid for larger screens */
-        justify-items: center; /* Center the grid items */
     }
 }

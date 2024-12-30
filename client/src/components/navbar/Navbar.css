@@ -13,11 +13,7 @@
 
 }
 
-
 .navbar a {
-    color: black;
-}
-.navbar a:hover {
     color: black;
 }
 .navbar .logo a img {

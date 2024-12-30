@@ -159,7 +159,7 @@ useEffect(() => {
         <a href="/profile">Profile </a>&nbsp;&nbsp;&gt;
         &nbsp;&nbsp;<a href="/orders"> Your Orders</a>
       </div> */}
-      <div className="pagination con2">
+      <div className="pagination">
         <button onClick={prevPage} disabled={currentPage === 1}>&laquo; Previous</button>
         {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }, (_, index) => (
           <button

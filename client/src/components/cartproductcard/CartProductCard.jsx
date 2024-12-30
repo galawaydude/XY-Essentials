@@ -2,8 +2,6 @@ import React from 'react';
 import './cartproductcard.css';
 
 const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart }) => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    
     const handleIncrease = () => {
         onUpdateQuantity(product._id, quantity + 1);
     };
@@ -18,41 +16,46 @@ const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart
         onRemoveFromCart(product._id);
     };
 
+    const totalPrice = product.price * quantity;
+
     return (
         <div className="cart-product-card">
             <div className="cart-product-details">
-                {/* Product Info Column */}
-                <div className="product-info">
-                    <div className="cp-img">
-                        <img src={product.images[0]} alt={product.name} />
-                    </div>
-                    <div className="cp-text">
+                {/* Product Image */}
+                <div className="cp-img">
+                    <img src={product.images[0]} alt={product.name} />
+                </div>
+
+                {/* Product Info Container */}
+                <div className="cp-info-container">
+                    {/* Price and Name Section */}
+                    <div className="cp-main-info">
                         <div className="cp-name">{product.name}</div>
                         <div className="cp-attributes">
                             {product.color && <div>Color: {product.color}</div>}
                             {product.size && <div>Size: {product.size}</div>}
                         </div>
                     </div>
-                </div>
 
-                {/* Price Column */}
-                <div className="cp-price">
-                    ₹{product.price}
-                </div>
+                    {/* Price, Quantity, and Total Section */}
+                    <div className="cp-right-section">
+                        <div className="cp-price-desktop">₹{product.price}</div>
 
-                {/* Quantity Column */}
-                <div className="cp-counter">
-                    <span onClick={handleDecrease}>-</span>
-                    <span>{quantity}</span>
-                    <span onClick={handleIncrease}>+</span>
-                </div>
+                        <div className="cp-controls">
+                            <div className="cp-counter">
+                                <span onClick={handleDecrease}>−</span>
+                                <span>{quantity}</span>
+                                <span onClick={handleIncrease}>+</span>
+                            </div>
+                        </div>
 
-                {/* Total Price Column */}
-                <div className="total-price">
-                    ₹{(product.price * quantity).toFixed(2)}
-                    <span className="cp-dlt-btn" onClick={handleDelete}>
-                        <i className="fas fa-trash-alt"></i>
-                    </span>
+                        <div className="cp-total-section">
+                            <div className="total-price">₹{totalPrice.toFixed(2)}</div>
+                        </div>
+                        <span className="cp-dlt-btn" onClick={handleDelete}>
+                            <i className="fas fa-trash-alt"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

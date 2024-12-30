@@ -110,6 +110,12 @@
   margin: 2.3rem 0 1.5rem 0;
 }
 
+.pagination button {
+  padding: 0.5rem 0.75rem;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .ol-order-card {

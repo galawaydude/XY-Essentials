@@ -216,7 +216,7 @@ const OrderDetails = () => {
           )}
           <div className="ord-price-row">
             <span className="ord-price-label">Total Amount</span>
-            <span className="ord-price-value">₹{order.finalPrice}</span>
+            <span className="ord-price-value">₹{order.finalPrice.toFixed(2)}</span>
           </div>
         </div>
         {/* Products Section */}

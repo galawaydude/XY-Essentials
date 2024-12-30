@@ -662,13 +662,15 @@ const Checkout = () => {
 
           {/* Coupon Section */}
           <div className="coupon-section">
-            <h4 className="coupon-heading">Have a Coupon?</h4>
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              placeholder="Enter coupon code"
-            />
+            <div className="coupon-divider">
+              <h4 className="coupon-heading">Have a Coupon?</h4>
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="Enter coupon code"
+              />
+            </div>
             <button onClick={handleApplyCoupon}>Apply Coupon</button>
           </div>
 

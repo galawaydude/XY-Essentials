@@ -1,6 +1,6 @@
 import React from 'react'
-import './Navbar.css'
 import XYNavLogo from './../../assets/xy essentials_wordmark TR.png'
+import './Navbar.css'
 
 const Navbar = () => {
     const apiUrl = import.meta.env.VITE_API_URL;

@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40%;
+    width: 50vw;
     max-height: 80vh;
     border-radius: 0.5rem;
     background: #ffffff;
@@ -141,4 +141,26 @@
 .address-multi-labels{
     display: flex;
     justify-content: space-between;
+}
+
+@media (max-width: 1000px) {
+    .address-modal-main-con {
+        width: 55vw;
+    }   
+}
+
+@media (max-width: 700px) {
+    .address-modal-main-con {
+        width: 70vw;
+    }   
+}
+
+@media (max-width: 530px) {
+    .address-modal-double-input {
+        flex-direction: column;
+    }
+
+    .address-label{
+        display: none;
+    }
 }

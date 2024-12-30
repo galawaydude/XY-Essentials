@@ -26,7 +26,8 @@
   margin-top: 2rem;
 }
 
-.checkout-left, .checkout-right {
+.checkout-left,
+.checkout-right {
   padding: 1.5rem;
   border-radius: 0.6rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -43,7 +44,8 @@
   top: 5rem;
 }
 
-.checkout-left h3, .checkout-right h3 {
+.checkout-left h3,
+.checkout-right h3 {
   color: #0A4834;
   margin-bottom: 1.25rem;
   font-size: 1.25rem;
@@ -70,7 +72,7 @@
 }
 
 /* Payment method section styling */
-.payment-section{
+.payment-section {
   border-bottom: 2px solid #0A4834;
 }
 
@@ -81,8 +83,14 @@
   margin: 2.5rem 0;
   align-items: center;
 }
+.coupon-divider{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
 
-.coupon-section input {
+.coupon-divider input {
   flex: 1;
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -212,11 +220,15 @@ ul {
   top: -10px;
   background-color: #0A4834;
   color: white;
-  font-size: 0.75rem; /* Slightly smaller font */
+  font-size: 0.75rem;
+  /* Slightly smaller font */
   font-weight: 600;
-  width: 1.5rem; /* Fixed width */
-  height: 1.5rem; /* Fixed height */
-  border-radius: 50%; /* Full rounded */
+  width: 1.5rem;
+  /* Fixed width */
+  height: 1.5rem;
+  /* Fixed height */
+  border-radius: 50%;
+  /* Full rounded */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -253,7 +265,8 @@ ul {
 }
 
 /* Update for INR symbol and improved layout for order items and summary */
-.checkout-right p strong, .checkout-right p span.inr {
+.checkout-right p strong,
+.checkout-right p span.inr {
   font-size: 1.2rem;
   color: #0A4834;
 }
@@ -289,7 +302,7 @@ li.product-item span.quantity {
   justify-content: space-between;
 }
 
-.total-row{
+.total-row {
   font-size: 1.25rem;
   font-weight: 400;
 }
@@ -309,20 +322,24 @@ li.product-item span.quantity {
   font-weight: 600;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+
+@media (max-width: 918px) {
   .checkout-content {
     flex-direction: column;
   }
-  
-  .checkout-left, .checkout-right {
+
+  .checkout-left,
+  .checkout-right {
     width: 100%;
   }
-  
+
   .checkout-right {
     position: static;
   }
-  
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
   .modal-content {
     width: 90%;
     margin: 0 1rem;
