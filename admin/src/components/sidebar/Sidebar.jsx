@@ -4,7 +4,10 @@ import {
     FaBox, FaBlog, FaTicketAlt, FaShoppingCart, FaTachometerAlt, 
     FaBars, FaTimes, FaUsers, FaChartLine, FaPlus, FaEdit,
     FaChevronDown, FaChevronRight, FaTags, FaShippingFast,
-    FaComments, FaCog, FaUserCog, FaClipboardList
+    FaComments, FaCog, FaUserCog, FaClipboardList,
+    FaSpeakerDeck,
+    FaSpeakap,
+    FaBroadcastTower
 } from 'react-icons/fa';
 import './sidebar.css';
 
@@ -64,7 +67,8 @@ const Sidebar = () => {
             name: 'Marketing',
             items: [
                 { path: '/admin/coupons', name: 'Coupons', icon: <FaTicketAlt /> },
-                { path: '/admin/reviews', name: 'Reviews', icon: <FaComments /> }
+                { path: '/admin/reviews', name: 'Reviews', icon: <FaComments /> },
+                { path: '/admin/broadcast', name: 'Broadcast', icon: <FaBroadcastTower /> }
             ]
         },
         {

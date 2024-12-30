@@ -1,113 +1,208 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { FaUpload, FaTimes, FaSpinner } from 'react-icons/fa';
+import '../addblog/addblog.css';
 
 const EditBlog = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const { id } = useParams(); // Get the blog post ID from the URL
-  const navigate = useNavigate(); // For navigation after editing
-  const [title, setTitle] = useState('');
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    tags: ''
+  });
   const [imgFile, setImgFile] = useState(null);
-  const [content, setContent] = useState('');
-  const [tags, setTags] = useState('');
+  const [imgPreview, setImgPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [initialImage, setInitialImage] = useState('');
 
+  // Fetch existing blog data
   useEffect(() => {
-    const fetchBlogPost = async () => {
+    const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch blog post');
-        }
-
-        setTitle(data.title);
-        setContent(data.content);
-        setTags(data.tags.join(', ')); // Convert tags array to comma-separated string
-      } catch (error) {
-        setError(error.message);
+        const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+          credentials: 'include'
+        });
+        if (!response.ok) throw new Error('Failed to fetch blog');
+        
+        const blog = await response.json();
+        setFormData({
+          title: blog.title,
+          content: blog.content,
+          tags: blog.tags.join(', ')
+        });
+        setImgPreview(blog.img);
+        setInitialImage(blog.img);
+      } catch (err) {
+        setError('Failed to fetch blog details');
       }
     };
 
-    fetchBlogPost();
+    fetchBlog();
   }, [id]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImgFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImgPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const validateForm = () => {
+    if (!formData.title.trim()) {
+      setError('Title is required');
+      return false;
+    }
+    if (!formData.content.trim()) {
+      setError('Content is required');
+      return false;
+    }
+    if (!imgPreview && !imgFile) {
+      setError('Cover image is required');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('img', imgFile); // You might need to handle image updates differently
-    formData.append('content', content);
-    formData.append('tags', tags.split(',').map(tag => tag.trim()));
+    setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
-        method: 'PUT',
-        body: formData,
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
       });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to update blog post');
+      
+      // Only append new image if it was changed
+      if (imgFile) {
+        formDataToSend.append('img', imgFile);
+      } else if (initialImage) {
+        formDataToSend.append('currentImage', initialImage);
       }
 
+      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: formDataToSend
+      });
+
+      if (!response.ok) throw new Error('Failed to update blog post');
+
       setSuccess('Blog post updated successfully!');
-      navigate(`/blogs/${id}`); // Redirect to the updated blog post page
-    } catch (error) {
-      setError(error.message);
+      setTimeout(() => navigate('/admin/blogs'), 1500);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="edit-blog-container">
-      <h2>Edit Blog</h2>
-      {error && <p className="error-text">{error}</p>}
-      {success && <p className="success-text">{success}</p>}
-      <form className="edit-blog-form" onSubmit={handleSubmit}>
-        <div className="input-component">
-          <label>Title</label>
+    <div className="add-blog-container">
+      <div className="add-blog-header">
+        <h1>Edit Blog Post</h1>
+        <button onClick={() => navigate('/admin/blogs')} className="back-btn">
+          <FaTimes /> Cancel
+        </button>
+      </div>
+
+      {error && <div className="alert alert-error">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
+
+      <form className="add-blog-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Blog Title</label>
           <input
             type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             placeholder="Enter blog title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
-        <div className="input-component">
-          <label>Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImgFile(e.target.files[0])}
-          />
+
+        <div className="form-group image-upload">
+          <label>Cover Image</label>
+          <div className="image-upload-area">
+            <div className="upload-placeholder  mb-2">
+              <FaUpload />
+              <span>Click or drag to upload new image</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
+            {/* {imgPreview && (
+              <div className="image-preview  mt-2 overflow-hidden">
+                <img src={imgPreview} alt="Preview" className='overflow-hidden'/>
+                <button type="button" onClick={() => {
+                  setImgFile(null);
+                  setImgPreview(initialImage);
+                }}>
+                  <FaTimes />
+                </button>
+              </div>
+            )} */}
+          </div>
         </div>
-        <div className="input-component">
+
+        <div className="form-group">
           <label>Content</label>
           <textarea
-            placeholder="Enter blog content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            name="content"
+            value={formData.content}
+            onChange={handleChange}
+            placeholder="Write your blog content here..."
+            rows="10"
             required
           />
         </div>
-        <div className="input-component">
-          <label>Tags (comma-separated)</label>
+
+        <div className="form-group">
+          <label>Tags</label>
           <input
             type="text"
-            placeholder="Enter tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
+            name="tags"
+            value={formData.tags}
+            onChange={handleChange}
+            placeholder="Enter tags separated by commas"
           />
+          <small>Separate tags with commas (e.g., fashion, lifestyle, tips)</small>
         </div>
-        <button className="btn btn-primary" type="submit">
-          Update Blog
-        </button>
+
+        <div className="form-actions">
+          <button type="button" onClick={() => navigate('/admin/blogs')} className="cancel-btn">
+            Cancel
+          </button>
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? <><FaSpinner className="spinner" /> Updating...</> : 'Update Blog'}
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default EditBlog;
+
