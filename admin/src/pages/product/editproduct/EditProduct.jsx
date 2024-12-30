@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import './editProduct.css';
 import { FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import "../addproduct/addproduct.css";
 
 const EditProduct = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
-    const { id } = useParams(); // Assuming the product ID is in the URL
+    const { id } = useParams();
     const [product, setProduct] = useState({
         name: '',
         description: '',
@@ -127,7 +127,6 @@ const EditProduct = () => {
             }
         });
 
-        // Send the formData to the backend
         try {
             const response = await fetch(`http://localhost:5000/api/products/${id}`, {
                 method: 'PUT',
@@ -142,10 +141,10 @@ const EditProduct = () => {
     };
 
     return (
-        <div className="edit-product-maincon">
-            <div className="edit-product-content container">
-                <h2 className="edit-product-head">Edit Product</h2>
-                <form className="edit-product-form" onSubmit={handleSubmit}>
+        <div className="add-product-maincon">
+            <div className="add-product-content">
+                <h2 className="add-product-head">Edit Product</h2>
+                <form className="add-product-form" onSubmit={handleSubmit}>
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="Product Name" value={product.name} onChange={handleChange} required />
 
@@ -203,23 +202,27 @@ const EditProduct = () => {
                     {product.keyIngredients.map((ingredient, index) => (
                         <div key={index} className="key-ingredient">
                             <label htmlFor={`ingredient-${index}`}>Ingredient</label>
-                            <input
-                                type="text"
-                                id={`ingredient-${index}`}
-                                name="ingredient"
-                                value={ingredient.ingredient}
-                                onChange={(e) => handleKeyIngredientChange(index, e)}
-                                required
-                            />
+                            <div className="key-ingredient-inputs">
+                                <input
+                                    type="text"
+                                    id={`ingredient-${index}`}
+                                    name="ingredient"
+                                    value={ingredient.ingredient}
+                                    onChange={(e) => handleKeyIngredientChange(index, e)}
+                                    required
+                                />
+                                <FaTrash onClick={() => deleteKeyIngredient(index)} style={{ cursor: 'pointer', color: 'red' }} />
+                            </div>
                             <label htmlFor={`description-${index}`}>Description</label>
-                            <input
-                                type="text"
-                                id={`description-${index}`}
-                                name="description"
-                                value={ingredient.description}
-                                onChange={(e) => handleKeyIngredientChange(index, e)}
-                            />
-                            <FaTrash onClick={() => deleteKeyIngredient(index)} style={{ cursor: 'pointer', color: 'red' }} />
+                            <div className="key-ingredient-inputs">
+                                <input
+                                    type="text"
+                                    id={`description-${index}`}
+                                    name="description"
+                                    value={ingredient.description}
+                                    onChange={(e) => handleKeyIngredientChange(index, e)}
+                                />
+                            </div>
                         </div>
                     ))}
                     <button type="button" onClick={addKeyIngredient}>Add Key Ingredient</button>

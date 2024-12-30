@@ -23,9 +23,8 @@ const Footer = () => {
         <nav className="footer-nav">
           <div className="nav-links">
             <Link to="/">Home</Link>
-            <Link to="/category">Category</Link>
             <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to="/disclaimer">Disclaimer</Link>
           </div>
           
           <div className="social-links">

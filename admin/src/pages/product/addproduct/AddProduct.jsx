@@ -241,23 +241,27 @@ const AddProduct = () => {
                     {product.keyIngredients.map((ingredient, index) => (
                         <div key={index} className="key-ingredient">
                             <label htmlFor={`ingredient-${index}`}>Ingredient</label>
-                            <input
-                                type="text"
-                                id={`ingredient-${index}`}
-                                name="ingredient"
-                                value={ingredient.ingredient}
-                                onChange={(e) => handleKeyIngredientChange(index, e)}
-                                required
-                            />
+                            <div className='key-ingredient-inputs'>
+                                <input
+                                    type="text"
+                                    id={`ingredient-${index}`}
+                                    name="ingredient"
+                                    value={ingredient.ingredient}
+                                    onChange={(e) => handleKeyIngredientChange(index, e)}
+                                    required
+                                />
+                                <FaTrash onClick={() => deleteKeyIngredient(index)} style={{ cursor: 'pointer', color: 'red' }} />
+                            </div>
                             <label htmlFor={`description-${index}`}>Description</label>
-                            <input
-                                type="text"
-                                id={`description-${index}`}
-                                name="description"
-                                value={ingredient.description}
-                                onChange={(e) => handleKeyIngredientChange(index, e)}
-                            />
-                            <FaTrash onClick={() => deleteKeyIngredient(index)} style={{ cursor: 'pointer', color: 'red' }} />
+                            <div className='key-ingredient-inputs'>
+                                <input
+                                    type="text"
+                                    id={`description-${index}`}
+                                    name="description"
+                                    value={ingredient.description}
+                                    onChange={(e) => handleKeyIngredientChange(index, e)}
+                                />
+                            </div>
                         </div>
                     ))}
                     <button type="button" onClick={addKeyIngredient}>Add Key Ingredient</button>
