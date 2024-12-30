@@ -1,77 +1,79 @@
-
-.pd-reviews {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.pd-reviews-con {
-    flex: 1.7;
-}
-
-.pd-review-stats {
-    flex: 1;
-}
-
+/* Main card container */
 .review-card {
     display: flex;
-    gap: 0.5rem;
     flex-direction: column;
-    border-radius: 0.3rem;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border: 1px solid #d6d6d6;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+/* Header section with rating and delete button */
 .review-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.review-info {
+/* Rating stars styling */
+.review-rating {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.review-date p {
-    font-size: 0.6rem;
-    color: #6f6f6f;
-    font-weight: 600;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
 }
 
 .review-rating .rating-star {
-    font-size: 0.7rem;
+    color: var(--pri);
+    font-size: 1.1rem;
 }
 
+/* Delete button styling - now positioned top right */
 .review-delete-btn {
     background: none;
-    border: none;
-    padding: 0.5rem;
+    padding: 0.4rem;
     cursor: pointer;
     color: #6f6f6f;
-    border-radius: 0.25rem;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.review-delete-btn i {
-    font-size: 0.8rem;
+    border-radius: 0.5rem;
 }
 
 .review-delete-btn:hover {
     background-color: #f3f4f6;
     color: #ef4444;
-    border-radius: 50%;
-}
-
-.review-delete-btn:focus {
-    outline: 2px solid #d1d5db;
-    outline-offset: 2px;
 }
 
 .review-delete-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
+}
+
+/* Review content styling */
+.review-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.review-info h6 {
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Add verified checkmark */
+.review-info h6::after {
+    content: "✓";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    background: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.7rem;
+}
+
+.review-info p {
+    font-size: 1rem;
 }

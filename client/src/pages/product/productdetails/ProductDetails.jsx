@@ -423,10 +423,10 @@ const ProductDetails = () => {
                     <div className="section_left_title">
                         Recommended For <strong>You</strong>
                     </div>
-                    <div className="view-all-btn">
+                    <Link to="/shop" className="view-all-btn">
                         <span>View All</span>
                         <i className="fas fa-arrow-right"></i>
-                    </div>
+                    </Link>
                 </div>
                 <hr />
                 <div className="home-products-con">

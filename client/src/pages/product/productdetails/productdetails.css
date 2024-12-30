@@ -278,6 +278,13 @@
     font-size: 0.8rem;
 }
 
+.pd-reviews-con {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 0.5rem;
+}
+
 /* Buttons */
 .pd-btns button {
     width: 100%;

@@ -1,4 +1,5 @@
 import React from 'react';
+import './reviewcard.css';
 
 const ReviewCard = ({ review }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
