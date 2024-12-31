@@ -1,7 +1,7 @@
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 5rem;
+  right: 10px;
   z-index: 1000000; /* Higher than navbar's z-index */
 }
 
@@ -24,4 +24,5 @@
 
 .custom-toast .btn-close {
   color: var(--pri);
+  font-size: 0.7rem;
 }

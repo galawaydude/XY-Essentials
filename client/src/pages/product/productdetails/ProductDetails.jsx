@@ -127,13 +127,17 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/${productId}`);
+                const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+                    credentials: 'include',
+                    method: 'GET'
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch product details');
                 }
                 const data = await response.json();
                 setProduct(data);
-                setReviews(data.reviews ? data.reviews : []);
+                // setReviews(data.reviews ? data.reviews : []);
+                // console.log('Reviews:', reviews);
             } catch (error) {
                 console.error(error);
                 setProduct(null);
@@ -141,6 +145,22 @@ const ProductDetails = () => {
                 setLoading(false);
             }
         };
+
+        const fetchProductReviews = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/reviews/product/${productId}`, {
+                    credentials: 'include',
+                    method: 'GET'
+                });
+                const data = await response.json();
+                setReviews(data);
+                console.log('Reviews:', reviews);
+            } catch (error) {
+                console.error('Error fetching product reviews:', error);
+            }
+        };
+
+        fetchProductReviews();
 
         fetchProductDetails();
     }, [productId]);
@@ -336,7 +356,7 @@ const ProductDetails = () => {
                             {[
                                 { title: "Suitable For", content: product.suitableFor },
                                 { title: "What Makes It Worth Using", content: [product.whatMakesItWorthUsing] },
-                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient} (${ing.description})`) },
+                                { title: "Key Ingredients", content: product.keyIngredients.map((ing) => `${ing.ingredient}: (${ing.description})`) },
                                 { title: "Claims", content: product.claims }
                             ].map((item, index) => (
                                 <div key={index} className="pd-desc-item">

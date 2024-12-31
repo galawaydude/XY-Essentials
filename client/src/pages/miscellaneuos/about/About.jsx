@@ -1,5 +1,7 @@
 import React from 'react';
 import './about.css'; // Assuming you have a separate CSS file for styling
+import Toast from '../../../components/toast/Toast';
+import { ToastBody } from 'react-bootstrap';
 
 const About = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -24,6 +26,7 @@ const About = () => {
                     Our mission is to create a community of readers who seek knowledge and inspiration. 
                     We aim to provide high-quality content that adds value to your life and encourages open dialogue.
                 </p>
+
             </div>
         </div>
     );
