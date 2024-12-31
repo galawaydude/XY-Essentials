@@ -25,6 +25,7 @@ import Error404 from './pages/notfound404/error404';
 import PrivacyPolicy from './pages/miscellaneuos/privacypolicy/Privacypolicy';
 import Disclaimer from './pages/miscellaneuos/disclaimer/Disclaimer';
 import TermsOfService from './pages/miscellaneuos/tos/Tos';
+import Comingsoon from './pages/comingsoon/Comingsoon';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -71,6 +72,7 @@ const AppRoutes = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/loader" element={<PreLoader />} />
+                    <Route path="/coming-soon" element={<Comingsoon />} />
                     <Route path="*" element={<Error404 />} />
                     
                     {/* <Route path='/order' element={<Ordercard />}/> */}
@@ -90,4 +92,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-

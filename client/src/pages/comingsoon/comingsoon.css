@@ -1,0 +1,42 @@
+.coming-soon-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--m1);
+  padding: 2rem;
+  text-align: center;
+}
+
+.coming-soon-image {
+  max-width: 550px;
+  aspect-ratio: 1/1;
+  width: 90%;
+  animation: float 3s ease-in-out infinite;
+}
+
+.coming-soon-text {
+  font-size: 1.5rem;
+  font-weight: var(--font-medium);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  animation: fadeIn 2s ease-out;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
