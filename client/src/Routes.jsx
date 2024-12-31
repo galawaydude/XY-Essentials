@@ -31,9 +31,9 @@ const AppRoutes = () => {
     const location = useLocation();
     const [loading, setLoading] = useState(true);
 
-    // Hide Navbar for specific routes
-    const hideNavbarRoutes = ['/loader']; // Add any other routes that should hide the Navbar
-    const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+    // Hide Navbar and Footer for specific routes
+    const hideNavbarAndFooterRoutes = ['/loader', '/coming-soon']; // Add any other routes that should hide the Navbar and Footer
+    const shouldShowNavbarAndFooter = !hideNavbarAndFooterRoutes.includes(location.pathname);
 
     // Check if the current route is the Home route ("/")
     const isHomeRoute = location.pathname === "/";
@@ -54,7 +54,7 @@ const AppRoutes = () => {
 
     return (
         <GoogleOAuthProvider clientId="761680962938-ktmlcpfdf9rcessoi34225uug4fjjfm6.apps.googleusercontent.com">
-            {shouldShowNavbar && <Navbar />}
+            {shouldShowNavbarAndFooter && <Navbar />}
             <main className="main">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -85,7 +85,7 @@ const AppRoutes = () => {
                     </Route>
                 </Routes>
             </main>
-            <Footer />
+            {shouldShowNavbarAndFooter && <Footer />}
         </GoogleOAuthProvider>
 
     );
