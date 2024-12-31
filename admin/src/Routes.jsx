@@ -15,6 +15,7 @@ import Reviews from './pages/reviews/Reviews';
 import Users from './pages/Users/Users.jsx';
 import UserDetails from './pages/Users/UserDetails.jsx';
 import OrderDetails from './pages/orders/OrderDetails.jsx';
+// import Broadcasting from './pages/broadcasting/Broadcasting.jsx';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -39,6 +40,7 @@ const AppRoutes = () => {
                     <Route path="/admin/orders/:id" element={<OrderDetails />} />
                     <Route path="/admin/reviews" element={<Reviews />} />
                     <Route path="/admin/coupons" element={<Coupons />} />
+                    {/* <Route path="/admin/broadcast" element={<Broadcasting />} /> */}
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </main>

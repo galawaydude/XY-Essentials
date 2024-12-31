@@ -1,0 +1,54 @@
+.terms-maincon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.terms-top-bg {
+    position: relative;
+    text-align: center;
+}
+
+.terms-top-bg img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.8);
+}
+
+.terms-overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.terms-content {
+    padding: 20px;
+}
+
+.terms-content h2 {
+    margin-top: 20px;
+    font-size: 1.8rem;
+}
+
+.terms-content p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .terms-overlay-text {
+        font-size: 2rem;
+    }
+
+    .terms-content h2 {
+        font-size: 1.5rem;
+    }
+}
