@@ -4,7 +4,8 @@ import './reviewcard.css';
 const ReviewCard = ({ review }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   
-  const { author, rating, comment, updatedAt } = review;
+  const { user, rating, comment, updatedAt } = review;
+  
 
   // Create star elements based on rating
   const renderStars = () => {
@@ -41,7 +42,7 @@ const ReviewCard = ({ review }) => {
         </button>
       </div>
       <div className="review-info">
-        <h6>{author}</h6>
+        <h6>{user?.name}</h6>
         <p>{comment}</p>
       </div>
       <div className="review-date">

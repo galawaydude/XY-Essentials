@@ -13,7 +13,11 @@ const getAllReviews = asyncHandler(async (req, res) => {
 
 // Get all reviews for a product
 const getProductReviews = asyncHandler(async (req, res) => {
-  const reviews = await Review.find({ product: req.params.productId });
+  const reviews = await Review.find({ product: req.params.productId })
+  .populate('product', 'name')
+  .populate('user', 'name')
+    .sort({ createdAt: -1 });
+    // console.log(reviews);
   res.json(reviews);
 });
 

@@ -72,6 +72,19 @@
     color: white;
     border-radius: 50%;
     font-size: 0.7rem;
+    position: relative;
+}
+
+.review-info h6::after:hover::before {
+    content: "Verified buyer";
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.2rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
 }
 
 .review-info p {

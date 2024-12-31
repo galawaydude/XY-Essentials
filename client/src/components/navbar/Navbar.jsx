@@ -29,9 +29,11 @@ const Navbar = () => {
                 </div>
                 <div className="nav-icons">
                     <div className="nav-link-icons">
-                        <a className='nav-link-icon' href="/account">      <i className="nav-icon-item far fa-user"></i></a>
+                        <a className='nav-link-icon' href="/cart" data-toggle="tooltip" data-placement="bottom" title="My Cart" ><i className="fas fa-shopping-cart" ></i></a>
                         <span className='nav-icon-divider'> | </span>
-                        <a className='nav-link-icon' href="/cart"><i className="fas fa-shopping-cart" ></i></a>
+                        <a className='nav-link-icon' href="/account" >
+                            <i className="nav-icon-item far fa-user" data-toggle="tooltip" data-placement="bottom" title="My Account" ></i>
+                        </a>
                         {/* <i className="nav-icon-item fas fa-bell"></i> */}
                
                     </div>

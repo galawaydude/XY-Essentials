@@ -75,6 +75,7 @@ svg {
 
 .loader-container {
     /* background-color: rgb(0, 0, 17); */
+    background-color: var(--pri);
     width: 100vw;
     height: 100vh;
     z-index: 100000000000000000000000000000;
@@ -82,14 +83,14 @@ svg {
 
 .site-name {
     text-anchor: middle;
-    stroke: var(--pri);
+    stroke: var(--m1);
     animation: 2s infinite alternate animate-stroke;
 }
 
 @keyframes animate-stroke {
     0% {
         fill: transparent;
-        stroke: var(--pri);
+        stroke: var(--m1);
         stroke-width: 1;
         stroke-dashoffset: 25%;
         stroke-dasharray: 0 32%;
@@ -97,13 +98,13 @@ svg {
 
     50% {
         fill: transparent;
-        stroke: var(--pri);
+        stroke: var(--m1);
         stroke-width: 3;
     }
 
     80%,
     100% {
-        fill: var(--pri);
+        fill: var(--m1);
         stroke: transparent;
         stroke-width: 0%;
         stroke-dashoffset: -25%;
