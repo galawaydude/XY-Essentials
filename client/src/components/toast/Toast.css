@@ -1,0 +1,27 @@
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000000; /* Higher than navbar's z-index */
+}
+
+.custom-toast {
+  min-width: 250px;
+  background-color: var(--m1);
+  border-left: 4px solid var(--pri);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-toast .toast-header {
+  background-color: var(--m1);
+  color: var(--pri);
+  border-bottom: 1px solid rgba(10, 72, 52, 0.1);
+}
+
+.custom-toast .toast-body {
+  color: var(--m3);
+}
+
+.custom-toast .btn-close {
+  color: var(--pri);
+}
