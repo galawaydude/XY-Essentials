@@ -106,6 +106,7 @@ const Cart = () => {
     return (
         <div className="cart">
             <div className="con2">
+            <div className="section_left_title">Cart</div>
                 {cartItems.length === 0 ? (
                     <div className="empty-cart-message">
                         <h2>It’s quiet in here, shall we change that?</h2>
