@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import './cart.css';
-import CartProductCard from '../../components/cartproductcard/CartProductCard';
 import { useNavigate } from 'react-router-dom';
 import eci from '../../assets/undraw_empty-cart_574u.svg';
+import './cart.css';
+import CartProductCard from '../../components/cartproductcard/CartProductCard';
 
 const Cart = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -121,48 +121,35 @@ const Cart = () => {
                         </button>
                     </div>
                 ) : (
-                    <>
-                        <div className="home-pro-head con2">
-                            <div className="section_left_title">Shopping Cart</div>
-                            <div className="items-count">{cartItems.length} items in your bag.</div>
-                        </div>
-                        <div className="cart-product-summary">
-                            {/* Rest of your existing cart content */}
-                            <div className="cart-products-con">
-                                <div className="cart-header">
-                                    <span>Product</span>
-                                    <span>Price</span>
-                                    <span>Quantity</span>
-                                    <span>Total Price</span>
+                    <div className="cart-product-summary">
+                        <div className="cart-products-con">
+                            {cartItems.map((item) => (
+                                <div key={item.product._id} className="cpc">
+                                    <input
+                                        type="checkbox"
+                                        className="cart-item-checkbox"
+                                        checked={!!selectedItems[item.product._id]}
+                                        onChange={() => handleCheckboxChange(item.product._id)}
+                                    />
+                                    <CartProductCard
+                                        product={item.product}
+                                        quantity={item.quantity}
+                                        onUpdateQuantity={updateQuantity}
+                                        onRemoveFromCart={removeFromCart}
+                                    />
                                 </div>
-                                {cartItems.map((item) => (
-                                    <div key={item.product._id} className="cart-item-container">
-                                        {/* <input
-                                            type="checkbox"
-                                            className="cart-item-checkbox"
-                                            checked={!!selectedItems[item.product._id]}
-                                            onChange={() => handleCheckboxChange(item.product._id)}
-                                        /> */}
-                                        <CartProductCard
-                                            product={item.product}
-                                            quantity={item.quantity}
-                                            onUpdateQuantity={updateQuantity}
-                                            onRemoveFromCart={removeFromCart}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="cart-summary-con">
-                                <h3>Cart Total</h3>
-                                <div className="total-con">
-                                    <span className='cart-price'>₹{calculateSubtotal().toFixed(2)}</span>
-                                </div>
-                                <button className="checkout-button" onClick={handleCheckout}>
-                                    Checkout
-                                </button>
-                            </div>
+                            ))}
                         </div>
-                    </>
+                        <div className="cart-summary-con">
+                            <h3>Cart Total</h3>
+                            <div className="total-con">
+                                <span className='cart-price'>₹{calculateSubtotal().toFixed(2)}</span>
+                            </div>
+                            <button className="checkout-button" onClick={handleCheckout}>
+                                Checkout
+                            </button>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>

@@ -108,7 +108,7 @@
   min-width: 120px;
 }
 
-.checkout-con button {
+.checkout-con.button {
   background-color: #0A4834;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -120,7 +120,7 @@
   overflow: hidden;
 }
 
-.checkout-con button:hover {
+.checkout-con.button:hover {
   background-color: #0d5f43;
 }
 

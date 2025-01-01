@@ -13,7 +13,7 @@ const YourOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itlOrderDetails, setItlOrderDetails] = useState(null);
   const [currentOrders, setCurrentOrders] = useState([]);
-  const ordersPerPage = 10;
+  const ordersPerPage = 5;
 
   useEffect(() => {
     const fetchOrders = async () => {

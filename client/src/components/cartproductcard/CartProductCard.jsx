@@ -21,40 +21,45 @@ const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart
     return (
         <div className="cart-product-card">
             <div className="cart-product-details">
-                {/* Product Image */}
-                <div className="cp-img">
-                    <img src={product.images[0]} alt={product.name} />
+                <div className="cp-left">
+                    <div className="cp-img-wrapper">
+                        <img src={product.images[0]} alt={product.name} />
+                    </div>
                 </div>
 
-                {/* Product Info Container */}
-                <div className="cp-info-container">
-                    {/* Price and Name Section */}
-                    <div className="cp-main-info">
-                        <div className="cp-name">{product.name}</div>
-                        <div className="cp-attributes">
-                            {product.color && <div>Color: {product.color}</div>}
-                            {product.size && <div>Size: {product.size}</div>}
+                <div className="cp-right">
+                    <div className="cp-header">
+                        <div className="cp-title-section">
+                            <h3>{product.name}</h3>
+                            <div className="cp-attributes">
+                                {product.color && <span>Color: {product.color}</span>}
+                                {product.size && <span>Size: {product.size}</span>}
+                            </div>
                         </div>
+                        <button className="cp-remove" onClick={handleDelete}>
+                            <i className="fas fa-trash"></i>
+                        </button>
                     </div>
 
-                    {/* Price, Quantity, and Total Section */}
-                    <div className="cp-right-section">
-                        <div className="cp-price-desktop">₹{product.price}</div>
+                    <div className="cp-footer">
+                        <div className="cp-price">
+                            <span className="price-label">Price:</span>
+                            <span className="price-amount">₹{product.price}</span>
+                        </div>
 
-                        <div className="cp-controls">
-                            <div className="cp-counter">
-                                <span onClick={handleDecrease}>−</span>
+                        <div className="cp-quantity">
+                            <span className="qty-label">Quantity:</span>
+                            <div className="qty-controls">
+                                <button onClick={handleDecrease}>−</button>
                                 <span>{quantity}</span>
-                                <span onClick={handleIncrease}>+</span>
+                                <button onClick={handleIncrease}>+</button>
                             </div>
                         </div>
 
-                        <div className="cp-total-section">
-                            <div className="total-price">₹{totalPrice.toFixed(2)}</div>
+                        <div className="cp-total">
+                            <span className="total-label">Total:</span>
+                            <span className="total-amount">₹{totalPrice.toFixed(2)}</span>
                         </div>
-                        <span className="cp-dlt-btn" onClick={handleDelete}>
-                            <i className="fas fa-trash-alt"></i>
-                        </span>
                     </div>
                 </div>
             </div>
