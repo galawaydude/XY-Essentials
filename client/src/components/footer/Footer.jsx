@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/(SVG)xy essentials_final.svg';
 import './Footer.css';
 
 const Footer = () => {
   return (
     <footer className="footer-main">
+      
       <div className="footer-content">
         {/* Subscription Section */}
-        <div className="subscribe-section">
+        {/* <div className="subscribe-section">
           <h2>Register Now So You Don't Miss Our Programs</h2>
           <div className="subscribe-form">
             <input 
@@ -17,6 +19,9 @@ const Footer = () => {
             />
             <button className="subscribe-btn">Subscribe Now</button>
           </div>
+        </div> */}
+        <div className='ft-logo'>
+          <img src={logo} alt="XY Essentials Logo" />
         </div>
 
         {/* Navigation Links */}
