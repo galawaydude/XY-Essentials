@@ -5,11 +5,10 @@ const cloudinary = require('../config/cloudinaryConfig.js'); // Adjust path as n
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'clubs', // Specify the folder in Cloudinary
+        folder: 'clubs', 
         allowed_formats: ['jpg', 'png', 'jpeg', 'heic'], 
     },
 });
 
 // Create the Multer instance
 exports.upload = multer({ storage: storage });
-
