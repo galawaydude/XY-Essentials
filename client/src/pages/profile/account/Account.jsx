@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AddressModal from '../../../components/address/AddressModal';
+import AddressModal from '../../../components/newaddress/AddressModal';  // Fixed import
+import EditAddressModal from '../../../components/editaddress/editaddressModal';
 import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
 
@@ -10,8 +11,9 @@ const Account = () => {
     const [addresses, setAddresses] = useState([]);
     const [orders, setOrders] = useState([]);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editAddressIndex, setEditAddressIndex] = useState(null);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [addressToEdit, setAddressToEdit] = useState(null);
     const [defaultAddressId, setDefaultAddressId] = useState(null);
 
     useEffect(() => {
@@ -50,15 +52,17 @@ const Account = () => {
     }, []);
 
     const handleAddAddress = (newAddress) => {
-        if (editAddressIndex !== null) {
-            const updatedAddresses = [...addresses];
-            updatedAddresses[editAddressIndex] = newAddress;
-            setAddresses(updatedAddresses);
-        } else {
-            setAddresses([...addresses, newAddress]);
-        }
-        setIsModalOpen(false);
-        setEditAddressIndex(null);
+        setAddresses([...addresses, newAddress]);
+        setIsAddModalOpen(false);
+    };
+
+    const handleEditAddress = (updatedAddress) => {
+        const updatedAddresses = addresses.map(addr => 
+            addr._id === updatedAddress._id ? updatedAddress : addr
+        );
+        setAddresses(updatedAddresses);
+        setIsEditModalOpen(false);
+        setAddressToEdit(null);
     };
 
     const handleSetDefault = async (addressId) => {
@@ -80,13 +84,12 @@ const Account = () => {
     };
 
     const openAddModal = () => {
-        setIsModalOpen(true);
-        setEditAddressIndex(null);
+        setIsAddModalOpen(true);
     };
 
-    const openEditModal = (index) => {
-        setEditAddressIndex(index);
-        setIsModalOpen(true);
+    const openEditModal = (address) => {
+        setAddressToEdit(address);
+        setIsEditModalOpen(true);
     };
 
     const handleProfileUpdate = (updatedProfile) => {
@@ -134,10 +137,10 @@ const Account = () => {
                 <h2 className="acc-section-title">Saved Addresses</h2>
                 <ul className="acc-addresses-list">
                     {addresses.length > 0 ? (
-                        addresses.map((address, index) => (
+                        addresses.map((address) => (
                             <li
                                 className={`acc-address-item ${address._id === defaultAddressId ? 'default-address' : ''}`}
-                                key={index}
+                                key={address._id}
                             >
                                 <div className="acc-address-content">
                                     <div className="acc-address-text">
@@ -157,7 +160,7 @@ const Account = () => {
                                         )}
                                         <button
                                             className="acc-btn acc-btn-edit-address"
-                                            onClick={() => openEditModal(index)}
+                                            onClick={() => openEditModal(address)}
                                             aria-label="Edit address"
                                         >
                                             <i className="fa-solid fa-pen-to-square"></i>
@@ -183,12 +186,22 @@ const Account = () => {
                 currentUser={profile}
             />
 
-            {/* Modal for Adding/Editing Address */}
+            {/* Add Address Modal */}
             <AddressModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
                 onSave={handleAddAddress}
-                initialAddress={editAddressIndex !== null ? addresses[editAddressIndex] : null}
+            />
+
+            {/* Edit Address Modal */}
+            <EditAddressModal
+                isOpen={isEditModalOpen}
+                onClose={() => {
+                    setIsEditModalOpen(false);
+                    setAddressToEdit(null);
+                }}
+                onSave={handleEditAddress}
+                address={addressToEdit}
             />
         </div>
     );

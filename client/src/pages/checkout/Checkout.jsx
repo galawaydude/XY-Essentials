@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './checkout.css';
-import AddressModal from '../../components/address/AddressModal';
+import AddressModal from '../../components/newaddress/AddressModal';
 
 const Checkout = () => {
   const apiUrl = import.meta.env.VITE_API_URL;

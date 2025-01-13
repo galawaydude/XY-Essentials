@@ -98,6 +98,19 @@
     font-size: 1rem;
   }
   
+  /* Footer Logo */
+  .ft-logo {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2rem;
+  }
+  
+  .ft-logo img {
+    filter: brightness(0) invert(1);
+    height: 60px;
+    width: auto;
+  }
+  
   /* Responsive Design */
   @media (max-width: 768px) {
     .subscribe-form {
@@ -127,5 +140,13 @@
     
     .social-links {
       margin-top: 1rem;
+    }
+    
+    .ft-logo {
+      justify-content: center;
+    }
+    
+    .ft-logo img {
+      height: 50px;
     }
   }

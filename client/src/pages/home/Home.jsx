@@ -3,6 +3,7 @@ import ProductCard from '../../components/productcard/ProductCard';
 import BlogCard from '../../components/blogcard/BlogCard';
 import { Link } from 'react-router-dom';
 import './home.css';
+import heroimg from '../../assets/heroimg.png';
 import PreLoader from '../../components/preloader/PreLoader';
 
 const Home = () => {
@@ -81,7 +82,13 @@ const Home = () => {
   return (
     <div className='home'>
       <div className="hero section con1 swipe-up">
-        <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+        <img src={heroimg} alt="Hero background" />
+        <div className="hero-content">
+          <h1 className='hero-heading'>Lorem ipsum dolor sit amet.
+          </h1>
+          <p className='hero-subtitle'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <Link to='/shop' className='hero-btn'>Explore Collection</Link>
+        </div>
       </div>
       <div className="about section con1 swipe-up">
         <div className="about-head">

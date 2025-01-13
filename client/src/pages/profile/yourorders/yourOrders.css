@@ -107,6 +107,9 @@
 }
 
 .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 2.3rem 0 1.5rem 0;
 }
 
@@ -115,7 +118,30 @@
   margin: 0 0.25rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  border: 1px solid #0A4834;
+  background-color: white;
+  color: #0A4834;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
+
+.pagination button:hover {
+  background-color: #0A4834;
+  color: white;
+}
+
+.pagination button:disabled {
+  background-color: #f0f0f0;
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: var(--pri);
+  color: white;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .ol-order-card {
