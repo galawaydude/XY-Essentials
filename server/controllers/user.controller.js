@@ -84,7 +84,7 @@ const requestPasswordReset = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
   .populate('orders')
-  .populate('addresses'); 
+  .populate('addresses')
   res.json(users);
 });
 

@@ -27,6 +27,23 @@ const getCart = asyncHandler(async (req, res) => {
     }
 });
 
+const getCarts = asyncHandler(async (req, res) => {
+    try {
+        const carts = await Cart.find({})
+            .populate('cartItems.product')
+            .populate('user');
+
+        if (carts) {
+            res.json(carts);
+        } else {
+            res.status(404).json({ message: 'Carts not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching carts:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 // Add an item to the cart
 const addToCart = asyncHandler(async (req, res) => {
     try {
@@ -187,6 +204,7 @@ const clearCart = asyncHandler(async (req, res) => {
 
 module.exports = {
     getCart,
+    getCarts,
     addToCart,
     removeCartItem,
     updateCartItem,

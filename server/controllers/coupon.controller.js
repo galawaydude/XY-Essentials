@@ -67,21 +67,37 @@ const createCoupon = asyncHandler(async (req, res) => {
 
 // Update a coupon (Admin only)
 const updateCoupon = asyncHandler(async (req, res) => {
-  const { code, discount, expiresAt } = req.body;
+  const {
+    code,
+    discountType,
+    discountValue,
+    expirationDate,
+    minimumPurchaseAmount,
+    maxDiscountAmount,
+    usageLimit,
+    isActive
+  } = req.body;
 
   const coupon = await Coupon.findById(req.params.id);
-
-  if (coupon) {
-    coupon.code = code || coupon.code;
-    coupon.discount = discount || coupon.discount;
-    coupon.expiresAt = expiresAt || coupon.expiresAt;
-
-    const updatedCoupon = await coupon.save();
-    res.json(updatedCoupon);
-  } else {
+  if (!coupon) {
     res.status(404);
     throw new Error('Coupon not found');
   }
+
+  // Use undefined checks to properly handle zero or empty string
+  if (code !== undefined) coupon.code = code;
+  if (discountType !== undefined) coupon.discountType = discountType;
+  if (discountValue !== undefined) coupon.discountValue = discountValue;
+  if (expirationDate !== undefined) coupon.expirationDate = expirationDate;
+  if (minimumPurchaseAmount !== undefined) 
+    coupon.minimumPurchaseAmount = minimumPurchaseAmount;
+  if (maxDiscountAmount !== undefined) 
+    coupon.maxDiscountAmount = maxDiscountAmount;
+  if (usageLimit !== undefined) coupon.usageLimit = usageLimit;
+  if (typeof isActive !== 'undefined') coupon.isActive = isActive;
+
+  const updatedCoupon = await coupon.save();
+  res.json(updatedCoupon);
 });
 
 
