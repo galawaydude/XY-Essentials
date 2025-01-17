@@ -265,11 +265,11 @@
 }
 
 /* Adjust checkbox column width */
-.inventory-table th:first-child,
+/* .inventory-table th:first-child,
 .inventory-table td:first-child {
     width: 48px;
     text-align: center;
-}
+} */
 
 /* Product info column width */
 .product-info {
