@@ -121,13 +121,13 @@ const Inventory = () => {
                 <table className="inventory-table">
                     <thead>
                         <tr>
-                            <th>
+                            {/* <th>
                                 <input
                                     type="checkbox"
                                     onChange={handleSelectAll}
                                     checked={selectedProducts.length === filteredProducts.length}
                                 />
-                            </th>
+                            </th> */}
                             <th onClick={() => handleSort('name')}>
                                 Product Info <FaSort />
                             </th>
@@ -147,13 +147,13 @@ const Inventory = () => {
                     <tbody>
                         {filteredProducts.map((product) => (
                             <tr key={product._id} className={product.stock < 10 ? 'low-stock' : ''}>
-                                <td>
+                                {/* <td>
                                     <input
                                         type="checkbox"
                                         checked={selectedProducts.includes(product._id)}
                                         onChange={() => handleSelectProduct(product._id)}
                                     />
-                                </td>
+                                </td> */}
                                 <td className="product-info">
                                     <img src={product.images[0]} alt={product.name} />
                                     <div>
