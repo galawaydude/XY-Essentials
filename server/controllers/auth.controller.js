@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model.js');
 const axios = require('axios');
 const emailSender = require('../utils/emailSender');
-const {sendOTP, generateOTP} = require('../services/otpService.js');
+const { sendOTP, generateOTP } = require('../services/otpService.js');
 const generateToken = require('../utils/generateToken.js')
 const bcrypt = require('bcrypt');
 
@@ -199,7 +199,7 @@ const authUser = async (req, res) => {
 
         if (user) {
             // Log the stored hashed password for comparison
-            console.log('Stored password (hashed):', user.password); 
+            console.log('Stored password (hashed):', user.password);
 
             const isMatch = await bcrypt.compare(password.trim(), user.password);
             console.log('Password comparison result:', isMatch);
@@ -370,7 +370,7 @@ const adminGoogleLogin = asyncHandler(async (req, res) => {
         // Find the user in the database by email
         let user = await User.findOne({ email });
         console.log('Found user by email:', user ? { id: user._id, email: user.email } : 'No user found');  // Debugging: log the user search result
-        
+
         if (!user) {
             // If user doesn't exist, create a new one (optional, based on your use case)
             console.log('Creating new user:', email);
@@ -428,6 +428,24 @@ const adminGoogleLogin = asyncHandler(async (req, res) => {
     }
 });
 
+const verifyAuth = (req, res) => {
+    const user = req.user;
+
+    if (user) {
+        res.json({
+            success: true,
+            message: 'User authenticated successfully',
+            user,
+        });
+        console.log('User authenticated:', { id: user._id, email: user.email });
+    } else {
+        res.status(401).json({
+            success: false,
+            message: 'User not authenticated',
+        });
+        console.log('User not authenticated');
+    }
+};
 
 module.exports = {
     registerUser,
@@ -437,4 +455,5 @@ module.exports = {
     adminGoogleLogin,
     sendOTP,
     verifyOTP,
+    verifyAuth
 };

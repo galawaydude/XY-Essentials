@@ -150,10 +150,11 @@ const getOrderById = asyncHandler(async (req, res) => {
 
 // Update waybill number 
 const updateWaybillNumber = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const order = await Order.findById(req.params.id);
 
   if (order) {
-    order.waybillNumber = req.body.waybillNumber || order.waybillNumber;
+    order.waybill = req.body.waybill || order.waybill;
     const updatedOrder = await order.save();
     res.json(updatedOrder);
   } else {

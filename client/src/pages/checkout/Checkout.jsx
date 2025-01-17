@@ -16,7 +16,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
   // const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(50);
   const [addresses, setAddresses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAddressIndex, setEditAddressIndex] = useState(null);
@@ -243,7 +243,7 @@ const Checkout = () => {
   // };
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  const totalAmount = totalItems + deliveryCharge - discount;
+  const totalAmount = totalItems - discount;
 
   const handleApplyCoupon = async () => {
     try {
@@ -263,12 +263,28 @@ const Checkout = () => {
 
       const { discountAmount } = await response.json();
       setDiscount(discountAmount);
-      alert(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
+      // alert(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
       console.error('Error applying coupon:', error);
     }
   };
+  useEffect(() => {
+    handleApplyCoupon();
+  }, [couponCode]);
+
+
+  // useEffect(() => {
+  //   if (paymentMethod === 'razorpay') {
+  //     // Apply PREPAY50 coupon
+  //     const couponCode = 'PREPAY50';
+  //     handleApplyCoupon(couponCode);
+  //   } else {
+  //     // Remove coupon when switching back to COD
+  //     setCouponCode(null);
+  //     setDiscount(0);
+  //   }
+  // }, [paymentMethod, handleApplyCoupon]);
 
   const handlePayment = async () => {
     setIsPlacingOrder(true);
@@ -367,7 +383,7 @@ const Checkout = () => {
                   shipping_charges: "",
                   giftwrap_charges: "",
                   transaction_charges: "",
-                  total_discount: "",
+                  total_discount: discount,
                   first_attemp_discount: "",
                   cod_amount: "",
                   payment_mode: paymentMethod,
@@ -404,8 +420,9 @@ const Checkout = () => {
             const result = await response.json();
             console.log("Result:", result);
 
-            const waybill = result.data[0]? result.data[0].waybill : "";
+            const waybill = Object.values(result.data)[0]?.waybill || "";
             console.log("Waybill:", waybill);
+            
             const responsewb = await fetch(`http://localhost:5000/api/orders/${createdOrder._id}/waybill`, {
               method: "PUT",
               credentials: "include",
@@ -432,7 +449,8 @@ const Checkout = () => {
 
 
         for (const item of checkoutItems) {
-          await fetch('http://localhost:5000/api/products/update-stock', {
+          console.log(`Updating stock for product ${item.product.name} by ${item.quantity}`);
+          const response = await fetch('http://localhost:5000/api/products/update-stock', {
             method: 'PUT',
             credentials: 'include',
             headers: {
@@ -443,6 +461,8 @@ const Checkout = () => {
               quantity: item.quantity,
             }),
           });
+          const data = await response.json();
+          console.log(`Updated stock for product ${item.product._id}: ${data.updatedStock}`);
         }
 
         for (const item of checkoutItems) {
@@ -641,7 +661,7 @@ const Checkout = () => {
                   checked={paymentMethod === 'razorpay'}
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
-                    setDiscount(0);
+                    setDiscount(50);
                   }}
                 /> UPI/Cards/NetBanking
               </label>
@@ -715,7 +735,7 @@ const Checkout = () => {
           </div>
           <div className="summary-row">
             <p>Shipping Fee:</p>
-            <p><span className="inr">₹</span><strong>{deliveryCharge.toFixed(2)}</strong></p>
+            <p><span className="inr">₹</span><strong>0.00</strong></p>
           </div>
           <div className="summary-row">
             <p>Discount:</p>

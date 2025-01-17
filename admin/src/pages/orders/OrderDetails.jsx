@@ -126,7 +126,7 @@ const OrderDetails = () => {
                                     onChange={(e) => setUpdatedStatus(e.target.value)}
                                     className="status-select"
                                 >
-                                    <option value="Not yet shipped">Not yet shipped</option>
+                                    <option value="Pending">Pending</option>
                                     <option value="Processing">Processing</option>
                                     <option value="Shipped">Shipped</option>
                                     <option value="Delivered">Delivered</option>

@@ -25,6 +25,66 @@ const OrderTable = ({ orders, refreshOrders }) => {
       : a[sortConfig.key] < b[sortConfig.key] ? 1 : -1;
   });
 
+  const callApi = async (type, awbNumber) => {
+    if (!awbNumber) {
+      alert('No waybill number available for this order');
+      return;
+    }
+  
+    const urlMap = {
+      invoice: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/invoice.json',
+      manifest: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/manifest.json',
+      label: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/label.json',
+    };
+  
+    try {
+      const response = await fetch(urlMap[type], {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            awb_numbers: awbNumber,
+            access_token: import.meta.env.VITE_ITL_ACCESS_TOKEN,
+            secret_key: import.meta.env.VITE_ITL_SECRET_KEY,
+          },
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const contentType = response.headers.get('Content-Type');
+  
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        throw new Error(`Unexpected response type. Response: ${textResponse}`);
+      }
+  
+      const data = await response.json();
+  
+      if (!data || !data.file_name) {
+        throw new Error('Invalid response format: file_name is missing.');
+      }
+  
+      // Download file
+      const link = document.createElement('a');
+      link.href = data.file_name;
+      link.download = `${type}_${awbNumber}.pdf`;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  
+    } catch (error) {
+      console.error(`${type} Error:`, error);
+      alert(`Failed to generate ${type}. Error: ${error.message}`);
+    }
+  };
+  
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
@@ -108,13 +168,22 @@ const OrderTable = ({ orders, refreshOrders }) => {
                     <Link to={`/admin/orders/${order._id}`} className="btn btn-sm btn-outline-success">
                       View
                     </Link>
-                    <button className="btn btn-sm btn-outline-success">
+                    <button
+                      onClick={() => callApi('invoice', order.waybill)}
+                      className="btn btn-sm btn-outline-success"
+                    >
                       Invoice
                     </button>
-                    <button className="btn btn-sm btn-outline-success">
+                    <button
+                      onClick={() => callApi('manifest', order.waybill)}
+                      className="btn btn-sm btn-outline-success"
+                    >
                       Manifest
                     </button>
-                    <button className="btn btn-sm btn-outline-success">
+                    <button
+                      onClick={() => callApi('label', order.waybill)}
+                      className="btn btn-sm btn-outline-success"
+                    >
                       Label
                     </button>
                   </div>

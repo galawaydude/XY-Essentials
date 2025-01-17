@@ -400,7 +400,7 @@ const ProductDetails = () => {
                                 </div>
                             </div>
 
-                            {deliveryCharges && deliveryPeriod && (
+                            {/* {deliveryCharges && deliveryPeriod && (
                                 <div className="pd-delivery-info">
                                     <div className="pd-delivery-charge">
                                         <span>Delivery Charge: </span>
@@ -411,7 +411,7 @@ const ProductDetails = () => {
                                         <span>{deliveryPeriod}</span>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
 
                             {/* <div className="pd-service-features">
                                 <div className="pd-sf-item">

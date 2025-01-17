@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema({
   shippingFee: { type: Number, required: true },
   finalPrice: { type: Number, required: true },
   waybill: { type: Number },
-  shippingStatus: { type: String, required: true, default: 'Not yet shipped' },
+  shippingStatus: { type: String, required: true, default: 'Pending' },
   deliveredAt: { type: Date },
 }, { timestamps: true });
 

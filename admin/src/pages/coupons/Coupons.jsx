@@ -68,8 +68,8 @@ const Coupons = () => {
     };
 
     const handleAddCoupon = async () => {
-        // Logic to add the new coupon (e.g., API call)
         try {
+            console.log('Adding coupon:', newCoupon);
             const response = await fetch('http://localhost:5000/api/coupons/', {
                 method: 'POST',
                 credentials: 'include',
@@ -82,6 +82,7 @@ const Coupons = () => {
                 throw new Error('Failed to add coupon');
             }
             const newCouponEntry = await response.json();
+            console.log('Added coupon:', newCouponEntry);
             setCoupons([...coupons, newCouponEntry]);
             setModalVisible(false);
             setNewCoupon({
@@ -95,6 +96,7 @@ const Coupons = () => {
                 isActive: true,
             });
         } catch (error) {
+            console.error('Error adding coupon:', error);
             setError(error.message);
         }
     };

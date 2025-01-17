@@ -111,19 +111,14 @@ const updateProductStock = asyncHandler(async (req, res) => {
           return res.status(404).json({ message: 'Product not found' });
       }
 
-      // Check if there is enough stock
-      if (product.stock >= quantity) {
-          product.stock -= quantity;
+      product.stock -= quantity;
 
-          // Initialize ordered if it doesn't exist
-          product.ordered = product.ordered || 0; 
-          product.ordered += quantity; 
+      // Initialize ordered if it doesn't exist
+      product.ordered = product.ordered || 0;
+      product.ordered += quantity;
 
-          await product.save();
-          res.status(200).json({ message: 'Stock updated successfully' });
-      } else {
-          res.status(400).json({ message: 'Not enough stock available' });
-      }
+      await product.save();
+      res.status(200).json({ message: 'Stock updated successfully' });
   } catch (error) {
       console.error('Error updating stock:', error);
       res.status(500).json({ message: 'Server error', error: error.message });
