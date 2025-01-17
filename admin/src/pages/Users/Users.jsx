@@ -93,11 +93,11 @@ const Users = () => {
                             onChange={handleSearch}
                         />
                     </div>
-                    <select className="filter-select" onChange={handleFilter} value={filter}>
+                    {/* <select className="filter-select" onChange={handleFilter} value={filter}>
                         <option value="all">All Users</option>
                         <option value="active">Active</option>
                         <option value="blocked">Blocked</option>
-                    </select>
+                    </select> */}
                 </div>
             </div>
 
@@ -109,7 +109,7 @@ const Users = () => {
                             <th onClick={() => handleSort('mobileNumber')}>Mobile <FaSort /></th>
                             <th onClick={() => handleSort('email')}>Email <FaSort /></th>
                             <th onClick={() => handleSort('orders')}>Orders <FaSort /></th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -130,11 +130,11 @@ const Users = () => {
                                         {user.orders?.length || 0}
                                     </span>
                                 </td>
-                                <td>
+                                {/* <td>
                                     <span className={`status-badge ${user.isActive ? 'active' : 'blocked'}`}>
                                         {user.isActive ? 'Active' : 'Blocked'}
                                     </span>
-                                </td>
+                                </td> */}
                                 <td className="actions-cell">
                                     <div className="action-buttons">
                                         <Link
@@ -144,13 +144,13 @@ const Users = () => {
                                         >
                                             <FaEye />
                                         </Link>
-                                        <button
+                                        {/* <button
                                             className={`action-btn ${user.isActive ? 'block' : 'unblock'}`}
                                             onClick={() => handleUserAction(user.isActive ? 'block' : 'unblock', user._id)}
                                             title={user.isActive ? 'Block User' : 'Unblock User'}
                                         >
                                             {user.isActive ? <FaLock /> : <FaUnlock />}
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
                             </tr>

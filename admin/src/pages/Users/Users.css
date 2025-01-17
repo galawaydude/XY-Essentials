@@ -1,7 +1,7 @@
+
 .users-container {
     padding: 20px;
-    background: var(--m1);
-    color: var(--m5);
+    background: #f8f9fa;
 }
 
 .users-header {
@@ -9,8 +9,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    border-bottom: 2px solid var(--pri);
-    padding-bottom: 1rem;
 }
 
 /* Reuse inventory styles for common elements */
@@ -28,11 +26,9 @@
 .search-box input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid var(--m2);
+    border: 1px solid #dee2e6;
     border-radius: 0.5rem;
     font-size: 0.9rem;
-    background: var(--m1);
-    color: var(--m5);
 }
 
 .search-icon {
@@ -40,21 +36,20 @@
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--m3);
+    color: #6c757d;
 }
 
 .filter-select {
     padding: 0.75rem;
-    border: 1px solid var(--m2);
+    border: 1px solid #dee2e6;
     border-radius: 0.5rem;
-    background: var(--m1);
-    color: var(--m5);
+    background: white;
     min-width: 150px;
 }
 
 /* Table styles */
 .users-table-container {
-    background: var(--m1);
+    background: white;
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     overflow: auto;
@@ -67,18 +62,17 @@
 }
 
 .users-table th {
-    background: var(--m1);
+    background: #f8f9fa;
     padding: 1rem;
     text-align: left;
     font-weight: 600;
-    color: var(--m5);
+    color: #495057;
     cursor: pointer;
-    border-bottom: 2px solid var(--pri);
 }
 
 .users-table td {
     padding: 1rem;
-    border-bottom: 1px solid var(--m2);
+    border-bottom: 1px solid #dee2e6;
     vertical-align: middle;
 }
 
@@ -98,20 +92,18 @@
 .user-info h4 {
     margin: 0;
     font-size: 0.9rem;
-    color: var(--m5);
 }
 
 .user-info span {
-    color: var(--m3);
+    color: #6c757d;
     font-size: 0.8rem;
 }
 
 .orders-badge {
-    background: var(--sec);
+    background: #e9ecef;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     font-weight: 500;
-    color: var(--m1);
 }
 
 .status-badge {
@@ -122,13 +114,13 @@
 }
 
 .status-badge.active {
-    background: var(--gld);
-    color: var(--m1);
+    background: #d1e7dd;
+    color: #0f5132;
 }
 
 .status-badge.blocked {
-    background: var(--pri);
-    color: var(--m1);
+    background: #f8d7da;
+    color: #842029;
 }
 
 .action-buttons {
@@ -140,26 +132,25 @@
     padding: 0.5rem;
     border: none;
     border-radius: 0.25rem;
-    background: var(--m3);
+    background: transparent;
     cursor: pointer;
     transition: all 0.2s;
-    color: var(--m1);
 }
 
 .action-btn:hover {
-    background: var(--pri);
+    background: #f8f9fa;
 }
 
 .action-btn.view:hover {
-    color: var(--sec);
+    color: #0d6efd;
 }
 
 .action-btn.block:hover {
-    color: var(--pri);
+    color: #dc3545;
 }
 
 .action-btn.unblock:hover {
-    color: var(--gld);
+    color: #198754;
 }
 
 /* Responsive styles */
