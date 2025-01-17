@@ -17,6 +17,10 @@ const Sidebar = () => {
     const [expandedGroups, setExpandedGroups] = useState([
         'Overview',
         'Orders',
+        'Products',
+        'Blogs',
+        'Marketing',
+        'Administration'
     ]);
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);

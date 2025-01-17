@@ -1,0 +1,41 @@
+.broadcast-container {
+    padding: 2rem;
+    background: #f8f9fa;
+}
+.broadcast-container h1 {
+    font-size: 2rem;
+    padding-bottom: 1rem;
+}
+
+.broadcast-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.broadcast-controls select,
+.broadcast-controls button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.broadcast-error {
+    margin: 1rem 0;
+    color: #dc3545;
+    background: #f8d7da;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.broadcast-csv {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    min-height: 80px;
+}
