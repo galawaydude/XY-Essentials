@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaPlus, FaCopy, FaEdit, FaTrash, FaFilter } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import './coupons.css';
-import { Link } from 'react-router-dom';
-import CouponCard from '../../components/couponcard/CouponCard';
 
 
 const Coupons = () => {

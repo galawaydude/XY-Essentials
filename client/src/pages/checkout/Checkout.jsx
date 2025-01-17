@@ -435,7 +435,7 @@ const Checkout = () => {
             console.log("Updated Order:", responsewbjson);
           } catch (error) {
             console.error("Error:", error);
-            alert("Failed to create order at ITL!");
+            // alert("Failed to create order at ITL!");
           }
 
           // Save the ITL awb_number in the order schema as waybill
@@ -471,7 +471,7 @@ const Checkout = () => {
             credentials: 'include',
           });
         }
-        alert("Order placed successfully with Cash on Delivery!");
+        // alert("Order placed successfully with Cash on Delivery!");
         navigate(`/orders/${createdOrder._id}`);
       } catch (error) {
         console.error("Error during Cash on Delivery processing:", error);
@@ -529,7 +529,7 @@ const Checkout = () => {
               const errorText = await verifyResponse.text();
               throw new Error('Failed to save payment details: ' + errorText);
             }
-            alert("Payment Successful!");
+            // alert("Payment Successful!");
           } catch (error) {
             console.error("Error saving payment details:", error);
           }
@@ -578,7 +578,7 @@ const Checkout = () => {
             });
           }
 
-          alert("Order placed successfully with Cash on Delivery!");
+          // alert("Order placed successfully with Razorpay!");
           navigate(`/orders/${createdOrder._id}`);
         },
         prefill: {

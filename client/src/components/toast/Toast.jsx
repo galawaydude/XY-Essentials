@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Toast as BootstrapToast } from 'react-bootstrap';
 import './Toast.css';
 
-const Toast = ({ message, show, onClose }) => {
+const Toast = ({ action, message, show, onClose }) => {
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
@@ -21,7 +21,7 @@ const Toast = ({ message, show, onClose }) => {
         className="custom-toast"
       >
         <BootstrapToast.Header closeButton>
-          <strong className="me-auto">XY Essentials</strong>
+          <strong className="me-auto">{action}</strong>
         </BootstrapToast.Header>
         <BootstrapToast.Body>
           {message}
