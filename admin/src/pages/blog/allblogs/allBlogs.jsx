@@ -129,7 +129,7 @@ const Blogs = () => {
                                 <button onClick={() => handleDelete(blog._id)} className="delete-btn">
                                     <FaTrash />
                                 </button>
-                                <Link to={`/blogs/${blog._id}`} className="view-btn">
+                                <Link to={`${import.meta.env.VITE_REACT_CLIENT_URL}/blogs/${blog._id}`} className="view-btn">
                                     <FaEye />
                                 </Link>
                             </div>
