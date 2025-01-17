@@ -1,8 +1,7 @@
 .admin-order-details {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
+    gap: 1rem;
     min-height: 100vh;
 }
 
@@ -16,7 +15,6 @@
 
 .order-header {
     padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

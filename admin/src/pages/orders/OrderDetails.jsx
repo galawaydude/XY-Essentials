@@ -162,6 +162,10 @@ const OrderDetails = () => {
                             <span>Email:</span>
                             <strong>{order.user.email}</strong>
                         </div>
+                        <div className="info-item">
+                            <span>Phone:</span>
+                            <strong>{order.shippingAddress.phoneNumber}</strong>
+                        </div>
                     </div>
                 </div>
 
@@ -181,8 +185,16 @@ const OrderDetails = () => {
                     <h2><FaCreditCard /> Payment Information</h2>
                     <div className="info-grid">
                         <div className="info-item">
+                            <span>Total Amount:</span>
+                            <strong>₹{order.finalPrice}</strong>
+                        </div>
+                        <div className="info-item">
+                            <span>Discount:</span>
+                            <strong>₹{order.discount}</strong>
+                        </div>
+                        <div className="info-item">
                             <span>Payment Method:</span>
-                            <strong>{order.paymentMethod}</strong>
+                            <strong>{order.paymentMethod === 'cod' ? "Pay on Delivery" : "Razorpay"}</strong>
                         </div>
                         <div className="info-item">
                             <span>Payment Status:</span>
@@ -223,7 +235,7 @@ const OrderDetails = () => {
                 </table>
             </div>
 
-            <div className="order-summary">
+            {/* <div className="order-summary">
                 <div className="summary-item">
                     <span>Subtotal:</span>
                     <strong>₹{order.subtotal}</strong>
@@ -240,7 +252,7 @@ const OrderDetails = () => {
                     <span>Total:</span>
                     <strong>₹{order.finalPrice}</strong>
                 </div>
-            </div>
+            </div> */}
 
             {showStatusModal && (
                 <div className="modal">
