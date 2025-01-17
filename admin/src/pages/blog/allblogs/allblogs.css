@@ -134,7 +134,7 @@
 .blogs-container .blog-actions a {
     width: 35px;
     height: 35px;
-    display: flex;
+    display: inline-flex;  /* Changed from flex to inline-flex */
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -143,6 +143,8 @@
     color: #495057;
     cursor: pointer;
     transition: all 0.2s;
+    padding: 0;  /* Added to remove any default button padding */
+    text-decoration: none;  /* Added to ensure consistent styling */
 }
 
 .blogs-container .blog-actions .edit-btn:hover { background: #0d6efd; color: white; }

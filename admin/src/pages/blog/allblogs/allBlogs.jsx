@@ -124,13 +124,13 @@ const Blogs = () => {
                             <img src={blog.img} alt={blog.title} />
                             <div className="blog-actions">
                                 <Link to={`/admin/edit-blog/${blog._id}`} className="edit-btn">
-                                    <FaEdit />
+                                    <FaEdit size={16} />
                                 </Link>
                                 <button onClick={() => handleDelete(blog._id)} className="delete-btn">
-                                    <FaTrash />
+                                    <FaTrash size={16} />
                                 </button>
-                                <Link to={`${import.meta.env.VITE_REACT_CLIENT_URL}/blogs/${blog._id}`} className="view-btn">
-                                    <FaEye />
+                                <Link to={`/blogs/${blog._id}`} className="view-btn">
+                                    <FaEye size={16} />
                                 </Link>
                             </div>
                         </div>
