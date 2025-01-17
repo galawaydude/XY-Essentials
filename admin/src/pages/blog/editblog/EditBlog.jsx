@@ -22,7 +22,7 @@ const EditBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
           credentials: 'include'
         });
         if (!response.ok) throw new Error('Failed to fetch blog');
@@ -99,7 +99,7 @@ const EditBlog = () => {
         formDataToSend.append('currentImage', initialImage);
       }
 
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
         method: 'PUT',
         credentials: 'include',
         body: formDataToSend

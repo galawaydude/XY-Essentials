@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users/user');
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user`);
                 if (!response.ok) throw new Error('Failed to fetch user');
                 const data = await response.json();
                 setUser(data);

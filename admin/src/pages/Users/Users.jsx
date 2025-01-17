@@ -18,7 +18,7 @@ const Users = () => {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/users', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -47,7 +47,7 @@ const Users = () => {
     const handleUserAction = async (action, userId) => {
         try {
             const endpoint = action === 'block' ? 'block' : 'unblock';
-            await fetch(`http://localhost:5000/api/users/${userId}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userId}`, {
                 method: 'PUT',
                 credentials: 'include'
             });

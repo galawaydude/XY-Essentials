@@ -29,7 +29,7 @@ const Coupons = () => {
     useEffect(() => {
         const fetchCoupons = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/coupons/', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
@@ -50,7 +50,7 @@ const Coupons = () => {
     const handleDelete = async (id) => {
         try {
             // Send DELETE request to the API
-            const response = await fetch(`http://localhost:5000/api/coupons/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -71,7 +71,7 @@ const Coupons = () => {
     const handleAddCoupon = async () => {
         try {
             console.log('Adding coupon:', newCoupon);
-            const response = await fetch('http://localhost:5000/api/coupons/', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -121,7 +121,7 @@ const Coupons = () => {
 
     const handleUpdateCoupon = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/coupons/${selectedCouponId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/${selectedCouponId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

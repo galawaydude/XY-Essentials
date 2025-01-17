@@ -20,7 +20,7 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/products');
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
             const data = await response.json();
             setProducts(data);
         } catch (error) {
@@ -63,7 +63,7 @@ const Inventory = () => {
 
     const handleDelete = async () => {
         try {
-            await fetch(`http://localhost:5000/api/products/${productToDelete}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/products/${productToDelete}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

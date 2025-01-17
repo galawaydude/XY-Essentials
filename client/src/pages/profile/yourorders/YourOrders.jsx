@@ -18,7 +18,7 @@ const YourOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/users/user/orders', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/orders`, {
           credentials: 'include',
         });
         if (!response.ok) {

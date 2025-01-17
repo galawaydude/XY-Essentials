@@ -9,7 +9,7 @@ const Combo = () => {
   useEffect(() => {
     const fetchCombos = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/combos'); // Update with your correct endpoint
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/combos`); // Update with your correct endpoint
         if (response.ok) {
           const data = await response.json();
           setCombos(data);

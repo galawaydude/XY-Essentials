@@ -135,7 +135,7 @@ const AddProduct = () => {
 
         // Send the formData to the backend
         try {
-            const response = await fetch('http://localhost:5000/api/products', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData,

@@ -13,7 +13,7 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/users/profile', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
           credentials: 'include',
         });
 
@@ -47,7 +47,7 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
     e.preventDefault();
     console.log('Updating profile with data:', formData);
     try {
-      const response = await fetch('http://localhost:5000/api/users/profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
         method: 'POST',
         credentials: 'include',
         headers: {

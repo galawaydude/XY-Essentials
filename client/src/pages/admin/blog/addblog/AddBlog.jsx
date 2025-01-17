@@ -18,7 +18,7 @@ const AddBlog = () => {
     formData.append('tags', tags.split(',').map(tag => tag.trim()));
 
     try {
-      const response = await fetch('http://localhost:5000/api/blogs', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs`, {
         method: 'POST',
         body: formData,
       });

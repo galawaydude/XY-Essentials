@@ -16,7 +16,7 @@ const UserDetails = () => {
 
     const fetchUserDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`, {
                 credentials: 'include'
             });
             const data = await response.json();

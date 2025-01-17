@@ -107,7 +107,7 @@ const Checkout = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const response = await fetch(`http://localhost:5000/api/users/profile/`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -115,7 +115,7 @@ const Checkout = () => {
     };
 
     const fetchAddresses = async () => {
-      const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/addresses`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -132,7 +132,7 @@ const Checkout = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products/');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
         const data = await response.json();
         setProducts(data);
         // console.log('Fetched Products:', data); 
@@ -247,7 +247,7 @@ const Checkout = () => {
 
   const handleApplyCoupon = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/coupons/apply', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/apply`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -311,7 +311,7 @@ const Checkout = () => {
 
     if (paymentMethod === 'cod') {
       try {
-        const response = await fetch('http://localhost:5000/api/orders/', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -423,7 +423,7 @@ const Checkout = () => {
             const waybill = Object.values(result.data)[0]?.waybill || "";
             console.log("Waybill:", waybill);
             
-            const responsewb = await fetch(`http://localhost:5000/api/orders/${createdOrder._id}/waybill`, {
+            const responsewb = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${createdOrder._id}/waybill`, {
               method: "PUT",
               credentials: "include",
               headers: {
@@ -450,7 +450,7 @@ const Checkout = () => {
 
         for (const item of checkoutItems) {
           console.log(`Updating stock for product ${item.product.name} by ${item.quantity}`);
-          const response = await fetch('http://localhost:5000/api/products/update-stock', {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
             method: 'PUT',
             credentials: 'include',
             headers: {
@@ -466,7 +466,7 @@ const Checkout = () => {
         }
 
         for (const item of checkoutItems) {
-          await fetch(`http://localhost:5000/api/cart/${item.product._id}`, {
+          await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
             method: 'DELETE',
             credentials: 'include',
           });
@@ -482,7 +482,7 @@ const Checkout = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/payments/razorpay', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/razorpay`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -516,7 +516,7 @@ const Checkout = () => {
           };
           console.log("Payment data to verify:", paymentData);
           try {
-            const verifyResponse = await fetch('http://localhost:5000/api/payments/verify', {
+            const verifyResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/verify`, {
               method: 'POST',
               credentials: 'include',
               headers: {
@@ -540,7 +540,7 @@ const Checkout = () => {
             razorpayOrderId: data.id,
           };
           console.log("Order data after successful razorpay payment:", razorpayOrderData);
-          const response = await fetch('http://localhost:5000/api/orders/', {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -557,7 +557,7 @@ const Checkout = () => {
           const createdOrder = await response.json();
 
           for (const item of checkoutItems) {
-            await fetch('http://localhost:5000/api/products/update-stock', {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
               method: 'PUT',
               credentials: 'include',
               headers: {
@@ -572,7 +572,7 @@ const Checkout = () => {
 
 
           for (const item of checkoutItems) {
-            await fetch(`http://localhost:5000/api/cart/${item.product._id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
               method: 'DELETE',
               credentials: 'include',
             });

@@ -15,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products/');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
         const data = await response.json();
         setProducts(data.slice(0, 4)); // Get only the first 4 products
       } catch (error) {
@@ -29,7 +29,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blogs/');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/`);
         const data = await response.json();
         setBlogs(data.slice(0, 3)); // Get only the first 4 products
       } catch (error) {

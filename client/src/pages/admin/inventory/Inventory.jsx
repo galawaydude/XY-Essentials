@@ -12,7 +12,7 @@ const Inventory = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products/');
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
@@ -30,7 +30,7 @@ const Inventory = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/products/${productToDelete}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${productToDelete}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {

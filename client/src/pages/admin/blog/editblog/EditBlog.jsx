@@ -14,7 +14,7 @@ const EditBlog = () => {
   useEffect(() => {
     const fetchBlogPost = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -42,7 +42,7 @@ const EditBlog = () => {
     formData.append('tags', tags.split(',').map(tag => tag.trim()));
 
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
         method: 'PUT',
         body: formData,
       });

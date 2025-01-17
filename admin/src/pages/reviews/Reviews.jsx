@@ -21,7 +21,7 @@ const Reviews = () => {
 
     const fetchReviews = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/reviews', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews`, {
                 credentials: 'include'
             });
             if (!response.ok) throw new Error('Failed to fetch reviews');
@@ -36,7 +36,7 @@ const Reviews = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/products', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
                 credentials: 'include'
             });
             if (!response.ok) throw new Error('Failed to fetch products');
@@ -50,7 +50,7 @@ const Reviews = () => {
     const handleDelete = async (reviewId) => {
         if (window.confirm('Are you sure you want to delete this review?')) {
             try {
-                const response = await fetch(`http://localhost:5000/api/reviews/${reviewId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}`, {
                     method: 'DELETE',
                     credentials: 'include'
                 });
@@ -68,7 +68,7 @@ const Reviews = () => {
             try {
                 await Promise.all(
                     selectedReviews.map(reviewId =>
-                        fetch(`http://localhost:5000/api/reviews/${reviewId}`, {
+                        fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}`, {
                             method: 'DELETE',
                             credentials: 'include'
                         })
