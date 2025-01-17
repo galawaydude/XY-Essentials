@@ -16,6 +16,9 @@ const OrderDetails = () => {
     const [updatedStatus, setUpdatedStatus] = useState('');
     const [waybillNumber, setWaybillNumber] = useState('');
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showStatusModal, setShowStatusModal] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [updatedPaymentStatus, setUpdatedPaymentStatus] = useState('');
 
     useEffect(() => {
         fetchOrderDetails();
@@ -67,6 +70,21 @@ const OrderDetails = () => {
         }
     };
 
+    const handlePaymentStatusUpdate = async () => {
+        try {
+            await fetch(`http://localhost:5000/api/orders/${id}/payment-status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ paymentStatus: updatedPaymentStatus })
+            });
+            fetchOrderDetails();
+            setShowPaymentModal(false);
+        } catch (error) {
+            setError('Failed to update payment status');
+        }
+    };
+
     const generateBill = async () => {
         try {
             const response = await fetch(`http://localhost:5000/api/orders/${id}/generate-bill`, {
@@ -92,16 +110,22 @@ const OrderDetails = () => {
     return (
         <div className="admin-order-details">
             <div className="order-header">
-                <h1>Order Details</h1>
-                <div className="order-actions">
-                    <button className="action-btn" onClick={generateBill}>
+                <div className="header-left">
+                    <h1>Order #{id}</h1>
+                    <span className="order-date">{new Date(order.createdAt).toLocaleString()}</span>
+                </div>
+                <div className="order-controls">
+                    <button className="control-btn primary" onClick={generateBill}>
                         <FaFileInvoice /> Generate Invoice
                     </button>
-                    <button className="action-btn" onClick={() => window.print()}>
+                    <button className="control-btn secondary" onClick={() => window.print()}>
                         <FaPrint /> Print Order
                     </button>
-                    <button className="action-btn" onClick={() => setShowUpdateModal(true)}>
-                        <FaShippingFast /> Update Shipping
+                    <button className="control-btn success" onClick={() => setShowStatusModal(true)}>
+                        <FaShippingFast /> Update Status
+                    </button>
+                    <button className="control-btn warning" onClick={() => setShowPaymentModal(true)}>
+                        <FaCreditCard /> Update Payment
                     </button>
                 </div>
             </div>
@@ -120,33 +144,10 @@ const OrderDetails = () => {
                         </div>
                         <div className="info-item">
                             <span>Status:</span>
-                            {editingStatus ? (
-                                <select 
-                                    value={updatedStatus}
-                                    onChange={(e) => setUpdatedStatus(e.target.value)}
-                                    className="status-select"
-                                >
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            ) : (
-                                <div className={`status-badge ${order.shippingStatus.toLowerCase()}`}>
-                                    {order.shippingStatus}
-                                    <FaEdit 
-                                        className="edit-icon"
-                                        onClick={() => setEditingStatus(true)}
-                                    />
-                                </div>
-                            )}
+                            <div className={`status-badge ${order.shippingStatus.toLowerCase()}`}>
+                                {order.shippingStatus}
+                            </div>
                         </div>
-                        {editingStatus && (
-                            <button className="update-btn" onClick={handleStatusUpdate}>
-                                Update Status
-                            </button>
-                        )}
                     </div>
                 </div>
 
@@ -241,24 +242,70 @@ const OrderDetails = () => {
                 </div>
             </div>
 
-            {showUpdateModal && (
+            {showStatusModal && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h3>Update Shipping Details</h3>
+                        <h3>Update Order Status</h3>
                         <div className="modal-body">
-                            <label>Waybill Number:</label>
-                            <input
-                                type="text"
-                                value={waybillNumber}
-                                onChange={(e) => setWaybillNumber(e.target.value)}
-                                placeholder="Enter waybill number"
-                            />
+                            <label>Shipping Status:</label>
+                            <select 
+                                value={updatedStatus}
+                                onChange={(e) => setUpdatedStatus(e.target.value)}
+                                className="status-select"
+                            >
+                                <option value="Pending">Pending</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                            {order.shippingStatus === 'Shipped' && (
+                                <>
+                                    <label>Waybill Number:</label>
+                                    <input
+                                        type="text"
+                                        value={waybillNumber}
+                                        onChange={(e) => setWaybillNumber(e.target.value)}
+                                        placeholder="Enter waybill number"
+                                    />
+                                </>
+                            )}
                         </div>
                         <div className="modal-actions">
-                            <button onClick={handleWaybillUpdate} className="update-btn">
+                            <button onClick={handleStatusUpdate} className="update-btn">
                                 Update
                             </button>
-                            <button onClick={() => setShowUpdateModal(false)} className="cancel-btn">
+                            <button onClick={() => setShowStatusModal(false)} className="cancel-btn">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showPaymentModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Update Payment Status</h3>
+                        <div className="modal-body">
+                            <label>Payment Status:</label>
+                            <select 
+                                value={updatedPaymentStatus}
+                                onChange={(e) => setUpdatedPaymentStatus(e.target.value)}
+                                className="status-select"
+                            >
+                                <option value="Pending">Pending</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Failed">Failed</option>
+                                <option value="Refunded">Refunded</option>
+                            </select>
+                        </div>
+                        <div className="modal-actions">
+                            <button onClick={handlePaymentStatusUpdate} className="update-btn">
+                                Update
+                            </button>
+                            <button onClick={() => setShowPaymentModal(false)} className="cancel-btn">
                                 Cancel
                             </button>
                         </div>
