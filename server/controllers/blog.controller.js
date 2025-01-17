@@ -57,15 +57,13 @@ const updateBlog = asyncHandler(async (req, res) => {
     if (blogPost) {
       // Use spread operator to update the blog post fields
       const updatedData = {
-        ...blogPost.toObject(), // Get current data
-        ...req.body, // Spread incoming data to override any fields
-        img: req.file.path,
+        ...blogPost.toObject(), 
+        ...req.body,
         tags: req.body.tags.split(',').map(tag => tag.trim()),
       };
 
-      // Handle image if uploaded
       if (req.file) {
-        updatedData.img = req.file.path; // Set the new image path
+        updatedData.img = req.file.path; 
       }
 
       // Update the blog post
@@ -91,11 +89,6 @@ const deleteBlog = asyncHandler(async (req, res) => {
   const blogPost = await Blog.findById(req.params.id);
 
   if (blogPost) {
-    if (blogPost.author.toString() !== req.user._id.toString() && !req.user.isAdmin) {
-      res.status(401);
-      throw new Error('Not authorized to delete this blog post');
-    }
-
     await blogPost.deleteOne();
     res.json({ message: 'Blog post removed' });
   } else {
