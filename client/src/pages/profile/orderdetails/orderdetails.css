@@ -172,3 +172,9 @@
   .ord-product-image{
     width: 30%;}
 }
+
+@media screen and (max-width: 450px) {
+  .ord-details-heading {
+    font-size: 1.2rem;
+  }
+}
