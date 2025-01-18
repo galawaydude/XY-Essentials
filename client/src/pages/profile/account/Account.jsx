@@ -128,6 +128,12 @@ const Account = () => {
                             <i className="fa-solid fa-clipboard-list"></i>
                             Your Orders
                         </button>
+                        <button
+                            className="acc-btn acc-btn-logout"
+                        >
+                            <i className="fa-solid fa-right-from-bracket"></i>
+                            Logout
+                        </button>
                     </div>
                 </div>
             </section>
