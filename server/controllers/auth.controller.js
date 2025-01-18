@@ -120,7 +120,7 @@ const verifyOTP = async (req, res) => {
         // Set token as a cookie
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false, // Set to true for production with HTTPS
+            secure: process.env.NODE_ENV === 'production', // Set to true for production with HTTPS
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiry (1 month)
         });
@@ -169,7 +169,7 @@ const verifyOTP = async (req, res) => {
 //         // Set cookie
 //         res.cookie('token', token, {
 //             httpOnly: true,
-//             secure: false, // Set to true in production
+//             secure: process.env.NODE_ENV === 'production', // Set to true in production
 //             sameSite: 'lax',
 //             maxAge: 30 * 24 * 60 * 60 * 1000,
 //         });
@@ -211,7 +211,7 @@ const authUser = async (req, res) => {
 
                 res.cookie('token', token, {
                     httpOnly: true,
-                    secure: false, // Set to true in production
+                    secure: process.env.NODE_ENV === 'production', // Set to true in production
                     sameSite: 'lax',
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
                 });
@@ -261,7 +261,7 @@ const authAdmin = async (req, res, next) => {
 
                     res.cookie('token', token, {
                         httpOnly: true,
-                        secure: false, // Set to true in production
+                        secure: process.env.NODE_ENV === 'production', // Set to true in production
                         sameSite: 'lax',
                         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
                     });
@@ -327,7 +327,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false, // Set to true in production
+            secure: process.env.NODE_ENV === 'production', // Set to true in production
             sameSite: 'lax', // Can also use 'Lax' depending on your needs
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
@@ -404,7 +404,7 @@ const adminGoogleLogin = asyncHandler(async (req, res) => {
         // Set the JWT token in a secure cookie
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false,  // Set to true in production with HTTPS
+            secure: process.env.NODE_ENV === 'production',  // Set to true in production with HTTPS
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });

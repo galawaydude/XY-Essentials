@@ -76,6 +76,10 @@ const AppRoutes = () => {
                     <Route path="*" element={<Error404 />} />
                     
                     {/* <Route path='/order' element={<Ordercard />}/> */}
+                    <Route path="/cart" element={<Cart />} />
+                        <Route path="/account" element={<Account />} />
+                        <Route path="/orders" element={<YourOrders />} />
+                        <Route path="/orders/:id" element={<OrderDetails />} />
 
                     <Route element={<ProtectedRoutes />}>
                         <Route path="/cart" element={<Cart />} />
