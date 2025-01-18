@@ -1,0 +1,79 @@
+.otp-form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    margin: 0 auto;
+    background: linear-gradient(5deg, rgba(255, 255, 255, 0.05), transparent);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    border-radius: 0.5rem;
+    backdrop-filter: blur(5.71px);
+}
+
+.otp-input-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.otp-input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--m2);
+    border-radius: 0.5rem;
+    font-family: var(--body-font);
+    font-size: 1rem;
+    color: var(--m5);
+    transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: var(--pri);
+    box-shadow: 0 0 0 2px rgba(10, 72, 52, 0.1);
+}
+
+.otp-input::placeholder {
+    color: var(--m2);
+    font-size: 0.9rem;
+}
+
+.otp-error {
+    color: #E95252;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.otp-submit {
+    background-color: var(--pri);
+    color: var(--m1);
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: var(--font-medium);
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.otp-submit:hover {
+    background-color: #0d5941;
+}
+
+.otp-submit:disabled {
+    background-color: var(--m2);
+    cursor: not-allowed;
+}
+
+@media screen and (max-width: 768px) {
+    .otp-form {
+        padding: 1.5rem;
+    }
+
+    .otp-input {
+        padding: 0.8rem;
+    }
+}
