@@ -31,7 +31,7 @@
 .address-modal-close {
     position: absolute;
     top: 0.5rem;
-    right: 1rem;
+    right: 0.3rem;
     background: none;
     border: none;
     cursor: pointer;

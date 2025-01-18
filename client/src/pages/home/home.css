@@ -17,13 +17,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  height: 50vh; /* Set explicit height */
   margin-bottom: 2rem; /* Add margin to prevent overlap */
   width: 100%;
 }
 
 .hero.section {
-  width: 90vw;
+  width: 85vw;
 }
 
 .hero img {

@@ -354,3 +354,12 @@ li.product-item span.quantity {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .coupon-heading{
+    width: 30%;
+  }
+  .coupon-divider input {
+    width: 70%;
+  }
+}

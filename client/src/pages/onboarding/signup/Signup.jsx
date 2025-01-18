@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OAuth from '../../../components/oauth/OAuth';
 import {useNavigate} from 'react-router-dom';
+import './otp.css';
 
 const Signup = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -83,70 +84,74 @@ const Signup = () => {
         </div>
         <div className="login-form-con">
         {!otpSent ? (
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-component">
-              <label>Name</label>
-              <input
-                type="text"
-                placeholder="Enter your name"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-component">
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="example@email.com"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-component">
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && <p className="error-text">{error}</p>}
-            <button className="btn btn-primary" type="submit">
-              Sign up
-            </button> 
-          </form> ): (
-            <form className="otp-form" onSubmit={handleVerifyOtp}>
+          <>
+            <form className="login-form" onSubmit={handleSubmit}>
               <div className="input-component">
-                <label>Enter OTP</label>
+                <label>Name</label>
                 <input
                   type="text"
-                  placeholder="Enter OTP sent to your email"
-                  id="otp"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Enter your name"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="input-component">
+                <label>Email</label>
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="input-component">
+                <label>Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               {error && <p className="error-text">{error}</p>}
               <button className="btn btn-primary" type="submit">
-                Verify OTP
-              </button>
+                Sign up
+              </button> 
             </form>
-          )}
             <div className="using-google">
               <p>or</p>
               <OAuth />
             </div>
             <p className="login-text">
-              Don't have an account? <span className="text-blue-700">Login</span>
+              Don't have an account? <a href={window.location.origin + "/login"} className="text-blue-700">Login</a>
             </p>
+          </>
+        ) : (
+          <form className="otp-form login-form" onSubmit={handleVerifyOtp}>
+            <div className="input-component otp-input-wrapper">
+              <label>Enter OTP</label>
+              <input
+                type="text"
+                placeholder="Enter OTP sent to your email"
+                id="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+                className="otp-input"
+              />
+            </div>
+            {error && <p className="error-text otp-error">{error}</p>}
+            <button className="btn btn-primary otp-submit" type="submit">
+              Verify OTP
+            </button>
+          </form>
+        )}
         </div>
       </div>
     </div>

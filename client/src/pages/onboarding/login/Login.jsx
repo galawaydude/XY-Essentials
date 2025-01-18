@@ -125,7 +125,7 @@ const Login = () => {
                         </div>
 
                         <p className="login-text">
-                            Don't have an account? <span className='text-blue-700'>Sign up</span>
+                            Don't have an account? <Link to="/signup" className='text-blue-700'>Sign up</Link>
                         </p>
                     </form>
                     {error && <div className="error-message">{error}</div>} {/* Display error message */}
