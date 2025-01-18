@@ -17,7 +17,7 @@ function OrderCard({ order }) {
   // Function to handle bill download
   const handleDownloadBill = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${order._id}/generate-bill`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${order._id}/generate-bill`, {
         method: 'GET',
         credentials: 'include',
         headers: {

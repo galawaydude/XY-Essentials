@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users/profile', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
                     credentials: 'include',
                 });
                 if (response.ok) {

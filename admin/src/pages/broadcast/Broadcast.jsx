@@ -15,7 +15,7 @@ const Broadcast = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/users', { credentials: 'include' });
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, { credentials: 'include' });
             const data = await res.json();
             setUsers(data);
         } catch (err) {
@@ -25,7 +25,7 @@ const Broadcast = () => {
 
     const fetchAllCarts = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/cart/get-all-carts', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/get-all-carts`, {
                 method: 'GET',
                 credentials: 'include'
             });

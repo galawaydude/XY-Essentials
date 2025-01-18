@@ -17,7 +17,7 @@ const Login = () => {
         e.preventDefault(); // Prevent default form submission
   
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Login = () => {
     const [user, setUser] = useState(null);
 
     const api = axios.create({
-        baseURL: 'http://localhost:5000/api/auth'
+        baseURL: `${import.meta.env.VITE_API_URL}/api/auth`
     });
 
     useEffect(() => {

@@ -13,7 +13,7 @@ const Cart = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users/user/cart', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/cart`, {
                     credentials: 'include',
                 });
 
@@ -41,7 +41,7 @@ const Cart = () => {
     const updateQuantity = async (productId, newQuantity) => {
         if (newQuantity < 1) return;
         try {
-            const response = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${productId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -62,7 +62,7 @@ const Cart = () => {
 
     const removeFromCart = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${productId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

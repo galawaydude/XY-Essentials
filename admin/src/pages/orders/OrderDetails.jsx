@@ -26,7 +26,7 @@ const OrderDetails = () => {
 
     const fetchOrderDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`, {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -42,7 +42,7 @@ const OrderDetails = () => {
 
     const handleStatusUpdate = async () => {
         try {
-            await fetch(`http://localhost:5000/api/orders/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -57,7 +57,7 @@ const OrderDetails = () => {
 
     const handleWaybillUpdate = async () => {
         try {
-            await fetch(`http://localhost:5000/api/orders/${id}/waybill`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/waybill`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -72,7 +72,7 @@ const OrderDetails = () => {
 
     const handlePaymentStatusUpdate = async () => {
         try {
-            await fetch(`http://localhost:5000/api/orders/${id}/payment-status`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/payment-status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -87,7 +87,7 @@ const OrderDetails = () => {
 
     const generateBill = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${id}/generate-bill`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/generate-bill`, {
                 credentials: 'include'
             });
             const blob = await response.blob();

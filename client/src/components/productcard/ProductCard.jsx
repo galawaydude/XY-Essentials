@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './productcard.css';
 import { Link } from 'react-router-dom';
+import Toast from '../toast/Toast';
 
 const ProductCard = ({ product }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -10,7 +11,7 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/cart', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +41,10 @@ const ProductCard = ({ product }) => {
       console.error('Error adding product to cart:', error);
     }
   };
+
+  // const showToast (() => {
+  //   <Toast action={action} message={message} show={buttonVisible} onClose={() => setButtonVisible(false)} />
+  // })
 
   return (
     <div className="home-product-item">

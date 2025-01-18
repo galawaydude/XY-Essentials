@@ -114,7 +114,7 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products/');
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
                 const data = await response.json();
                 setProducts(data.slice(0, 4));
             } catch (error) {
@@ -127,7 +127,7 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${productId}`, {
                     credentials: 'include',
                     method: 'GET'
                 });
@@ -148,7 +148,7 @@ const ProductDetails = () => {
 
         const fetchProductReviews = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/reviews/product/${productId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/product/${productId}`, {
                     credentials: 'include',
                     method: 'GET'
                 });
@@ -168,7 +168,7 @@ const ProductDetails = () => {
     useEffect(() => {
 
         const fetchAddresses = async () => {
-            const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/addresses`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -185,7 +185,7 @@ const ProductDetails = () => {
 
     const handleAddReview = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/products/${productId}/reviews`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${productId}/reviews`, {
                 credentials: 'include',
                 method: 'POST',
                 headers: {
@@ -238,7 +238,7 @@ const ProductDetails = () => {
 
     const handleAddToCart = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/cart', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

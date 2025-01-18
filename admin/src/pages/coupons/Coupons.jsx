@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaPlus, FaCopy, FaEdit, FaTrash, FaFilter } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import './coupons.css';
-import { Link } from 'react-router-dom';
-import CouponCard from '../../components/couponcard/CouponCard';
 
 
 const Coupons = () => {
@@ -31,7 +29,7 @@ const Coupons = () => {
     useEffect(() => {
         const fetchCoupons = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/coupons/', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/`, {
                     credentials: 'include',
                 });
                 if (!response.ok) {
@@ -52,7 +50,7 @@ const Coupons = () => {
     const handleDelete = async (id) => {
         try {
             // Send DELETE request to the API
-            const response = await fetch(`http://localhost:5000/api/coupons/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -73,7 +71,7 @@ const Coupons = () => {
     const handleAddCoupon = async () => {
         try {
             console.log('Adding coupon:', newCoupon);
-            const response = await fetch('http://localhost:5000/api/coupons/', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -123,7 +121,7 @@ const Coupons = () => {
 
     const handleUpdateCoupon = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/coupons/${selectedCouponId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/${selectedCouponId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

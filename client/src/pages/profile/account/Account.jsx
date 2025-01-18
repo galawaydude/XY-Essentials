@@ -18,7 +18,7 @@ const Account = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const response = await fetch(`http://localhost:5000/api/users/profile/`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -26,7 +26,7 @@ const Account = () => {
         };
 
         const fetchAddresses = async () => {
-            const response = await fetch(`http://localhost:5000/api/users/user/addresses`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/addresses`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -39,7 +39,7 @@ const Account = () => {
         };
 
         const fetchOrders = async () => {
-            const response = await fetch(`http://localhost:5000/api/users/user/orders`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/orders`, {
                 credentials: 'include',
             });
             const data = await response.json();
@@ -69,7 +69,7 @@ const Account = () => {
         console.log('Setting default address to:', addressId);
         
         try {
-            const response = await fetch(`http://localhost:5000/api/addresses/${addressId}/set-default`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses/${addressId}/set-default`, {
                 method: 'PUT',
                 credentials: 'include',
             });

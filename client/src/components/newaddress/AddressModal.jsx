@@ -39,7 +39,7 @@ const AddressModal = ({ isOpen, onClose, onSave }) => {
       console.log('Form submitted with data:', formData);
   
       try {
-        const response = await fetch('http://localhost:5000/api/addresses', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses`, {
           method: 'POST',
           credentials: 'include',
           headers: {
