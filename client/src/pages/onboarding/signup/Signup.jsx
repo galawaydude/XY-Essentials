@@ -145,7 +145,7 @@ const Signup = () => {
               <OAuth />
             </div>
             <p className="login-text">
-              Don't have an account? <span className="text-blue-700">Login</span>
+              Don't have an account? <a href={window.location.origin + "/login"} className="text-blue-700">Login</a>
             </p>
         </div>
       </div>
