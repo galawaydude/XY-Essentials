@@ -103,7 +103,10 @@
     color: var(--pri);
 }
 
-/* Responsive design */
+.mobile-menu {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .navbar {
         padding: 0 2rem;

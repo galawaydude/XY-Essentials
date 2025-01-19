@@ -4,6 +4,12 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+.od-text-nav,
+.od-text-nav a {
+  padding: 0;
+  color: black;
+}
+
 .ord-details-heading {
   font-size: 1.3rem;
   color: var(--pri);
@@ -28,7 +34,8 @@
   margin-bottom: 2rem;
 }
 
-.ord-status-label, .ord-payment-label {
+.ord-status-label,
+.ord-payment-label {
   font-weight: 600;
 }
 
@@ -41,7 +48,7 @@
 
 /* Shipping Section */
 .ord-shipping-section,
-.ord-payment-section{
+.ord-payment-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -98,7 +105,7 @@
   gap: 2rem;
 }
 
-.ord-product-price{
+.ord-product-price {
   font-size: 1rem;
   font-weight: 500;
 }
@@ -115,7 +122,7 @@
   border-radius: 0.4rem;
 }
 
-.ord-product-details{
+.ord-product-details {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -164,17 +171,29 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .ord-info-sections, .ord-product-item{
+
+  .ord-info-sections,
+  .ord-product-item {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .ord-product-image{
-    width: 30%;}
+  .ord-product-image {
+    width: 30%;
+  }
+
+  .ord-pricing-breakdown{
+    margin-bottom: 1.5rem;
+  }
 }
 
 @media screen and (max-width: 450px) {
   .ord-details-heading {
     font-size: 1.2rem;
   }
+}
+
+h2 {
+  margin: 0;
 }
