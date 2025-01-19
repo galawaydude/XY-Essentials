@@ -168,7 +168,12 @@ const Account = () => {
 
             {/* Addresses Section */}
             <section className="acc-section acc-addresses">
-                <h2 className="acc-section-title">Saved Addresses</h2>
+                <div className="acc-section-header">
+                    <h2 className="acc-section-title">Saved Addresses</h2>
+                    <button className="acc-btn acc-btn-add-address" onClick={openAddModal}>
+                        <i className="fa-regular fa-square-plus"></i>
+                    </button>
+                </div>
                 <ul className="acc-addresses-list">
                     {addresses.length > 0 ? (
                         addresses.map((address) => (
@@ -207,9 +212,6 @@ const Account = () => {
                         <li className="acc-address-item"><p>No saved addresses available.</p></li>
                     )}
                 </ul>
-                <button className="acc-btn acc-btn-add-address" onClick={openAddModal}>
-                    Add New Address
-                </button>
             </section>
 
             {/*EditProfileModal */}
