@@ -22,7 +22,7 @@ import YourOrders from './pages/profile/yourorders/YourOrders';
 import Ordercard from './components/ordercard/Ordercard';
 import PreLoader from './components/preloader/PreLoader';
 import Error404 from './pages/notfound404/error404';
-import PrivacyPolicy from './pages/miscellaneuos/privacypolicy/PrivacyPolicy';
+import PrivacyPolicy from './pages/miscellaneuos/privacypolicy/PrivacyPolicyPage';
 import Disclaimer from './pages/miscellaneuos/disclaimer/Disclaimer';
 import TermsOfService from './pages/miscellaneuos/tos/Tos';
 import Comingsoon from './pages/comingsoon/Comingsoon';
