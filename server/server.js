@@ -65,5 +65,6 @@ app.use('/api/blogs', blogRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000 || process.env.WEBSITES_PORT;
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
