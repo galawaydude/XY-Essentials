@@ -56,11 +56,11 @@ const ProductCard = ({ product }) => {
       <div className="home-product-details">
         <Link to={`/products/${product._id}`} key={product._id}>
           <div className="h-product-title">
-            {product.name}
+            {product.name.length > 40 ? `${product.name.substring(0, 40)}...` : product.name}
           </div>
         </Link>
         <div className="h-product-subtitle">
-          {product.description}
+          {product.description.length > 60 ? `${product.description.substring(0, 60)}...` : product.description}
         </div>
         <div className="h-product-price-cart">
           <div className="h-product-prices">
@@ -69,14 +69,13 @@ const ProductCard = ({ product }) => {
             </div>
           </div>
         </div>
-        <hr className='pc-divider' />
         <div className="h-p-cart-btn">
           {message ? (
-            <span>{message}</span> // Display plain text message
+            <span>{message}</span>
           ) : (
             <button onClick={handleAddToCart}>
-              <span>Add to Cart</span>
-              <i className="fas fa-shopping-cart"></i>
+              <i className="fas fa-cart-plus"></i>
+              <span>Add</span>
             </button>
           )}
         </div>

@@ -20,13 +20,16 @@
 
 .home-product-img img {
     border-radius: 0.5rem 0.5rem 0 0;
-    height: 15vmax;
-    object-fit: cover;
+    height: 10vmax; /* Reduced from 12vmax */
+    width: 100%;
+    object-fit: contain; /* Changed from cover to contain */
+    padding: 0.5rem;
 }
 
 .home-product-details {
     /* width: 90%; */
-    padding: 0.3rem;
+    padding: 0.5rem;
+    width: 100%;
 }
 
 .h-product-price-cart {
@@ -38,13 +41,30 @@
 
 .h-p-cart-btn {
     flex: 3;
+    margin-top: 0.3rem;
 }
 
 .h-p-cart-btn button {
-    height: 2.3rem;
+    height: 1.8rem; /* Reduced height */
     flex: 3;
     width: 100%;
     overflow: hidden;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    background-color: var(--pri);
+    transition: all 0.3s ease;
+}
+
+.h-p-cart-btn button:hover {
+    background-color: #0d5b41;
+}
+
+.h-p-cart-btn button i {
+    font-size: 0.8rem;
 }
 
 .h-product-prices {
@@ -71,7 +91,10 @@
     max-lines: 2;
     overflow: hidden;
     /* text-overflow: ellipsis; */
-
+    font-size: 0.9rem; /* Added specific font size */
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
 }
 .h-product-title:hover {
     color: rgb(40, 40, 186);
@@ -81,6 +104,8 @@
     /* font-weight: 300; */
     font-size: 0.7rem;
     color: var(--m4);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
 }
 
 .h-product-title {
@@ -110,5 +135,35 @@
 
 .h-p-price {
     color: black;
+}
+
+/* Add media queries for responsive design */
+@media screen and (max-width: 768px) {
+    .home-product-item {
+        padding: 0.5rem;
+    }
+
+    .home-product-img img {
+        height: 20vmax; /* Reduced from 25vmax */
+    }
+
+    .h-product-title {
+        font-size: 0.85rem;
+    }
+
+    .h-product-subtitle {
+        font-size: 0.65rem;
+    }
+
+    .h-p-price {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .h-p-cart-btn {
+        height: 1.6rem;
+        font-size: 0.7rem;
+    }
 }
 
