@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import ProductCard from '../../components/productcard/ProductCard';
 import BlogCard from '../../components/blogcard/BlogCard';
 import { Link } from 'react-router-dom';
-import './home.css';
 import heroimg from '../../assets/heroimg.png';
 import PreLoader from '../../components/preloader/PreLoader';
+import './home.css';
 
 const Home = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -166,10 +166,10 @@ const Home = () => {
 
       <div className="home-products section con1 swipe-up">
         <div className="home-pro-head">
-          <div className="section_left_title">
+          <div className="section_left_title h-left-title">
             Browse Our <strong>Products</strong>
           </div>
-          <Link to="/shop" className="view-all-btn">
+          <Link to="/shop" className="view-all-btn h-view-all-btn">
             <span>View All</span>
             <i className="fas fa-arrow-right"></i>
           </Link>
@@ -184,10 +184,10 @@ const Home = () => {
       </div>
       <div className="home-blog section con1 swipe-up">
         <div className="home-pro-head">
-          <div className="section_left_title">
+          <div className="section_left_title h-left-title">
             Explore More About  <strong>Skincare</strong>
           </div>
-          <Link to="/blogs" className="view-all-btn">
+          <Link to="/blogs" className="view-all-btn h-view-all-btn">
             <span>View All</span>
             <i className="fas fa-arrow-right"></i>
           </Link>
@@ -201,7 +201,7 @@ const Home = () => {
       </div>
       <div className="home-testimonials section con1 swipe-up">
         <div className="home-pro-head">
-          <div className="section_left_title">
+          <div className="section_left_title h-left-title">
             Our Happy  <strong>Customers</strong>
           </div>
         </div>
