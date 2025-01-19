@@ -284,14 +284,20 @@
 @media (max-width: 770px) {
   .hero-content {
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-heading {
     font-size: 2.5rem;
+    text-align: center;
   }
 
   .hero-subtitle {
     font-size: 1rem;
+    text-align: center;
   }
 
   .home-products-con,
@@ -330,5 +336,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .cat-items {
+    transition: height 0.3s ease;
+  }
+
+  .cat-item {
+    height: 300px;
+    transition: all 0.3s ease;
+  }
+
+  .cat-item-img, .cat-item-img img {
+    height: 100%;
   }
 }
