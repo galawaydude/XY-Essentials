@@ -12,6 +12,7 @@ const ProductListing = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [priceRange, setPriceRange] = useState([0, 1000]);
     const [selectedRating, setSelectedRating] = useState('');
+    const [isFilterVisible, setIsFilterVisible] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -95,95 +96,106 @@ const ProductListing = () => {
                 <hr />
 
                 <div className="plp-main-container">
-                    <div className="plp-filter-sidebar">
-                        <div className="plp-search-container">
-                            <input
-                                type="text"
-                                className="plp-search-input"
-                                placeholder="Search products..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-
-                        <div className="plp-filter-section">
-                            <div className="plp-filter-header">
-                                <h6 className="plp-filter-title">Filters</h6>
-                                <button 
-                                    className="plp-filter-button"
-                                    onClick={handleClearFilters}
-                                >
-                                    Clear All
-                                </button>
+                    <div className="plp-sidebar-container">
+                        <div className="plp-top-controls">
+                            <div className="plp-search-container">
+                                <input
+                                    type="text"
+                                    className="plp-search-input"
+                                    placeholder="Search products..."
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                            <div className="filter-toggle-btn" onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                                <span>Filters</span>
+                                {isFilterVisible ? 
+                                    <i className="fa-solid fa-toggle-on"></i> : 
+                                    <i className="fa-solid fa-toggle-off"></i>
+                                }
                             </div>
                         </div>
 
-                        <div className="plp-filter-section">
-                            <div className="plp-filter-header">
-                                <p className="plp-filter-title">Categories</p>
+                        <div className={`plp-filter-sidebar ${isFilterVisible ? 'visible' : 'hidden'}`}>
+                            <div className="plp-filter-section">
+                                <div className="plp-filter-header">
+                                    <h6 className="plp-filter-title">Filters</h6>
+                                    <button 
+                                        className="plp-filter-button"
+                                        onClick={handleClearFilters}
+                                    >
+                                        Clear All
+                                    </button>
+                                </div>
                             </div>
-                            <div className="plp-filter-group">
-                                {['Cleanse', 'Protect', 'Treat'].map((category) => (
-                                    <label className="plp-filter-option" key={category}>
-                                        <input
-                                            type="checkbox"
-                                            className="plp-filter-checkbox"
-                                            checked={selectedCategory === category}
-                                            onChange={() => setSelectedCategory(
-                                                category === selectedCategory ? '' : category
-                                            )}
-                                        />
-                                        <span className="plp-filter-label">{category}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
 
-                        <div className="plp-filter-section">
-                            <div className="plp-filter-header">
-                                <p className="plp-filter-title">Skin Type</p>
+                            <div className="plp-filter-section">
+                                <div className="plp-filter-header">
+                                    <p className="plp-filter-title">Categories</p>
+                                </div>
+                                <div className="plp-filter-group">
+                                    {['Cleanse', 'Protect', 'Treat'].map((category) => (
+                                        <label className="plp-filter-option" key={category}>
+                                            <input
+                                                type="checkbox"
+                                                className="plp-filter-checkbox"
+                                                checked={selectedCategory === category}
+                                                onChange={() => setSelectedCategory(
+                                                    category === selectedCategory ? '' : category
+                                                )}
+                                            />
+                                            <span className="plp-filter-label">{category}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="plp-filter-group">
-                                {['Dry', 'Oily'].map((skinType) => (
-                                    <label className="plp-filter-option" key={skinType}>
-                                        <input
-                                            type="checkbox"
-                                            className="plp-filter-checkbox"
-                                            checked={selectedSkinType === skinType}
-                                            onChange={() => setSelectedSkinType(
-                                                skinType === selectedSkinType ? '' : skinType
-                                            )}
-                                        />
-                                        <span className="plp-filter-label">{skinType}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
 
-                        {/* <div className="plp-filter-section">
-                            <div className="plp-filter-header">
-                                <p className="plp-filter-title">Minimum Rating</p>
+                            <div className="plp-filter-section">
+                                <div className="plp-filter-header">
+                                    <p className="plp-filter-title">Skin Type</p>
+                                </div>
+                                <div className="plp-filter-group">
+                                    {['Dry', 'Oily'].map((skinType) => (
+                                        <label className="plp-filter-option" key={skinType}>
+                                            <input
+                                                type="checkbox"
+                                                className="plp-filter-checkbox"
+                                                checked={selectedSkinType === skinType}
+                                                onChange={() => setSelectedSkinType(
+                                                    skinType === selectedSkinType ? '' : skinType
+                                                )}
+                                            />
+                                            <span className="plp-filter-label">{skinType}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="plp-filter-group">
-                                {[
-                                    { value: '', label: 'All Ratings' },
-                                    { value: 4, label: '4+ Stars' },
-                                    { value: 4.5, label: '4.5+ Stars' },
-                                    { value: 5, label: '5 Stars' }
-                                ].map((rating) => (
-                                    <label className="plp-filter-option" key={rating.value}>
-                                        <input
-                                            type="radio"
-                                            className="plp-filter-checkbox"
-                                            name="rating"
-                                            checked={selectedRating === rating.value}
-                                            onChange={() => setSelectedRating(rating.value)}
-                                        />
-                                        <span className="plp-filter-label">{rating.label}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div> */}
+
+                            {/* <div className="plp-filter-section">
+                                <div className="plp-filter-header">
+                                    <p className="plp-filter-title">Minimum Rating</p>
+                                </div>
+                                <div className="plp-filter-group">
+                                    {[
+                                        { value: '', label: 'All Ratings' },
+                                        { value: 4, label: '4+ Stars' },
+                                        { value: 4.5, label: '4.5+ Stars' },
+                                        { value: 5, label: '5 Stars' }
+                                    ].map((rating) => (
+                                        <label className="plp-filter-option" key={rating.value}>
+                                            <input
+                                                type="radio"
+                                                className="plp-filter-checkbox"
+                                                name="rating"
+                                                checked={selectedRating === rating.value}
+                                                onChange={() => setSelectedRating(rating.value)}
+                                            />
+                                            <span className="plp-filter-label">{rating.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div> */}
+                        </div>
                     </div>
 
                     <div className="plp-products-grid">
