@@ -1,17 +1,18 @@
 name: Sync Fork
 
 on:
-  push:
-    branches:
-      - main        # Change this if your friend uses a different main branch name
+  schedule:
+    - cron: '*/15 * * * *'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: TG908/fork-sync@v1.1
+      - name: Sync Fork with Upstream
+        uses: TG908/fork-sync@v1.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: goyalaakarsh     
-          base: main                  
-          head: main                 
+          owner: goyalaakarsh       
+          base: main                
+          head: main                
