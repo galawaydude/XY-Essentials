@@ -33,16 +33,7 @@ const Checkout = () => {
   const [link, setLink] = useState('');
   const [link_name, setLinkName] = useState('');
 
-  // Add useEffect to check addresses
-  useEffect(() => {
-    if (addresses.length === 0) {
-      setMessage('Please add a delivery address to proceed with your order.');
-      setAction('Address Required!');
-      setLink('/account');
-      setLinkName('Add Address');
-      setShowToast(true);
-    }
-  }, [addresses]);
+
 
   //ITL: ACCESS CODES
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -116,6 +107,8 @@ const Checkout = () => {
     // setEditAddressIndex(null); 
   };
 
+
+
   const openAddModal = () => {
     setIsModalOpen(true);
     setEditAddressIndex(null);
@@ -151,6 +144,8 @@ const Checkout = () => {
       }
     };
 
+    
+
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
@@ -165,7 +160,25 @@ const Checkout = () => {
     fetchProducts();
     fetchProfile();
     fetchAddresses();
+
   }, []);
+
+  useEffect(() => {
+    if (addresses.length === 0) {
+      setMessage('Please add a delivery address to proceed with your order.');
+      setAction('Address Required!');
+      setLink('/account');
+      setLinkName('Add Address');
+      setShowToast(true);
+    } else {
+      setShowToast(false);
+    }
+  }, [addresses]);
+
+
+
+
+
 
   const addFreeSachets = () => {
     const uniqueSkinTypes = new Set();

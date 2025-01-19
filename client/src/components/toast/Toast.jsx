@@ -21,7 +21,7 @@ const Toast = ({ action, message, show, onClose, link , link_name}) => {
         onClose={onClose}
         className="custom-toast"
       >
-        <BootstrapToast.Header closeButton closeVariant="black">
+        <BootstrapToast.Header closeButton closeVariant="white">
           <strong className="me-auto">{action}</strong>
         </BootstrapToast.Header>
         <BootstrapToast.Body>
