@@ -16,12 +16,14 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
   // const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
-  const [discount, setDiscount] = useState(50);
+  const [discount, setDiscount] = useState(0);
+  const [pmDiscount, setPmDiscount] = useState(50);
   const [addresses, setAddresses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAddressIndex, setEditAddressIndex] = useState(null);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [couponApplied, setCouponApplied] = useState(false);
 
   //ITL: ACCESS CODES
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -243,7 +245,8 @@ const Checkout = () => {
   // };
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  const totalAmount = totalItems - discount;
+  const totalItemsPrice = totalItems;
+  const totalAmount = totalItems - discount - pmDiscount;
 
   const handleApplyCoupon = async () => {
     try {
@@ -263,15 +266,17 @@ const Checkout = () => {
 
       const { discountAmount } = await response.json();
       setDiscount(discountAmount);
+      setCouponApplied(true);
+      setPmDiscount(0)
       // alert(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
     } catch (error) {
       // alert(error.message);
       console.error('Error applying coupon:', error);
     }
   };
-  useEffect(() => {
-    handleApplyCoupon();
-  }, [couponCode]);
+  // useEffect(() => {
+  //   handleApplyCoupon();
+  // }, [couponCode]);
 
 
   // useEffect(() => {
@@ -661,7 +666,7 @@ const Checkout = () => {
                   checked={paymentMethod === 'razorpay'}
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
-                    setDiscount(50);
+                    setPmDiscount(50);
                   }}
                 /> UPI/Cards/NetBanking
               </label>
@@ -673,7 +678,7 @@ const Checkout = () => {
                   checked={paymentMethod === 'cod'}
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
-                    setDiscount(0);
+                    setPmDiscount(0);
                   }}
                 /> Pay on Delivery
               </label>
@@ -687,11 +692,26 @@ const Checkout = () => {
               <input
                 type="text"
                 value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+                onChange={(e) => {
+                  setCouponCode(e.target.value);
+                  setCouponApplied(false);
+                }}
                 placeholder="Enter coupon code"
               />
             </div>
-            <button onClick={handleApplyCoupon}>Apply Coupon</button>
+            <button
+              onClick={handleApplyCoupon}
+              disabled={couponApplied}
+            >
+              {couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
+            </button>
+            <div className="coupon-status">
+              {couponApplied ? (
+                <div className="coupon-applied">Coupon applied! You saved ₹{discount.toFixed(2)}</div>
+              ) : (
+                <div className="coupon-not-applied"></div>
+              )}
+            </div>
           </div>
 
           {/* Order Items Section */}
@@ -737,8 +757,14 @@ const Checkout = () => {
             <p>Shipping Fee:</p>
             <p><span className="inr">₹</span><strong>0.00</strong></p>
           </div>
+          {paymentMethod === 'razorpay' && (
+            <div className="summary-row">
+              <p>Online Payment Savings:</p>
+              <p><span className="inr">₹</span><strong>{pmDiscount}</strong></p>
+            </div>
+          )}
           <div className="summary-row">
-            <p>Discount:</p>
+            <p>Coupon Applied:</p>
             <p><span className="inr">₹</span><strong>{discount.toFixed(2)}</strong></p>
           </div>
           <hr />

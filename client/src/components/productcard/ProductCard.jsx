@@ -6,8 +6,9 @@ import Toast from '../toast/Toast';
 const ProductCard = ({ product }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   
-  const [buttonVisible, setButtonVisible] = useState(true);
+  const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
+  const [buttonText, setButtonText] = useState('Add');
 
   const handleAddToCart = async () => {
     try {
@@ -16,10 +17,10 @@ const ProductCard = ({ product }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Include credentials for cookie
+        credentials: 'include',
         body: JSON.stringify({
-          productId: product._id, // Ensure your product has an _id field
-          quantity: 1, // You can modify this to allow user to choose quantity
+          productId: product._id,
+          quantity: 1,
         }),
       });
 
@@ -29,22 +30,22 @@ const ProductCard = ({ product }) => {
 
       const data = await response.json();
       console.log('Product added to cart:', data);
-      setMessage('Added to cart');
-      setButtonVisible(false);
+      setMessage(`${product.name} added to cart.`);
+      setShowToast(true);
 
-      // Reset message and show button after 6 seconds
+      setButtonText('Added');
+      setTimeout(() => {
+        setButtonText('Add');
+      }, 1000);
+
       setTimeout(() => {
         setMessage('');
-        setButtonVisible(true);
+        setShowToast(false);
       }, 6000);
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
   };
-
-  // const showToast (() => {
-  //   <Toast action={action} message={message} show={buttonVisible} onClose={() => setButtonVisible(false)} />
-  // })
 
   return (
     <div className="home-product-item">
@@ -70,14 +71,11 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
         <div className="h-p-cart-btn">
-          {message ? (
-            <span>{message}</span>
-          ) : (
-            <button onClick={handleAddToCart}>
-              <i className="fas fa-cart-plus"></i>
-              <span>Add</span>
-            </button>
-          )}
+          <Toast action='Added to cart' message={message} show={showToast} onClose={() => setShowToast(false)} />
+          <button onClick={handleAddToCart}>
+            <i className="fas fa-cart-plus"></i>
+            <span>{buttonText}</span>
+          </button>
         </div>
       </div>
     </div>
@@ -85,3 +83,4 @@ const ProductCard = ({ product }) => {
 }
 
 export default ProductCard;
+

@@ -41,7 +41,7 @@ export default function OAuth() {
                 setUser(obj);
                 console.log(response.data.user);
                 // console.log(response.data.token);
-                navigate('/');
+                navigate('/account');
             }
         } catch (err) {
             console.error('Error while requesting Google token: ', err);

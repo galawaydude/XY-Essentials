@@ -10,7 +10,7 @@ router.put('/:itemId', protect,  updateCartItem);
 router.delete('/:itemId', protect, removeCartItem);
 router.delete('/', protect, clearCart);
 
-
+// Admin Routes
 router.get('/get-all-carts', protect, admin, getCarts);
 
 module.exports = router;

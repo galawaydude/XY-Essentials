@@ -446,6 +446,29 @@ const verifyAuth = (req, res) => {
     }
 };
 
+const logout = (req, res) => {
+    console.log('Logging out user...');
+    try {
+        // Clear the token cookie
+        res.clearCookie('token');
+        console.log('Token cookie cleared');
+
+        // Send a success response to the client
+        res.status(200).json({
+            success: true,
+            message: 'Logged out successfully',
+        });
+        console.log('User logged out successfully');
+    } catch (error) {
+        console.error('Error logging out user:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred during logout',
+        });
+    }
+};
+
+
 module.exports = {
     registerUser,
     authUser,
@@ -454,5 +477,6 @@ module.exports = {
     adminGoogleLogin,
     sendOTP,
     verifyOTP,
-    verifyAuth
+    verifyAuth,
+    logout
 };

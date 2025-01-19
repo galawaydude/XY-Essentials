@@ -5,6 +5,7 @@ import ReviewCard from '../../../components/reviewcard/ReviewCard';
 import './productdetails.css';
 import { Link } from 'react-router-dom';
 import PreLoader from '../../../components/preloader/PreLoader';
+import Toast from '../../../components/toast/Toast';
 
 const CustomImageSlider = ({ images }) => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -106,6 +107,9 @@ const ProductDetails = () => {
     const [deliveryCharges, setDeliveryCharges] = useState(null);
     const [deliveryPeriod, setDeliveryPeriod] = useState(null);
     const { id: productId } = useParams();
+      const [showToast, setShowToast] = useState(false);
+      const [message, setMessage] = useState('');
+      const [buttonText, setButtonText] = useState('Add');
 
     //ITL: ACCESS CODES
     const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -256,6 +260,18 @@ const ProductDetails = () => {
 
             const data = await response.json();
             console.log('Product added to cart:', data);
+            setMessage(`${product.name} added to cart.`);
+            setShowToast(true);
+      
+            setButtonText('Added');
+            setTimeout(() => {
+              setButtonText('Add');
+            }, 1000);
+      
+            setTimeout(() => {
+              setMessage('');
+              setShowToast(false);
+            }, 6000);
         } catch (error) {
             console.error('Error adding product to cart:', error);
         }
@@ -394,9 +410,11 @@ const ProductDetails = () => {
 
                             <div className="pd-btns">
                                 <div className="pd-cart-btn">
-                                    <button onClick={handleAddToCart}>
-                                        <span>Add to Cart</span>
-                                    </button>
+                                <Toast action='Added to cart' message={message} show={showToast} onClose={() => setShowToast(false)} />
+                                <button onClick={handleAddToCart}>
+            <i className="fas fa-cart-plus"></i>
+            <span>{buttonText}</span>
+          </button>
                                 </div>
                             </div>
 
