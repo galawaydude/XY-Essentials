@@ -1,10 +1,3 @@
-.privacy-maincon {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
-
 .privacy-top-bg {
     position: relative;
     text-align: center;
@@ -27,10 +20,6 @@
     font-size: 2.5rem;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
     z-index: 1;
-}
-
-.privacy-content {
-    padding: 20px;
 }
 
 .privacy-content h2 {

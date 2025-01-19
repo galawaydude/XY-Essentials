@@ -23,7 +23,7 @@ const BlogListing = () => {
                 <h1 className="blog-overlay-text">Blogs</h1>
             </div>
 
-            <div className="blog-con con1">
+            <div className="blog-con section">
                 <div className="blog-cards-con">
                     {blogs.map((blog) => (
                         <BlogCard key={blog._id} blog={blog} />

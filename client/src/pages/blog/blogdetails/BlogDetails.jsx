@@ -34,7 +34,7 @@ const BlogDetails = () => {
     }
 
     return (
-        <div className="blog-details-maincon container">
+        <div className="blog-details-maincon section">
             <div className="bd-con">
                 <div className="bd-title">
                     <h2>{blog.title}</h2>

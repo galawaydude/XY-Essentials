@@ -22,7 +22,7 @@ import YourOrders from './pages/profile/yourorders/YourOrders';
 import Ordercard from './components/ordercard/Ordercard';
 import PreLoader from './components/preloader/PreLoader';
 import Error404 from './pages/notfound404/error404';
-// import PrivacyPolicy from './pages/miscellaneuos/privacypolicy/PrivacyPolicy';
+import PrivacyPolicy from './pages/miscellaneuos/privacypolicy/PrivacyPolicy';
 import Disclaimer from './pages/miscellaneuos/disclaimer/Disclaimer';
 import TermsOfService from './pages/miscellaneuos/tos/Tos';
 import Comingsoon from './pages/comingsoon/Comingsoon';
@@ -66,7 +66,7 @@ const AppRoutes = () => {
                     <Route path="/blogs/:id" element={<BlogDetails />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    {/* <Route path="/privacy" element={<PrivacyPolicy />} /> */}
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/login" element={<Login />} />

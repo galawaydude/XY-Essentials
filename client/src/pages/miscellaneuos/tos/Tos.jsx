@@ -11,7 +11,7 @@ const TermsOfService = () => {
                 />
                 <h1 className="terms-overlay-text">Terms of Service</h1>
             </div>
-            <div className="terms-content container">
+            <div className="terms-content section">
                 <h2>Agreement to Terms</h2>
                 <p>
                     By accessing our website, you agree to be bound by these Terms of Service and to comply

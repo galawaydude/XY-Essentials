@@ -125,25 +125,46 @@
 }
 
 @media (max-width: 600px) {
-    .nav-links, .nav-icons {
+    .nav-links {
         display: none;
     }
 
     .navbar {
-        padding: 0 1rem;
+        padding: 0 1rem; /* Reduce padding */
         justify-content: center;
     }
-}
+    
+    .nav-icons {
+        position: absolute;
+        right: 1.5rem;
+    }
 
-.mobile-menu {
-    display: none;
+    .nav-icon-divider {
+        display: none;
+    }
+
+    .nav-link-icons {
+        gap: 0.5rem;
+    }
+
+    .logo {
+        position: absolute;
+        left: 43%;
+        transform: translateX(-50%); /* Center the logo */
+    }
+
+    .logo a img {
+        width: 140px; /* Keep the reduced logo size */
+    }
 }
 
 @media (max-width: 640px) {
     .mobile-menu {
         display: block;
         position: absolute;
-        left: 1rem;
+        left: 1.5rem; /* Slightly adjust position */
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .mobile-menu i {
@@ -153,11 +174,19 @@
     }
 
     .navbar {
-        padding: 0 1rem;
+        padding: 0 1rem; /* Match the padding from above */
         justify-content: center;
+        position: relative; /* Ensure proper positioning context */
     }
 
-    .nav-links, .nav-icons {
+    .nav-links {
         display: none;
+    }
+    
+    .nav-icons {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%); /* Center vertically */
     }
 }
