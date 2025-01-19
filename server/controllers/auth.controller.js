@@ -4,7 +4,6 @@ const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model.js');
 const axios = require('axios');
-const emailSender = require('../utils/emailSender');
 const { sendOTP, generateOTP } = require('../services/otpService.js');
 const generateToken = require('../utils/generateToken.js')
 const bcrypt = require('bcrypt');
