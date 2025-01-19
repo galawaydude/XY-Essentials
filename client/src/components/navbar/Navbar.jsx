@@ -11,7 +11,10 @@ const Navbar = () => {
         <>
             <div className='navbar'>
                 <div className="mobile-menu">
-                    <i className="fa-solid fa-bars" onClick={() => setSidebarOpen(true)}></i>
+                    <i 
+                        className={`fa-solid ${sidebarOpen ? 'fa-xmark' : 'fa-bars'}`} 
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                    ></i>
                 </div>
                 <div className="logo">
                     <a href="/">

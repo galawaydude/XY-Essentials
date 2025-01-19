@@ -14,16 +14,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <a className='sidebar-link' href="/blogs">Blogs</a>
                     <a className='sidebar-link' href="/about">About</a>
                 </div>
-                <div className="sidebar-icons">
-                    <a className='sidebar-icon-link' href="/account">
-                        <i className="far fa-user"></i>
-                        <span>My Account</span>
-                    </a>
-                    <a className='sidebar-icon-link' href="/cart">
-                        <i className="fas fa-shopping-cart"></i>
-                        <span>Cart</span>
-                    </a>
-                </div>
             </div>
         </div>
     )
