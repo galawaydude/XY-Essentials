@@ -54,6 +54,7 @@ background-color: rgba(0, 0, 0, 0.034);
 
 .h-blog-card-tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.2rem;
 }
 

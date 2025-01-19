@@ -1,14 +1,19 @@
 .blog-cards-con {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Updated to ensure equal widths */
     gap: 2rem;
+}
+
+/* Add this to ensure each card takes full width of its grid cell */
+.blog-cards-con > * {
+    width: 100%;
+    min-width: 0; /* Prevents content from forcing grid item wider */
 }
 
 .blog-maincon {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 4rem;
 }
 
 .blog-top-bg {
@@ -35,14 +40,21 @@
     z-index: 1; /* Make sure text appears above the image */
 }
 
-@media (max-width: 868px){
+@media (max-width: 918px){
     .blog-cards-con {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
     }
 }
 
 @media (max-width: 500px){
     .blog-cards-con {
-        gap: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .blog-cards-con > * {
+        width: 100%;
     }
 }
