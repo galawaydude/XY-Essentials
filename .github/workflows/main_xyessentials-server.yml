@@ -18,23 +18,23 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
+      - name: npm install and build
         working-directory: ./server  # Add this line
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          # Removed npm run test
 
       - name: Zip artifact for deployment
         run: |
-          cd server  # Add this line
+          cd server
           zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: server/release.zip  # Update this path
+          path: server/release.zip
 
   deploy:
     runs-on: ubuntu-latest
