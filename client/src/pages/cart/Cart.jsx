@@ -9,6 +9,24 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState({});
     const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
+
+       useEffect(() => {
+            const fetchProfile = async () => {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                setProfile(data);
+    
+                if (!response.ok) {
+                    navigate('/login');
+                    console.error('Failed to fetch profile');
+                }
+            };
+    
+            fetchProfile();
+        }, []);
 
     useEffect(() => {
         const fetchCart = async () => {

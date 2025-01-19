@@ -20,7 +20,7 @@ const Toast = ({ action, message, show, onClose }) => {
         onClose={onClose}
         className="custom-toast"
       >
-        <BootstrapToast.Header closeButton>
+        <BootstrapToast.Header closeButton closeVariant="white">
           <strong className="me-auto">{action}</strong>
         </BootstrapToast.Header>
         <BootstrapToast.Body>
@@ -32,3 +32,4 @@ const Toast = ({ action, message, show, onClose }) => {
 };
 
 export default Toast;
+

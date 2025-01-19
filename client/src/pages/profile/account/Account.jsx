@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AddressModal from '../../../components/newaddress/AddressModal';  // Fixed import
 import EditAddressModal from '../../../components/editaddress/editaddressModal';
 import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
 
 const Account = () => {
+    const navigate = useNavigate();  
     const apiUrl = import.meta.env.VITE_API_URL;
     const [profile, setProfile] = useState([]);
     const [addresses, setAddresses] = useState([]);
@@ -23,6 +24,11 @@ const Account = () => {
             });
             const data = await response.json();
             setProfile(data);
+
+            if (!response.ok) {
+                navigate('/login');
+                console.error('Failed to fetch profile');
+            }
         };
 
         const fetchAddresses = async () => {
@@ -57,7 +63,7 @@ const Account = () => {
     };
 
     const handleEditAddress = (updatedAddress) => {
-        const updatedAddresses = addresses.map(addr => 
+        const updatedAddresses = addresses.map(addr =>
             addr._id === updatedAddress._id ? updatedAddress : addr
         );
         setAddresses(updatedAddresses);
@@ -67,7 +73,7 @@ const Account = () => {
 
     const handleSetDefault = async (addressId) => {
         console.log('Setting default address to:', addressId);
-        
+
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses/${addressId}/set-default`, {
                 method: 'PUT',
@@ -82,6 +88,28 @@ const Account = () => {
             console.error('Error while setting default address:', error);
         }
     };
+
+    const handleLogout = async () => {
+        console.log('Logging out...');
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+            if (!response.ok) {
+                console.error('Failed to log out:', response.status, response.statusText);
+                throw new Error('Failed to log out');
+            }
+    
+            // Clear user info and navigate after successful logout
+            console.log('Logged out successfully');
+            localStorage.removeItem('user-info');
+            navigate('/');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
+    
 
     const openAddModal = () => {
         setIsAddModalOpen(true);
@@ -129,7 +157,7 @@ const Account = () => {
                             Your Orders
                         </button>
                         <button
-                            className="acc-btn acc-btn-logout"
+                            className="acc-btn acc-btn-logout" onClick={handleLogout}
                         >
                             <i className="fa-solid fa-right-from-bracket"></i>
                             Logout

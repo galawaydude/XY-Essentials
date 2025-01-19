@@ -8,6 +8,7 @@ router.put('/:id', protect, updateAddress);
 router.put('/:id/set-default', protect, setDefaultAddress);
 router.delete('/:id', protect, deleteAddress);
 
+// Admin Routes
 router.get('/', protect, admin, getUserAddresses);
 
 module.exports = router;

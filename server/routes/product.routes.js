@@ -11,8 +11,8 @@ const { upload } = require('../middlewares/multer.middleware.js');
 // User Routes
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
-router.put('/update-stock', updateProductStock);
 router.get('/:id/reviews', getProductReviews);
+router.put('/update-stock', protect, updateProductStock);
 router.post('/:id/reviews', protect, addReview);
 router.post('/:id/reviews/:id', protect, updateReview);
 

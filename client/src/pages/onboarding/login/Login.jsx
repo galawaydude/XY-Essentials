@@ -34,7 +34,7 @@ const Login = () => {
             // Handle successful login
             // alert('Login successful!');
             localStorage.setItem('user-info', JSON.stringify(data)); // Save user info if needed
-            navigate('/'); // Redirect to the home page or dashboard
+            navigate('/account'); // Redirect to the home page or dashboard
   
         } catch (error) {
             setError(error.message);
@@ -71,7 +71,7 @@ const Login = () => {
         
                 setUser(obj);
                 // console.log(response.data.user);
-                navigate('/');
+                navigate('/account');
             }
         } catch (err) {
             console.error('Error while requesting Google token: ', err);

@@ -66,7 +66,7 @@ const Signup = () => {
   
           // On successful verification, redirect
           console.log('OTP verified successfully, redirecting...');
-          navigate('/');
+          navigate('/account');
   
       } catch (error) {
           console.error('Error during OTP verification:', error);
