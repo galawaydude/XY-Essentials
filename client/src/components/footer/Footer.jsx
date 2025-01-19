@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/(SVG)xy essentials_final.svg';
-import './Footer.css';
+import './footer.css';
 
 const Footer = () => {
   return (
