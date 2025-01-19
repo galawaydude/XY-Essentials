@@ -5,6 +5,7 @@ const fs = require('fs');
 const Order = require('../models/order.model');
 const path = require('path');
 const { sendOrderConfirmation, sendOrderStatusUpdate } = require('../utils/resend');
+const Address = require('../models/address.model'); // ensure this import
 
 // Get all orders for a user
 const getUserOrders = asyncHandler(async (req, res) => {
@@ -38,14 +39,24 @@ const placeOrder = asyncHandler(async (req, res) => {
 
     const order = new Order(orderData);
 
+    const addressDoc = await Address.findById(req.body.shippingAddress).lean();
     const createdOrder = await order.save();
 
     // Update user with the new order ID
     req.user.orders.push(createdOrder._id);
     await req.user.save();
 
+    // Send email - remove duplicate call
+    try {
+      await sendOrderConfirmation(req.user, createdOrder, req.body.orderItems, addressDoc);
+      console.log('Order confirmation email sent successfully');
+    } catch (emailError) {
+      console.error('Failed to send order confirmation:', emailError);
+    }
+
     console.log('Created Order:', createdOrder); // Log the created order
     res.status(201).json(createdOrder); // Respond with the created order
+
   } catch (error) {
     console.error('Error creating order:', error); // Log any errors that occur
     res.status(500).json({ message: 'Failed to create order', error: error.message });
@@ -53,9 +64,9 @@ const placeOrder = asyncHandler(async (req, res) => {
 });
 
 const createOrder = asyncHandler(async (req, res) => {
-    const order = await Order.create(req.body);
-    await sendOrderConfirmation(req.user, order);
-    res.status(201).json(order);
+  const order = await Order.create(req.body);
+
+  res.status(201).json(order);
 });
 
 const generateBill = async (req, res) => {
@@ -65,10 +76,10 @@ const generateBill = async (req, res) => {
     // Fetch the order details from MongoDB
     console.log(`Fetching order with ID: ${id}`);
     const order = await Order.findById(id)
-    .populate('orderItems.product') // Populate product details
-    .populate('shippingAddress') // Populate address details
-    .populate('user') // Populate user with specific fields (name and phone)
-    .lean();
+      .populate('orderItems.product') // Populate product details
+      .populate('shippingAddress') // Populate address details
+      .populate('user') // Populate user with specific fields (name and phone)
+      .lean();
     console.log('Fetched Order:', order);
 
 
@@ -93,7 +104,7 @@ const generateBill = async (req, res) => {
     const page = await browser.newPage();
     console.log('Setting page content...');
     await page.setContent(html);
-    
+
     console.log('Generating PDF...');
     const pdfBuffer = await page.pdf({
       format: 'A4',
@@ -106,7 +117,7 @@ const generateBill = async (req, res) => {
     });
 
     console.log('PDF Buffer Size:', pdfBuffer.length);
-    
+
     await browser.close();
 
     // Check if pdfBuffer is valid
@@ -124,7 +135,7 @@ const generateBill = async (req, res) => {
     // Send the PDF as a response
     console.log('Sending PDF to client...');
     res.send(pdfBuffer);
-    
+
   } catch (error) {
     console.error("Error generating bill:", error);
     res.status(500).send("Error generating bill");
