@@ -136,12 +136,12 @@ const OrderDetails = () => {
 
   return (
     <div>
-      <div className="text-nav-con container">
+      <div className="text-nav-con section od-text-nav">
         <a href="/profile">Profile </a>&nbsp;&nbsp;&gt;
         &nbsp;&nbsp;<a href="/orders"> Your Orders</a>&nbsp;&nbsp;&gt;
         &nbsp;&nbsp;<a> Order: {order._id}</a>
       </div>
-      <div className="ord-details-container con1 section">
+      <div className="ord-details-container section">
         <div className="ord-payment-item">
           <div className="ord-payment-label">Order Date: </div>
           <div className="ord-payment-value">{formatDate(order.createdAt)}</div>
