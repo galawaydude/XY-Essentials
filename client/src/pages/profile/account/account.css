@@ -16,7 +16,7 @@
 }
 
 .acc-section-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;  /* Smaller for account details */
   font-weight: 600;
   color: var(--pri);
   margin-bottom: 1.5rem;
@@ -24,11 +24,25 @@
   border-bottom: 2px solid var(--pri);
 }
 
+.acc-addresses .acc-section-title {
+  font-size: 1.5rem;  /* Larger for addresses section */
+}
+
+.acc-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Personal Details */
 .acc-personal-details .acc-details-grid {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
+}
+
+.acc-detail-item{
+  font-size: 1rem;
 }
 
 .acc-details-info {
@@ -83,6 +97,7 @@
   list-style-type: none;
   padding: 0;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
 }
 
@@ -108,6 +123,7 @@
 
 .acc-address-text {
   flex: 1;
+  font-size: 0.9rem;
 }
 
 .acc-address-actions {
@@ -133,7 +149,7 @@
 }
 
 .def-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #4a5568;
 }
 
@@ -154,17 +170,22 @@
 }
 
 .acc-btn-add-address {
-  background-color: white;
+  background: none;
+  border: none;
   color: var(--pri);
-  border: 2px solid var(--pri);
-  width: 100%;
-  margin-top: 1.5rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
 }
 
 .acc-btn-add-address:hover {
-  background-color: var(--pri);
-  color: white;
+  transform: scale(1.1);
+  background: none;
+  color: var(--pri);
 }
 
 /* Modal Styling */
@@ -228,6 +249,12 @@
   color: white;
 }
 
+@media (max-width: 992px) {
+  .acc-addresses-list {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .acc-section {
     padding: 1.25rem;
@@ -246,6 +273,10 @@
   .acc-address-item {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .acc-addresses-list {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
