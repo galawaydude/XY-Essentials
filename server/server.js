@@ -17,7 +17,6 @@ const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
 const orderRoutes = require('./routes/order.routes');
 const cartRoutes = require('./routes/cart.routes');
-const mailRoutes = require('./routes/mail.routes');
 const adminRoutes = require('./routes/admin.routes');
 const categoryRoutes = require('./routes/category.routes');
 const couponRoutes = require('./routes/coupon.routes');
@@ -27,7 +26,6 @@ const inventoryRoutes = require('./routes/inventory.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const reviewRoutes = require('./routes/review.routes');
 const blogRoutes = require('./routes/blog.routes');
-const emailRoutes = require('./routes/email.routes');
 
 const app = express();
 app.use(cookieParser());
@@ -56,14 +54,12 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/coupons', couponRoutes);
-app.use('/api/mails', mailRoutes);
 app.use('/api/combos', comboRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/blogs', blogRoutes);
-app.use('/api/email', emailRoutes);
 
 // Middlewares
 app.use(notFound);
