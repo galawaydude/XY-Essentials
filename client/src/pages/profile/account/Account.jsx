@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddressModal from '../../../components/newaddress/AddressModal';  // Fixed import
-import EditAddressModal from '../../../components/editaddress/editaddressModal';
+import EditAddressModal from '../../../components/editaddress/EditAddressModal';
 import EditProfileModal from '../../../components/editprofile/editprofile';
 import './account.css';
 
