@@ -12,7 +12,7 @@ const ProductListing = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [priceRange, setPriceRange] = useState([0, 1000]);
     const [selectedRating, setSelectedRating] = useState('');
-    const [isFilterVisible, setIsFilterVisible] = useState(true);
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
