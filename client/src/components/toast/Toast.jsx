@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Toast as BootstrapToast } from 'react-bootstrap';
 import './Toast.css';
+import { Link } from 'react-router-dom';
 
-const Toast = ({ action, message, show, onClose }) => {
+const Toast = ({ action, message, show, onClose, link , link_name}) => {
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
@@ -20,11 +21,12 @@ const Toast = ({ action, message, show, onClose }) => {
         onClose={onClose}
         className="custom-toast"
       >
-        <BootstrapToast.Header closeButton closeVariant="white">
+        <BootstrapToast.Header closeButton closeVariant="black">
           <strong className="me-auto">{action}</strong>
         </BootstrapToast.Header>
         <BootstrapToast.Body>
           {message}
+          {link && <Link to={link}> {link_name}</Link>}
         </BootstrapToast.Body>
       </BootstrapToast>
     </div>

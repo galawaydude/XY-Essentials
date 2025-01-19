@@ -8,6 +8,9 @@ const ProductCard = ({ product }) => {
   
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
+  const [action, setAction] = useState('');
+  const [link, setLink] = useState('');
+  const [link_name, setLinkName] = useState('');
   const [buttonText, setButtonText] = useState('Add');
 
   const handleAddToCart = async () => {
@@ -24,6 +27,15 @@ const ProductCard = ({ product }) => {
         }),
       });
 
+      if (response.status === 404) {
+        setMessage('Please login to add items to cart.');
+        setLink('/login');
+        setLinkName('Click here to login.');
+        setAction('Login Required!');
+        setShowToast(true);
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to add product to cart');
       }
@@ -31,6 +43,9 @@ const ProductCard = ({ product }) => {
       const data = await response.json();
       console.log('Product added to cart:', data);
       setMessage(`${product.name} added to cart.`);
+      setAction('Added to cart!');
+      setLink('/cart');
+      setLinkName('Go to cart.');
       setShowToast(true);
 
       setButtonText('Added');
@@ -71,7 +86,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
         <div className="h-p-cart-btn">
-          <Toast action='Added to cart' message={message} show={showToast} onClose={() => setShowToast(false)} />
+          <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
           <button onClick={handleAddToCart}>
             <i className="fas fa-cart-plus"></i>
             <span>{buttonText}</span>
