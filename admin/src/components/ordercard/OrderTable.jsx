@@ -113,7 +113,8 @@ const OrderTable = ({ orders, refreshOrders }) => {
       processing: 'bg-info',
       shipped: 'bg-primary',
       delivered: 'bg-success',
-      cancelled: 'bg-danger'
+      cancelled: 'bg-danger',
+      completed: 'bg-success'
     };
     return `badge ${statusClasses[status.toLowerCase()]} text-black`;
   };
@@ -154,7 +155,7 @@ const OrderTable = ({ orders, refreshOrders }) => {
                 </td>
                 <td className="text-nowrap">₹{order.finalPrice.toFixed(2)}</td>
                 <td>
-                  <span className={getStatusBadgeClass(order.shippingStatus)}>
+                  <span className={getStatusBadgeClass(order.paymentStatus)}>
                     {order.paymentStatus}
                   </span>
                 </td>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './checkout.css';
 import AddressModal from '../../components/newaddress/AddressModal';
+import Toast from '../../components/toast/Toast';
 
 const Checkout = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -24,6 +25,15 @@ const Checkout = () => {
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [couponApplied, setCouponApplied] = useState(false);
+
+  // Add state variables at the top with other states
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState('');
+  const [action, setAction] = useState('');
+  const [link, setLink] = useState('');
+  const [link_name, setLinkName] = useState('');
+
+
 
   //ITL: ACCESS CODES
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -97,6 +107,8 @@ const Checkout = () => {
     // setEditAddressIndex(null); 
   };
 
+
+
   const openAddModal = () => {
     setIsModalOpen(true);
     setEditAddressIndex(null);
@@ -132,6 +144,8 @@ const Checkout = () => {
       }
     };
 
+    
+
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
@@ -146,7 +160,25 @@ const Checkout = () => {
     fetchProducts();
     fetchProfile();
     fetchAddresses();
+
   }, []);
+
+  useEffect(() => {
+    if (addresses.length === 0) {
+      setMessage('Please add a delivery address to proceed with your order.');
+      setAction('Address Required!');
+      setLink('/account');
+      setLinkName('Add Address');
+      setShowToast(true);
+    } else {
+      setShowToast(false);
+    }
+  }, [addresses]);
+
+
+
+
+
 
   const addFreeSachets = () => {
     const uniqueSkinTypes = new Set();
@@ -427,7 +459,7 @@ const Checkout = () => {
 
             const waybill = Object.values(result.data)[0]?.waybill || "";
             console.log("Waybill:", waybill);
-            
+
             const responsewb = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${createdOrder._id}/waybill`, {
               method: "PUT",
               credentials: "include",
@@ -621,6 +653,14 @@ const Checkout = () => {
 
   return (
     <div className="checkout-con container">
+      <Toast
+        action={action}
+        message={message}
+        show={showToast}
+        link={link}
+        link_name={link_name}
+        onClose={() => setShowToast(false)}
+      />
       <div className="">
         <div className="home-pro-head">
           <div className="section_left_title">
@@ -647,6 +687,7 @@ const Checkout = () => {
                 ))
               ) : (
                 <option disabled>No addresses available</option>
+
               )}
             </select>
             <button className="add-address-btn" onClick={openAddModal}>

@@ -107,9 +107,12 @@ const ProductDetails = () => {
     const [deliveryCharges, setDeliveryCharges] = useState(null);
     const [deliveryPeriod, setDeliveryPeriod] = useState(null);
     const { id: productId } = useParams();
-      const [showToast, setShowToast] = useState(false);
-      const [message, setMessage] = useState('');
-      const [buttonText, setButtonText] = useState('Add');
+    const [showToast, setShowToast] = useState(false);
+    const [message, setMessage] = useState('');
+    const [action, setAction] = useState('');
+    const [link, setLink] = useState('');
+    const [link_name, setLinkName] = useState('');
+    const [buttonText, setButtonText] = useState('Add');
 
     //ITL: ACCESS CODES
     const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -195,7 +198,7 @@ const ProductDetails = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rating, comment}),
+                body: JSON.stringify({ rating, comment }),
             });
 
             if (!response.ok) {
@@ -254,6 +257,15 @@ const ProductDetails = () => {
                 }),
             });
 
+            if (response.status === 404) {
+                setMessage('Please login to add items to cart.');
+                setLink('/login');
+                setLinkName('Click here to login.');
+                setAction('Login Required!');
+                setShowToast(true);
+                return;
+              }
+
             if (!response.ok) {
                 throw new Error('Failed to add product to cart');
             }
@@ -261,16 +273,19 @@ const ProductDetails = () => {
             const data = await response.json();
             console.log('Product added to cart:', data);
             setMessage(`${product.name} added to cart.`);
+            setAction('Added to cart!');
+            setLink('/cart');
+            setLinkName('Go to cart.');
             setShowToast(true);
-      
+
             setButtonText('Added');
             setTimeout(() => {
-              setButtonText('Add');
+                setButtonText('Add');
             }, 1000);
-      
+
             setTimeout(() => {
-              setMessage('');
-              setShowToast(false);
+                setMessage('');
+                setShowToast(false);
             }, 6000);
         } catch (error) {
             console.error('Error adding product to cart:', error);
@@ -310,24 +325,24 @@ const ProductDetails = () => {
 
         const headers = {
             "Content-Type": "application/json",
-          };
-        
-          try {
+        };
+
+        try {
             const response = await fetch(url, {
-              method: "POST",
-              headers: headers,
-              body: JSON.stringify(payload),
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(payload),
             });
-        
+
             const result = await response.json();
             console.log("Rate Check Result:", result);
             setDeliveryCharges(result.data[0].rate);
             setDeliveryPeriod(result.expected_delivery_date);
-          } catch (error) {
+        } catch (error) {
             console.error("Error during rate check:", error);
             // alert("Failed to check rates at ITL!");
-          }
-        };
+        }
+    };
 
     itlRateCheck();
     // ITL: RATE CHECK END
@@ -410,11 +425,11 @@ const ProductDetails = () => {
 
                             <div className="pd-btns">
                                 <div className="pd-cart-btn">
-                                <Toast action='Added to cart' message={message} show={showToast} onClose={() => setShowToast(false)} />
-                                <button onClick={handleAddToCart}>
-            <i className="fas fa-cart-plus"></i>
-            <span>{buttonText}</span>
-          </button>
+                                <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
+                                    <button onClick={handleAddToCart}>
+                                        <i className="fas fa-cart-plus"></i>
+                                        <span>{buttonText}</span>
+                                    </button>
                                 </div>
                             </div>
 
