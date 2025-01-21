@@ -52,8 +52,10 @@ const AppRoutes = () => {
         return <PreLoader />; // Only show PreLoader on Home route
     }
 
+    console.log(import.meta.env.VITE_REACT_CLIENT_URL);
+
     return (
-        <GoogleOAuthProvider clientId={import.meta.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             {shouldShowNavbarAndFooter && <Navbar />}
             <main className="main">
                 <Routes>
