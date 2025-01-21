@@ -115,7 +115,7 @@ const AddBlog = () => {
           <div className="image-upload-area">
             {imgPreview ? (
               <div className="image-preview">
-                <img src={imgPreview} alt="Preview" />
+                <img loading="lazy" src={imgPreview} alt="Preview" />
                 <button type="button" onClick={() => {
                   setImgFile(null);
                   setImgPreview(null);

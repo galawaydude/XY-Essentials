@@ -66,7 +66,7 @@ const ProductCard = ({ product }) => {
     <div className="home-product-item">
       <Link to={`/products/${product._id}`} target="_blank" rel="noopener noreferrer" key={product._id}>
         <div className="home-product-img">
-          <img src={product.images[0]} alt={product.name} />
+          <img loading="lazy" src={product.images[0]} alt={product.name} />
         </div>
       </Link>
       <div className="home-product-details">

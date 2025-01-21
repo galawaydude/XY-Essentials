@@ -8,7 +8,7 @@ const About = () => {
     return (
         <div className="about-maincon">
             <div className="about-top-bg">
-                <img 
+                <img loading="lazy" 
                     src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                     alt="About Background" 
                 />

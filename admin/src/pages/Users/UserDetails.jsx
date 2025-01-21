@@ -37,7 +37,7 @@ const UserDetails = () => {
                 <div className="user-header-info">
                     <div className="user-avatar">
                         {/* {user.pfp ? (
-                            <img src={user.pfp} alt={user.name} />
+                            <img loading="lazy" src={user.pfp} alt={user.name} />
                         ) : ( */}
                             <FaUser className="default-avatar" />
                       

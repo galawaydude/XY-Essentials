@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
         </div> */}
         <div className='ft-logo'>
-          <img src={logo} alt="XY Essentials Logo" />
+          <img loading="lazy" src={logo} alt="XY Essentials Logo" />
         </div>
 
         {/* Navigation Links */}

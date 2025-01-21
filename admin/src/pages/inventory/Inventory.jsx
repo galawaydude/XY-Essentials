@@ -155,7 +155,7 @@ const Inventory = () => {
                                     />
                                 </td> */}
                                 <td className="product-info">
-                                    <img src={product.images[0]} alt={product.name} />
+                                    <img loading="lazy" src={product.images[0]} alt={product.name} />
                                     <div>
                                         <h4>{product.name}</h4>
                                         <span>{product.packaging}</span>

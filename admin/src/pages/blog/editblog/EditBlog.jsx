@@ -155,7 +155,7 @@ const EditBlog = () => {
             </div>
             {/* {imgPreview && (
               <div className="image-preview  mt-2 overflow-hidden">
-                <img src={imgPreview} alt="Preview" className='overflow-hidden'/>
+                <img loading="lazy" src={imgPreview} alt="Preview" className='overflow-hidden'/>
                 <button type="button" onClick={() => {
                   setImgFile(null);
                   setImgPreview(initialImage);

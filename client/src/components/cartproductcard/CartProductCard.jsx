@@ -23,7 +23,7 @@ const CartProductCard = ({ product, quantity, onUpdateQuantity, onRemoveFromCart
             <div className="cart-product-details">
                 <div className="cp-left">
                     <div className="cp-img-wrapper">
-                        <img src={product.images[0]} alt={product.name} />
+                        <img loading="lazy" src={product.images[0]} alt={product.name} />
                     </div>
                 </div>
 

@@ -49,7 +49,7 @@ const OrderDetails = () => {
         return;
       }
 
-      const url = "https://pre-alpha.ithinklogistics.com/api_v3/order/get_details.json";
+      const url = `${import.meta.env.VITE_ITL_URL}/api_v3/order/get_details.json`;
 
       // Payload for the API
       const payload = {
@@ -224,7 +224,7 @@ const OrderDetails = () => {
           <h2 className="ord-products-heading">Products in this order</h2>
           {order.orderItems.map((item, index) => (
             <Link key={index} to={`/products/${item.productId._id}`} className="ord-product-item" style={{ color: 'inherit' }}>
-              <img src={item.productId.images[0]} alt={item.productName} className="ord-product-image" />
+              <img loading="lazy" src={item.productId.images[0]} alt={item.productName} className="ord-product-image" />
               <div className="ord-product-details">
                 <p className="ord-product-name">{item.productName}</p>
                 <p className="ord-product-quantity">Quantity: {item.quantity}</p>

@@ -129,7 +129,7 @@ const Cart = () => {
                     <div className="empty-cart-message">
                         <h2>It’s quiet in here, shall we change that?</h2>
 
-                        <img src={eci} alt="Empty Cart Illustration" width="400" />
+                        <img loading="lazy" src={eci} alt="Empty Cart Illustration" width="400" />
                         <button
                             className="shop-now-btn"
                             onClick={() => navigate('/shop')}

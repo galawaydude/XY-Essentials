@@ -8,7 +8,7 @@ const Comingsoon = () => {
       <p className="coming-soon-text">
         Exciting things are on the way. Stay tuned!
       </p>
-      <img 
+      <img loading="lazy" 
         src={comingsoonImg} 
         alt="Coming Soon" 
         className="coming-soon-image"

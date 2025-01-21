@@ -82,7 +82,7 @@ const Home = () => {
   return (
     <div className='home'>
       <div className="hero section con1 swipe-up">
-        <img src={heroimg} alt="Hero background" />
+        <img loading="lazy" src={heroimg} alt="Hero background" />
         <div className="hero-content">
           <h1 className='hero-heading'>Lorem ipsum dolor sit amet.
           </h1>
@@ -150,7 +150,7 @@ const Home = () => {
           {['Cleanse', 'Treat', 'Protect'].map((category) => (
             <Link to={`/shop?category=${category}`} className="cat-item" key={category}>
               <div className="cat-item-img">
-                <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt={category} />
+                <img loading="lazy" src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt={category} />
               </div>
               <div className="cat-item-title">
                 {category}
@@ -161,7 +161,7 @@ const Home = () => {
       </div>
 
       {/* <div className="hero section con1">
-        <img src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+        <img loading="lazy" src="https://images.unsplash.com/photo-1548610762-7c6afe24c261?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
       </div> */}
 
       <div className="home-products section con1 swipe-up">

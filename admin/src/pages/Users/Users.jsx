@@ -117,7 +117,7 @@ const Users = () => {
                         {filteredUsers.map((user) => (
                             <tr key={user._id}>
                                 <td className="user-info">
-                                    {/* <img src={user.pfp || '/default-avatar.png'} alt={user.name} /> */}
+                                    {/* <img loading="lazy" src={user.pfp || '/default-avatar.png'} alt={user.name} /> */}
                                     <div>
                                         <h4>{user.name}</h4>
                                         <span>{user.isAdmin ? 'Admin' : 'User'}</span>

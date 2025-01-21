@@ -51,7 +51,7 @@ const Checkout = () => {
   useEffect(() => {
     // ITL: RATE CHECK
     const itlRateCheck = async () => {
-      const url = "https://pre-alpha.ithinklogistics.com/api_v3/rate/check.json";
+      const url = `${import.meta.env.VITE_ITL_URL}/api_v3/rate/check.json`;
 
       // console.log(ITL_ACCESS_TOKEN)
 
@@ -144,7 +144,7 @@ const Checkout = () => {
       }
     };
 
-    
+
 
     const fetchProducts = async () => {
       try {
@@ -366,7 +366,7 @@ const Checkout = () => {
 
         //ITL: CREATE ORDER
         const itlAddOrder = async () => {
-          const url = "https://pre-alpha.ithinklogistics.com/api_v3/order/add.json";
+          const url = `${import.meta.env.VITE_ITL_URL}/api_v3/order/add.json`;
 
           const payload = {
             data: {
@@ -593,6 +593,124 @@ const Checkout = () => {
           }
           const createdOrder = await response.json();
 
+          //ITL: CREATE ORDER
+          const itlAddOrder = async () => {
+            const url = `${import.meta.env.VITE_ITL_URL}/api_v3/order/add.json`;
+
+            const payload = {
+              data: {
+                shipments: [
+                  {
+                    waybill: "",
+                    order: createdOrder._id,
+                    sub_order: "",
+                    order_date: createdOrder.createdAt,
+                    total_amount: parseFloat(createdOrder.finalPrice.toFixed(2)),
+                    name: selectedAddress.fullName,
+                    company_name: "XY Essentials",
+                    add: selectedAddress.addressLine1,
+                    add2: selectedAddress.addressLine2,
+                    add3: "",
+                    pin: selectedAddress.postalCode,
+                    city: selectedAddress.city,
+                    state: selectedAddress.state,
+                    country: "India",
+                    phone: selectedAddress.phoneNumber,
+                    alt_phone: "",
+                    email: profile.email,
+                    is_billing_same_as_shipping: "yes",
+                    billing_name: selectedAddress.fullName,
+                    billing_company_name: selectedAddress.companyName || "",
+                    billing_add: selectedAddress.addressLine1,
+                    billing_add2: selectedAddress.addressLine2,
+                    billing_add3: "",
+                    billing_pin: selectedAddress.postalCode,
+                    billing_city: selectedAddress.city,
+                    billing_state: selectedAddress.state,
+                    billing_country: "India",
+                    billing_phone: selectedAddress.phoneNumber,
+                    billing_alt_phone: "",
+                    billing_email: profile.email,
+                    products: createdOrder.orderItems
+                      .filter(item => item.packaging !== 'Sachet')
+                      .map(item => ({
+                        product_name: item.productName,
+                        product_sku: "",
+                        product_quantity: item.quantity,
+                        product_price: item.price,
+                        product_tax_rate: "",
+                        product_hsn_code: "",
+                        product_discount: "",
+                      })),
+                    shipment_length: "10",
+                    shipment_width: "10",
+                    shipment_height: "5",
+                    weight: "90.00",
+                    shipping_charges: "",
+                    giftwrap_charges: "",
+                    transaction_charges: "",
+                    total_discount: discount,
+                    first_attemp_discount: "",
+                    cod_amount: "",
+                    payment_mode: paymentMethod,
+                    reseller_name: "",
+                    eway_bill_number: "",
+                    gst_number: "",
+                    what3words: "",
+                    return_address_id: "1293",
+                  },
+                ],
+                pickup_address_id: "1293",
+                access_token: ITL_ACCESS_TOKEN,
+                secret_key: ITL_SECRET_KEY,
+                logistics: "",
+                s_type: "",
+                order_type: "",
+              },
+            };
+
+            console.log("Payload:", payload);
+
+
+            const headers = {
+              "Content-Type": "application/json",
+            };
+
+            try {
+              const response = await fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(payload),
+              });
+
+              const result = await response.json();
+              console.log("Result:", result);
+
+              const waybill = Object.values(result.data)[0]?.waybill || "";
+              console.log("Waybill:", waybill);
+
+              const responsewb = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${createdOrder._id}/waybill`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ waybill }),
+              });
+              const responsewbjson = await responsewb.json();
+              console.log("Updated Order:", responsewbjson);
+            } catch (error) {
+              console.error("Error:", error);
+              // alert("Failed to create order at ITL!");
+            }
+
+            // Save the ITL awb_number in the order schema as waybill
+
+          };
+
+          itlAddOrder();
+          //ITL: CREATE ORDER END
+
           for (const item of checkoutItems) {
             await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
               method: 'PUT',
@@ -763,7 +881,7 @@ const Checkout = () => {
                 <li key={item.product._id} className="product-item">
                   <div className="item-info">
                     <div className="image-container">
-                      <img
+                      <img loading="lazy"
                         src={item.product.images[0]}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-md"

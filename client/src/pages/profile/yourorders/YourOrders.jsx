@@ -95,7 +95,7 @@ useEffect(() => {
       return;
     }
 
-    const url = "https://pre-alpha.ithinklogistics.com/api_v3/order/get_details.json";
+    const url = `${import.meta.env.VITE_ITL_URL}/api_v3/order/get_details.json`;
 
     const payload = {
       data: {

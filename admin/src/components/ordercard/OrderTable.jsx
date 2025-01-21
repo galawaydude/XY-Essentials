@@ -32,9 +32,9 @@ const OrderTable = ({ orders, refreshOrders }) => {
     }
   
     const urlMap = {
-      invoice: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/invoice.json',
-      manifest: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/manifest.json',
-      label: 'https://pre-alpha.ithinklogistics.com/api_v3/shipping/label.json',
+      invoice: `${import.meta.env.VITE_ITL_URL}/api_v3/shipping/invoice.json`,
+      manifest: `${import.meta.env.VITE_ITL_URL}/api_v3/shipping/manifest.json`,
+      label: `${import.meta.env.VITE_ITL_URL}/api_v3/shipping/label.json`,
     };
   
     try {

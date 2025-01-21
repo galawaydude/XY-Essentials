@@ -38,7 +38,7 @@ const CustomImageSlider = ({ images }) => {
     return (
         <div className="custom-slider">
             <div className="main-image-container">
-                <img
+                <img loading="lazy"
                     src={images[currentIndex]}
                     alt={`Product ${currentIndex + 1}`}
                     className="main-image"
@@ -79,7 +79,7 @@ const CustomImageSlider = ({ images }) => {
                         onClick={() => handleThumbClick(index)}
                         className={`thumbnail-button ${index === selectedThumb ? 'active' : ''}`}
                     >
-                        <img
+                        <img loading="lazy"
                             src={img}
                             alt={`Thumbnail ${index + 1}`}
                             className="thumbnail-image"
@@ -303,7 +303,7 @@ const ProductDetails = () => {
 
     // ITL: RATE CHECK
     const itlRateCheck = async () => {
-        const url = "https://pre-alpha.ithinklogistics.com/api_v3/rate/check.json";
+        const url = `${import.meta.env.VITE_ITL_URL}/api_v3/rate/check.json`;
 
         console.log(ITL_ACCESS_TOKEN)
 
