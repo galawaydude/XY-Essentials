@@ -155,6 +155,7 @@
   background-position: center;
   background-repeat: no-repeat;
   filter: brightness(0.9);
+  transition: all 0.3s ease; /* Add transition */
 }
 
 .cat-item-img img:hover {
