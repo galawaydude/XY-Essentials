@@ -40,6 +40,7 @@ const corsOptions = {
     origin: corsOrigins,
     credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 const apiUrl = process.env.API_URL || 'http://localhost:5000';
