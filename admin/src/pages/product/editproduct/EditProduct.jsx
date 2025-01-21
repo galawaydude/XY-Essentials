@@ -130,6 +130,7 @@ const EditProduct = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
                 method: 'PUT',
+                credentials: 'include',
                 body: formData,
             });
             const data = await response.json();

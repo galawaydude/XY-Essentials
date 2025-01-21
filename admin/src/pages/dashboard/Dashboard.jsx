@@ -2,9 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { FaUsers, FaShoppingCart, FaRupeeSign, FaBoxOpen, FaTruck, FaClock, FaTimesCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import './dashboard.css';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setProfile(data);
+
+      if (!response.ok) {
+        navigate('/login');
+        console.error('Failed to fetch profile');
+      }
+    };
+
+    fetchProfile();
+  }, []);
   const [stats, setStats] = useState({
     totalOrders: 0,
     totalRevenue: 0,
@@ -26,6 +46,8 @@ const Dashboard = () => {
     monthlyRevenue: [],
     productCategories: []
   });
+
+
 
   useEffect(() => {
     console.log('Fetching dashboard data...');

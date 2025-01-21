@@ -79,7 +79,7 @@ const Inventory = () => {
             const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesFilter = filter === 'all' || 
                                 (filter === 'low-stock' && product.stock < 10) ||
-                                (filter === 'out-of-stock' && product.stock === 0);
+                                (filter === 'out-of-stock' && product.stock <= 0);
             return matchesSearch && matchesFilter;
         })
         .sort((a, b) => {

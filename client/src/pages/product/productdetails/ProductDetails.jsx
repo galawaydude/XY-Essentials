@@ -114,6 +114,8 @@ const ProductDetails = () => {
     const [link_name, setLinkName] = useState('');
     const [buttonText, setButtonText] = useState('Add');
 
+
+
     //ITL: ACCESS CODES
     const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
     const ITL_SECRET_KEY = import.meta.env.VITE_ITL_SECRET_KEY;
@@ -171,6 +173,12 @@ const ProductDetails = () => {
 
         fetchProductDetails();
     }, [productId]);
+
+    useEffect(() => {
+        if (product && product.stock <= 0) {
+          setButtonText('Out Of Stock');
+        }
+      }, [product?.stock]);
 
     useEffect(() => {
 
@@ -272,7 +280,7 @@ const ProductDetails = () => {
 
             const data = await response.json();
             console.log('Product added to cart:', data);
-            setMessage(`${product.name} added to cart.`);
+            setMessage(`${quantity} x ${product.name} added to cart.`);
             setAction('Added to cart!');
             setLink('/cart');
             setLinkName('Go to cart.');
@@ -414,20 +422,22 @@ const ProductDetails = () => {
                                     ₹{product.price}
                                 </div>
                             </div>
-                            <div className="pd-quantity">
-                                <div className='pd-quantity-head'>Quantity</div>
-                                <div className="pd-quantity-counter">
-                                    <button onClick={() => handleQuantityChange('decrement')}>-</button>
-                                    <p className='pd-quantity-num'>{quantity}</p>
-                                    <button onClick={() => handleQuantityChange('increment')}>+</button>
+                            {product.stock > 0 && (
+                                <div className="pd-quantity">
+                                    <div className='pd-quantity-head'>Quantity</div>
+                                    <div className="pd-quantity-counter">
+                                        <button onClick={() => handleQuantityChange('decrement')}>-</button>
+                                        <p className='pd-quantity-num'>{quantity}</p>
+                                        <button onClick={() => handleQuantityChange('increment')}>+</button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <div className="pd-btns">
                                 <div className="pd-cart-btn">
                                 <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
-                                    <button onClick={handleAddToCart}>
-                                        <i className="fas fa-cart-plus"></i>
+                                    <button onClick={handleAddToCart} disabled={product.stock <= 0}>
+                                    {product.stock > 0 && <i className="fas fa-cart-plus"></i>}
                                         <span>{buttonText}</span>
                                     </button>
                                 </div>

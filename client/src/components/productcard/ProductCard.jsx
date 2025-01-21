@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './productcard.css';
 import { Link } from 'react-router-dom';
 import Toast from '../toast/Toast';
@@ -13,8 +13,25 @@ const ProductCard = ({ product }) => {
   const [link_name, setLinkName] = useState('');
   const [buttonText, setButtonText] = useState('Add');
 
+  useEffect(() => {
+    if (product.stock <= 0) {
+      setButtonText('Out Of Stock');
+    }
+  }, [product.stock]);
+
   const handleAddToCart = async () => {
     try {
+      if (product.stock <= 0) {
+        setMessage('This product is currently out of stock.');
+        setAction('Out of stock!');
+        setLink('');
+        setLinkName('');
+        setShowToast(true);
+        setTimeout(() => {
+          setMessage('');
+          setShowToast(false);
+        }, 6000);
+      }
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
         method: 'POST',
         headers: {
@@ -51,12 +68,12 @@ const ProductCard = ({ product }) => {
       setButtonText('Added');
       setTimeout(() => {
         setButtonText('Add');
-      }, 1000);
+      }, 2000);
 
       setTimeout(() => {
-        setMessage('');
         setShowToast(false);
-      }, 6000);
+        setMessage('');
+      }, 3000);
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
@@ -87,8 +104,8 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="h-p-cart-btn">
           <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
-          <button onClick={handleAddToCart}>
-            <i className="fas fa-cart-plus"></i>
+          <button onClick={handleAddToCart} disabled={product.stock <= 0}>
+            {product.stock > 0 && <i className="fas fa-cart-plus"></i>}
             <span>{buttonText}</span>
           </button>
         </div>
@@ -98,4 +115,5 @@ const ProductCard = ({ product }) => {
 }
 
 export default ProductCard;
+
 

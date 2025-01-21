@@ -278,7 +278,7 @@ const Checkout = () => {
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalItemsPrice = totalItems;
-  const totalAmount = totalItems - discount - pmDiscount;
+  const totalAmount = Math.max(totalItems - discount - pmDiscount, 1);
 
   const handleApplyCoupon = async () => {
     try {
@@ -537,7 +537,7 @@ const Checkout = () => {
       // Debugging: Log the data received from Razorpay
       console.log("Razorpay data received:", data);
       const options = {
-        key: `${import.meta.env.REACT_APP_RAZORPAY_KEY_ID}`,
+        key: `${import.meta.env.VITE_RAZORPAY_KEY_ID}`,
         amount: Math.round(data.amount * 100),
         currency: data.currency,
         name: "XY Essentials",

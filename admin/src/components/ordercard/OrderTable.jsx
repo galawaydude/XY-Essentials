@@ -40,6 +40,7 @@ const OrderTable = ({ orders, refreshOrders }) => {
     try {
       const response = await fetch(urlMap[type], {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

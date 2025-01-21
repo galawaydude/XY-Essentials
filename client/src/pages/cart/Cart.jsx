@@ -11,22 +11,22 @@ const Cart = () => {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
 
-       useEffect(() => {
-            const fetchProfile = async () => {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
-                    credentials: 'include',
-                });
-                const data = await response.json();
-                setProfile(data);
-    
-                if (!response.ok) {
-                    navigate('/login');
-                    console.error('Failed to fetch profile');
-                }
-            };
-    
-            fetchProfile();
-        }, []);
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+                credentials: 'include',
+            });
+            const data = await response.json();
+            setProfile(data);
+
+            if (!response.ok) {
+                navigate('/login');
+                console.error('Failed to fetch profile');
+            }
+        };
+
+        fetchProfile();
+    }, []);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -124,7 +124,7 @@ const Cart = () => {
     return (
         <div className="cart">
             <div className="con2">
-            <div className="section_left_title">Cart</div>
+                <div className="section_left_title">Cart</div>
                 {cartItems.length === 0 ? (
                     <div className="empty-cart-message">
                         <h2>It’s quiet in here, shall we change that?</h2>
