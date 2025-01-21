@@ -537,7 +537,7 @@ const Checkout = () => {
       // Debugging: Log the data received from Razorpay
       console.log("Razorpay data received:", data);
       const options = {
-        key: 'rzp_test_mRwGhrvW3W8Tlv',
+        key: `${import.meta.env.REACT_APP_RAZORPAY_KEY_ID}`,
         amount: Math.round(data.amount * 100),
         currency: data.currency,
         name: "XY Essentials",
