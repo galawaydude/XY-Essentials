@@ -1,23 +1,39 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { useState, useEffect } from 'react';
+import PreLoader from '../components/preloader/PreLoader';
 
 const ProtectedRoutes = () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const [cookies] = useCookies();
-    const userInfo = JSON.parse(localStorage.getItem('user-info'));
-    const token = userInfo?.token;
-    // console.log(token);
-    // const token = cookies.token;
-    // console.log(cookies);
-    // console.log(document.cookie);
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    setIsAuthenticated(true);
+                } else {
+                    setIsAuthenticated(false);
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                setIsAuthenticated(false);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    if (!token) {
-        console.error('Token is missing or invalid');
-        return <Navigate to="/login" />;
+        checkAuth();
+    }, []);
+
+    if (loading) {
+        return <PreLoader />;
     }
 
-    return <Outlet />;
-}
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
 
 export default ProtectedRoutes;

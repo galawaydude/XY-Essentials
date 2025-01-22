@@ -59,32 +59,25 @@ const AppRoutes = () => {
             {shouldShowNavbarAndFooter && <Navbar />}
             <main className="main">
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/shop" element={<ProductListing />} />
-                    <Route path="/products/:id" element={<ProductDetails />} />
-                    {/* <Route path="/combos" element={<Combo />} /> */}
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/blogs" element={<BlogListing />} />
-                    <Route path="/blogs/:id" element={<BlogDetails />} />
+                    {/* Public Routes */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
                     <Route path="/terms" element={<TermsOfService />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/loader" element={<PreLoader />} />
                     <Route path="/coming-soon" element={<Comingsoon />} />
+                    <Route path="/loader" element={<PreLoader />} />
                     <Route path="*" element={<Error404 />} />
-                    
-                    {/* <Route path='/order' element={<Ordercard />}/> */}
-                    <Route path="/cart" element={<Cart />} />
-                        <Route path="/account" element={<Account />} />
-                        <Route path="/orders" element={<YourOrders />} />
-                        <Route path="/orders/:id" element={<OrderDetails />} />
+                    <Route path="/shop" element={<ProductListing />} />
+                    <Route path="/products/:id" element={<ProductDetails />} />
+                    <Route path="/" element={<Home />} />
 
+                    {/* Protected Routes */}
                     <Route element={<ProtectedRoutes />}>
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/checkout" element={<Checkout />} />
                         <Route path="/account" element={<Account />} />
                         <Route path="/orders" element={<YourOrders />} />
                         <Route path="/orders/:id" element={<OrderDetails />} />
@@ -93,7 +86,6 @@ const AppRoutes = () => {
             </main>
             {shouldShowNavbarAndFooter && <Footer />}
         </GoogleOAuthProvider>
-
     );
 };
 
