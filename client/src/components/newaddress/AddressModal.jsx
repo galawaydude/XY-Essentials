@@ -132,10 +132,10 @@ const AddressModal = ({ isOpen, onClose, onSave }) => {
           <label className='address-label' htmlFor="phoneNumber">Contact Number</label>
           <input id="phoneNumber" name="phoneNumber" className="address-modal-input" type="text" placeholder="Phone Number" value={formData.phoneNumber} onChange={handleChange} required />
 
-          <div className="address-modal-checkbox">
+          {/* <div className="address-modal-checkbox">
             <input type="checkbox" id="isDefault" name="isDefault" checked={formData.isDefault} onChange={handleChange} />
             <label htmlFor="isDefault">Set as default address</label>
-          </div>
+          </div> */}
 
           <div className="address-modal-buttons">
             <button type="button" className="address-modal-cancel" onClick={onClose}>Cancel</button>

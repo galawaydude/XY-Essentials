@@ -1,53 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './reviewcard.css';
 
-const ReviewCard = ({ review }) => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  
-  const { user, rating, comment, updatedAt } = review;
-  
+const ReviewCard = ({ review, onDelete, onUpdate, currentUserId }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedRating, setEditedRating] = useState(review.rating);
+  const [editedComment, setEditedComment] = useState(review.comment);
 
-  // Create star elements based on rating
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= Math.floor(rating)) {
-        stars.push(<i key={i} className="rating-star fas fa-star"></i>);
-      } else if (i === Math.ceil(rating)) {
-        stars.push(<i key={i} className="rating-star fas fa-star-half-alt"></i>);
-      } else {
-        stars.push(<i key={i} className="rating-star far fa-star"></i>);
-      }
-    }
-    return stars;
+  const handleSubmitEdit = async () => {
+    await onUpdate(review._id, {
+      rating: editedRating,
+      comment: editedComment
+    });
+    setIsEditing(false);
   };
 
-  // Format the date to display only the date part
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const isOwner = currentUserId === review.user._id;
 
   return (
     <div className="review-card">
-      <div className="review-header">
-        <div className="review-rating">
-          {renderStars()}
+      {!isEditing ? (
+        <>
+          <div className="review-header">
+            <div className="review-info-header">
+              <h6>{review.user?.name}</h6>
+              <div className="review-rating">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <i
+                    key={star}
+                    className={`fas fa-star`}
+                    style={{ color: star <= review.rating ? '#FFD700' : '#e4e5e9' }}
+                  ></i>
+                ))}
+              </div>
+            </div>
+            {isOwner && (
+              <div className="review-actions">
+                <button
+                  className="review-edit-btn"
+                  onClick={() => setIsEditing(true)}
+                  aria-label="Edit review"
+                >
+                  <i className="fas fa-edit"></i>
+                </button>
+                <button
+                  className="review-delete-btn"
+                  onClick={() => onDelete(review._id)}
+                  aria-label="Delete review"
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="review-info">
+            <p>{review.comment}</p>
+          </div>
+          <div className="review-date">
+            <p>Posted on {new Date(review.updatedAt).toLocaleDateString()}</p>
+          </div>
+        </>
+      ) : (
+        <div className="review-edit-form">
+          <div className="rating-edit">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <i
+                key={star}
+                className={`fas fa-star`}
+                onClick={() => setEditedRating(star)}
+                style={{ color: star <= editedRating ? '#FFD700' : '#e4e5e9' }}
+              ></i>
+            ))}
+          </div>
+          <textarea
+            value={editedComment}
+            onChange={(e) => setEditedComment(e.target.value)}
+            className="review-edit-textarea"
+          />
+          <div className="edit-actions">
+            <button onClick={handleSubmitEdit} className="save-btn">Save</button>
+            <button onClick={() => setIsEditing(false)} className="cancel-btn">Cancel</button>
+          </div>
         </div>
-        <button 
-          className="review-delete-btn"
-          aria-label="Delete review"
-        >
-          <i className="fa-solid fa-trash"></i>
-        </button>
-      </div>
-      <div className="review-info">
-        <h6>{user?.name}</h6>
-        <p>{comment}</p>
-      </div>
-      <div className="review-date">
-        <p>Posted on {formatDate(updatedAt)}</p>
-      </div>
+      )}
     </div>
   );
 };

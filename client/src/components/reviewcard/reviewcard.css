@@ -27,6 +27,21 @@
     font-size: 1.1rem;
 }
 
+.review-rating i, 
+.rating-edit i,
+.star-rating i {
+    color: #FFD700;  /* Golden color for stars */
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.review-rating i:hover, 
+.rating-edit i:hover,
+.star-rating i:hover {
+    transform: scale(1.1);
+}
+
 /* Delete button styling - now positioned top right */
 .review-delete-btn {
     background: none;
@@ -89,4 +104,83 @@
 
 .review-info p {
     font-size: 1rem;
+}
+
+.review-edit-form {
+    padding: 1rem;
+}
+
+.rating-edit {
+    margin-bottom: 1rem;
+}
+
+.rating-edit i {
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.rating-edit i.filled {
+    color: var(--pri);
+}
+
+.review-edit-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--m2);
+    border-radius: 4px;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.save-btn, .cancel-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-btn {
+    background-color: var(--pri);
+    color: white;
+}
+
+.cancel-btn {
+    background-color: var(--m2);
+    color: var(--m5);
+}
+
+.review-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.review-edit-btn,
+.review-delete-btn {
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.review-edit-btn {
+    color: var(--pri);
+}
+
+.review-delete-btn {
+    color: #dc3545;
+}
+
+.review-edit-btn:hover {
+    background-color: rgba(10, 72, 52, 0.1);
+}
+
+.review-delete-btn:hover {
+    background-color: rgba(220, 53, 69, 0.1);
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ProductCard from '../../../components/productcard/ProductCard';
 import ReviewCard from '../../../components/reviewcard/ReviewCard';
 import './productdetails.css';
@@ -8,9 +8,28 @@ import PreLoader from '../../../components/preloader/PreLoader';
 import Toast from '../../../components/toast/Toast';
 
 const CustomImageSlider = ({ images }) => {
+    const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedThumb, setSelectedThumb] = useState(0);
+    const [profile, setProfile] = useState([]);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+                credentials: 'include',
+            });
+            const data = await response.json();
+            setProfile(data);
+
+            if (!response.ok) {
+                navigate('/login');
+                console.error('Failed to fetch profile');
+            }
+        };
+
+        fetchProfile();
+    }, []);
 
     const goToNext = () => {
         setCurrentIndex((prevIndex) =>
@@ -113,6 +132,7 @@ const ProductDetails = () => {
     const [link, setLink] = useState('');
     const [link_name, setLinkName] = useState('');
     const [buttonText, setButtonText] = useState('Add');
+    const [currentUserId, setCurrentUserId] = useState(null);
 
 
 
@@ -176,9 +196,9 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (product && product.stock <= 0) {
-          setButtonText('Out Of Stock');
+            setButtonText('Out Of Stock');
         }
-      }, [product?.stock]);
+    }, [product?.stock]);
 
     useEffect(() => {
 
@@ -198,6 +218,21 @@ const ProductDetails = () => {
         fetchAddresses();
     }, []);
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                setCurrentUserId(data._id);
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        };
+        fetchProfile();
+    }, []);
+
     const handleAddReview = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${productId}/reviews`, {
@@ -214,12 +249,95 @@ const ProductDetails = () => {
             }
 
             const newReview = await response.json();
-            setReviews((prevReviews) => [...prevReviews, newReview]);
-            setRating(1);
+            
+            // Fetch user details for the new review
+            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
+                credentials: 'include'
+            });
+            const userData = await userResponse.json();
+
+            // Create complete review object with user data
+            const completeReview = {
+                ...newReview,
+                user: {
+                    _id: userData._id,
+                    name: userData.name
+                }
+            };
+
+            setReviews(prevReviews => [completeReview, ...prevReviews]);
+            setRating(5);
             setComment('');
             setReviewModalOpen(false);
+
+            // Show success toast
+            setShowToast(true);
+            setMessage('Review added successfully');
+            setAction('Success');
         } catch (error) {
             console.error(error);
+            setShowToast(true);
+            setMessage('Failed to add review');
+            setAction('Error');
+        }
+    };
+
+    const handleUpdateReview = async (reviewId, updatedData) => {
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/products/${productId}/reviews/${reviewId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(updatedData),
+                }
+            );
+
+            if (!response.ok) throw new Error('Failed to update review');
+
+            const updatedReview = await response.json();
+            setReviews(reviews.map(review =>
+                review._id === reviewId ? updatedReview : review
+            ));
+
+            setShowToast(true);
+            setMessage('Review updated successfully');
+            setAction('Success');
+        } catch (error) {
+            console.error('Error updating review:', error);
+            setShowToast(true);
+            setMessage('Failed to update review');
+            setAction('Error');
+        }
+    };
+
+    const handleDeleteReview = async (reviewId) => {
+        if (!window.confirm('Are you sure you want to delete this review?')) return;
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/products/${productId}/reviews/${reviewId}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include',
+                }
+            );
+
+            if (!response.ok) throw new Error('Failed to delete review');
+
+            setReviews(reviews.filter(review => review._id !== reviewId));
+
+            setShowToast(true);
+            setMessage('Review deleted successfully');
+            setAction('Success');
+        } catch (error) {
+            console.error('Error deleting review:', error);
+            setShowToast(true);
+            setMessage('Failed to delete review');
+            setAction('Error');
         }
     };
 
@@ -272,7 +390,7 @@ const ProductDetails = () => {
                 setAction('Login Required!');
                 setShowToast(true);
                 return;
-              }
+            }
 
             if (!response.ok) {
                 throw new Error('Failed to add product to cart');
@@ -435,9 +553,9 @@ const ProductDetails = () => {
 
                             <div className="pd-btns">
                                 <div className="pd-cart-btn">
-                                <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
+                                    <Toast action={action} message={message} show={showToast} link={link} link_name={link_name} onClose={() => setShowToast(false)} />
                                     <button onClick={handleAddToCart} disabled={product.stock <= 0}>
-                                    {product.stock > 0 && <i className="fas fa-cart-plus"></i>}
+                                        {product.stock > 0 && <i className="fas fa-cart-plus"></i>}
                                         <span>{buttonText}</span>
                                     </button>
                                 </div>
@@ -548,7 +666,13 @@ const ProductDetails = () => {
                 <div className="pd-reviews">
                     <div className="pd-reviews-con">
                         {reviews.map((review) => (
-                            <ReviewCard key={review._id} review={review} />
+                            <ReviewCard
+                                key={review._id}
+                                review={review}
+                                onDelete={handleDeleteReview}
+                                onUpdate={handleUpdateReview}
+                                currentUserId={currentUserId}
+                            />
                         ))}
                     </div>
                 </div>
@@ -565,9 +689,9 @@ const ProductDetails = () => {
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <i
                                         key={star}
-                                        className={`rating-star ${star <= rating ? 'fas fa-star' : 'far fa-star'
-                                            }`}
+                                        className={`fas fa-star ${star <= rating ? 'active' : ''}`}
                                         onClick={() => setRating(star)}
+                                        style={{ color: star <= rating ? '#FFD700' : '#e4e5e9' }}
                                     />
                                 ))}
                             </div>
@@ -577,9 +701,16 @@ const ProductDetails = () => {
                             <textarea
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
+                                required
+                                placeholder="Write your review here..."
                             ></textarea>
                         </div>
-                        <button onClick={handleAddReview}>Submit Review</button>
+                        <button 
+                            onClick={handleAddReview}
+                            disabled={!comment.trim() || rating === 0}
+                        >
+                            Submit Review
+                        </button>
                     </div>
                 </div>
             )}

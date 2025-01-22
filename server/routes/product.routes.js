@@ -14,13 +14,12 @@ router.get('/:id', getProductById);
 router.get('/:id/reviews', getProductReviews);
 router.put('/update-stock', protect, updateProductStock);
 router.post('/:id/reviews', protect, addReview);
-router.post('/:id/reviews/:id', protect, updateReview);
+router.put('/:productId/reviews/:reviewId', protect, updateReview);
+router.delete('/:productId/reviews/:reviewId', protect, deleteReview);
 
 // Admin Routes
 router.post('/', protect, admin, upload.fields([{ name: 'productImages' }]), createProduct);
 router.put('/:id',protect, admin, upload.fields([{ name: 'productImages' }]), updateProduct);
 router.delete('/:id', protect, admin, deleteProduct);
-
-
 
 module.exports = router;

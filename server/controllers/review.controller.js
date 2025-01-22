@@ -42,36 +42,58 @@ const addReview = asyncHandler(async (req, res) => {
   res.status(201).json(createdReview);
 });
 
-
 // Update a review
 const updateReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
+  const { reviewId } = req.params;
 
-  const review = await Review.findById(req.params.id);
+  const review = await Review.findById(reviewId);
 
-  if (review && review.user.equals(req.user._id)) {
-    review.rating = rating || review.rating;
-    review.comment = comment || review.comment;
-
-    const updatedReview = await review.save();
-    res.json(updatedReview);
-  } else {
+  if (!review) {
     res.status(404);
     throw new Error('Review not found');
   }
+
+  // Check if the user is the owner of the review
+  if (review.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Not authorized to edit this review');
+  }
+
+  review.rating = rating || review.rating;
+  review.comment = comment || review.comment;
+
+  const updatedReview = await review.save();
+
+  // Populate user info before sending response
+  await updatedReview.populate('user', 'name');
+  res.json(updatedReview);
 });
 
 // Delete a review
 const deleteReview = asyncHandler(async (req, res) => {
-  const review = await Review.findById(req.params.id);
+  const { reviewId, productId } = req.params;
 
-  if (review && review.user.equals(req.user._id)) {
-    await review.deleteOne();
-    res.json({ message: 'Review removed' });
-  } else {
+  const review = await Review.findById(reviewId);
+
+  if (!review) {
     res.status(404);
     throw new Error('Review not found');
   }
+
+  // Check if the user is the owner of the review
+  if (review.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Not authorized to delete this review');
+  }
+
+  // Remove review reference from product
+  await Product.findByIdAndUpdate(productId, {
+    $pull: { reviews: reviewId }
+  });
+
+  await review.deleteOne();
+  res.json({ message: 'Review removed' });
 });
 
 module.exports = {
