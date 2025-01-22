@@ -10,7 +10,7 @@ const BlogCard = ({ blog }) => {
             <div className="home-blog-card">
                  <Link to={`/blogs/${blog._id}`}>
                 <div className="home-blog-img">
-                    <img src={blog.img} alt={blog.title} />
+                    <img loading="lazy" src={blog.img} alt={blog.title} />
                 </div>
                 <div className="home-blog-details">
                     <div className="h-blog-card-tags">

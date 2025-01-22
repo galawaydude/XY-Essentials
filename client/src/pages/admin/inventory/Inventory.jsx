@@ -68,7 +68,7 @@ const Inventory = () => {
                 {products.map((product) => (
                     <div className="inven-card" key={product._id}>
                         <div className="ic-img">
-                            <img
+                            <img loading="lazy"
                                 src={product.images[0]} // Assuming the product has an images property
                                 alt={product.name}
                             />

@@ -12,56 +12,79 @@ const statesOfIndia = [
 const AddressModal = ({ isOpen, onClose, onSave }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   
-    const [formData, setFormData] = useState({
-      fullName: '',
-      addressLine1: '',
-      addressLine2: '',
-      landMark: '',
-      postalCode: '',
-      city: '',
-      state: '',
-      phoneNumber: '',
-      isDefault: false,
+  const [formData, setFormData] = useState({
+    fullName: '',
+    addressLine1: '',
+    addressLine2: '',
+    landMark: '',
+    postalCode: '',
+    city: '',
+    state: '',
+    phoneNumber: '',
+    isDefault: false,
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    console.log(`Changing ${name}: ${type === 'checkbox' ? checked : value}`);
+
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
     });
-  
-    const handleChange = (e) => {
-      const { name, value, type, checked } = e.target;
-      console.log(`Changing ${name}: ${type === 'checkbox' ? checked : value}`);
-  
-      setFormData({
-        ...formData,
-        [name]: type === 'checkbox' ? checked : value,
+  };
+
+  const validateForm = () => {
+    if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      setError('Please enter a valid 10-digit phone number');
+      return false;
+    }
+    if (!/^\d{6}$/.test(formData.postalCode)) {
+      setError('Please enter a valid 6-digit postal code');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${apiUrl}/api/addresses`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      console.log('Form submitted with data:', formData);
-  
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to save address');
-        }
-  
-        const savedAddress = await response.json();
-        console.log('Address saved successfully:', savedAddress);
-        onSave(savedAddress);
-        onClose();
-      } catch (error) {
-        console.error('Error during address submission:', error);
+
+      if (!response.ok) {
+        throw new Error('Failed to save address');
       }
-    };
-  
-    if (!isOpen) return null;
+
+      const savedAddress = await response.json();
+      console.log('Address saved successfully:', savedAddress);
+      onSave(savedAddress);
+      onClose();
+    } catch (error) {
+      console.error('Error during address submission:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
 
   return (
     <div className="address-modal-overlay">
@@ -73,6 +96,7 @@ const AddressModal = ({ isOpen, onClose, onSave }) => {
 
         <h3 className="address-modal-title">Add New Address</h3>
         <form className="address-modal-form" onSubmit={handleSubmit}>
+          {error && <div className="address-error-message">{error}</div>}
           <label className='address-label' htmlFor="fullName">Full Name</label>
           <input id="fullName" name="fullName" className="address-modal-input" type="text" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required />
 
@@ -115,7 +139,9 @@ const AddressModal = ({ isOpen, onClose, onSave }) => {
 
           <div className="address-modal-buttons">
             <button type="button" className="address-modal-cancel" onClick={onClose}>Cancel</button>
-            <button type="submit" className="address-modal-save">Save</button>
+            <button type="submit" className="address-modal-save" disabled={isLoading}>
+              {isLoading ? <i className="fas fa-spinner fa-spin"></i> : 'Save'}
+            </button>
           </div>
         </form>
       </div>

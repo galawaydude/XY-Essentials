@@ -47,7 +47,7 @@ const BlogDetails = () => {
                     ))}
                 </div>
                 <div className="bd-img">
-                    <img src={blog.img} alt={blog.title} />
+                    <img loading="lazy" src={blog.img} alt={blog.title} />
                 </div>
                 <div className="bd-content">
                     {blog.content}

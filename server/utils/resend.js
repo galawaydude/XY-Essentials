@@ -3,7 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: path.resolve(__dirname, '../config/.env') });
 const resend = new Resend(process.env.RESEND_API_KEY);
-console.log('Resend API client initialized:', resend);
+// console.log('Resend API client initialized:', resend);
 
 const sendOrderConfirmation = async (user, order, orderItems, shippingAddressDoc) => {
     if (!user?.email || !order?._id) {

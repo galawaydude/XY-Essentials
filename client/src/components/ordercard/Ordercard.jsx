@@ -60,7 +60,7 @@ const OrderCard = ({ order }) => {
       <div className="order-products">
         {products.map((product, index) => (
           <div key={index} className="order-product">
-            <img src={product.images[0]} alt={product.name} className="product-image" />
+            <img loading="lazy" src={product.images[0]} alt={product.name} className="product-image" />
             <div className="product-details">
               <span className="product-name">{product.name}</span>
               <span className="product-quantity">Qty: {product.quantity}</span>

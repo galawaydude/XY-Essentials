@@ -10,20 +10,49 @@
   background-color: var(--m1);
   border-left: 4px solid var(--pri);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  padding-right: 35px; /* Make space for close button */
+}
+
+.toast-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--m3);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+}
+
+.toast-close-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Remove default bootstrap close button styles */
+.custom-toast .btn-close {
+  display: none;
 }
 
 .custom-toast .toast-header {
   background-color: var(--m1);
   color: var(--pri);
-  border-bottom: 1px solid rgba(10, 72, 52, 0.1);
+  border-bottom: none;
+  padding-right: 0;
 }
 
 .custom-toast .toast-body {
   color: var(--m3);
-}
-
-.custom-toast .btn-close {
-  color: var(white);
-  width: auto;
-  font-size: 0.7rem;
 }

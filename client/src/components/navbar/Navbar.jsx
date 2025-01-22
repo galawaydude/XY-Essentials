@@ -44,7 +44,7 @@ const Navbar = () => {
                 </div>
                 <div className="logo">
                     <a href="/">
-                        <img src={XYNavLogo} alt="" /></a>
+                        <img loading="lazy" src={XYNavLogo} alt="" /></a>
                 </div>
                 <div className="nav-links">
                     <div className="nav-link-items">

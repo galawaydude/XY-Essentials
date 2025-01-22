@@ -8,7 +8,7 @@ const PreLoader = () => {
   return (
     // <div className="preloader">
     //   <div className="loader-circle"></div>
-    //   <img src={XYSvg} alt="XY Essentials" className="preloader-svg" />
+    //   <img loading="lazy" src={XYSvg} alt="XY Essentials" className="preloader-svg" />
     // </div>
 
     <div className="loader-container">

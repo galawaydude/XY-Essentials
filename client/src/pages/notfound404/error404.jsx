@@ -11,7 +11,7 @@ function error404() {
             </div>
 
             <div className='err-img-con'>
-                <img src={errimg} alt="" />
+                <img loading="lazy" src={errimg} alt="" />
             </div>
 
             <div className='err-txt-con'>

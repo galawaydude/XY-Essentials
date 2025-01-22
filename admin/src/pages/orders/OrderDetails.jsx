@@ -222,7 +222,7 @@ const OrderDetails = () => {
                         {order.orderItems.map((item, index) => (
                             <tr key={index}>
                                 <td className="product-cell">
-                                    <img src={item.productId.images[0]} alt={item.productName} />
+                                    <img loading="lazy" src={item.productId.images[0]} alt={item.productName} />
                                     <span>{item.productName}</span>
                                 </td>
                                 <td>{item.packaging}</td>

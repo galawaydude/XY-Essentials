@@ -111,6 +111,11 @@ const updateProductStock = asyncHandler(async (req, res) => {
           return res.status(404).json({ message: 'Product not found' });
       }
 
+      // Check if the stock can be reduced by the given quantity
+      if (product.stock < quantity) {
+          return res.status(400).json({ message: 'Insufficient stock. Cannot reduce stock by given quantity.' });
+      }
+
       product.stock -= quantity;
 
       // Initialize ordered if it doesn't exist

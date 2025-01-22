@@ -22,8 +22,7 @@ const AppRoutes = () => {
 
     return (
 
-        <GoogleOAuthProvider clientId="729808825464-vmqepq2un9gnf0nj08p5esin4457snb1.apps.googleusercontent.com">
-     
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <main className="main">
 
                 <Routes>

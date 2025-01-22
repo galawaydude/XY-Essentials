@@ -79,7 +79,7 @@ const Inventory = () => {
             const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesFilter = filter === 'all' || 
                                 (filter === 'low-stock' && product.stock < 10) ||
-                                (filter === 'out-of-stock' && product.stock === 0);
+                                (filter === 'out-of-stock' && product.stock <= 0);
             return matchesSearch && matchesFilter;
         })
         .sort((a, b) => {
@@ -155,7 +155,7 @@ const Inventory = () => {
                                     />
                                 </td> */}
                                 <td className="product-info">
-                                    <img src={product.images[0]} alt={product.name} />
+                                    <img loading="lazy" src={product.images[0]} alt={product.name} />
                                     <div>
                                         <h4>{product.name}</h4>
                                         <span>{product.packaging}</span>

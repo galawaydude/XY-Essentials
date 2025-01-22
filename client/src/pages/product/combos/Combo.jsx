@@ -40,7 +40,7 @@ const Combo = () => {
             <div className="products">
               {combo.products.map(product => (
                 <div key={product._id} className="product">
-                  <img src={product.images[0]} alt={product.name} />
+                  <img loading="lazy" src={product.images[0]} alt={product.name} />
                   <h3>{product.name}</h3>
                   {/* <p>{product.description}</p> */}
                   <p>Price: ${product.price}</p>

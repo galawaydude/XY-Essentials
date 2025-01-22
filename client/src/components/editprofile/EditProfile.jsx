@@ -10,6 +10,9 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
     mobileNumber: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -45,6 +48,12 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!/^\d{10}$/.test(formData.mobileNumber)) {
+      setError('Please enter a valid 10-digit phone number');
+      return;
+    }
+    setLoading(true);
+    setError('');
     console.log('Updating profile with data:', formData);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
@@ -65,7 +74,10 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
       onSave(updatedProfile);
       onClose();
     } catch (error) {
+      setError(error.message || 'Failed to update profile');
       console.error('Error during profile update:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,6 +116,7 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
               value={formData.email}
               onChange={handleChange}
               required
+              disabled
             />
           </div>
 
@@ -125,10 +138,12 @@ const EditProfileModal = ({ isOpen, onClose, onSave, currentUser }) => {
               Cancel
             </button>
             <button type="submit" className="save-button">
-              Save Changes
+              {loading ? <i className="fa fa-spinner fa-spin"></i> : 'Save Changes'}
             </button>
           </div>
         </form>
+          {/* {loading && <div className="loading-indicator">Saving profile...</div>} */}
+        {error && <div className="error-message">{error}</div>}
       </div>
     </div>
   );

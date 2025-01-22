@@ -118,6 +118,12 @@
     background-color: #005f29;
 }
 
+.error-message {
+    color: #ff4444;
+    margin-top: 1rem;
+    text-align: center;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .edit-profile-container {

@@ -121,7 +121,7 @@ const Blogs = () => {
                 {filteredBlogs.map(blog => (
                     <div key={blog._id} className="blog-card">
                         <div className="blog-image">
-                            <img src={blog.img} alt={blog.title} />
+                            <img loading="lazy" src={blog.img} alt={blog.title} />
                             <div className="blog-actions">
                                 <Link to={`/admin/edit-blog/${blog._id}`} className="edit-btn">
                                     <FaEdit size={16} />
