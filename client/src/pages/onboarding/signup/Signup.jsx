@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { FaEyeSlash, FaEye } from 'react-icons/fa'; // Add this import
 import OAuth from '../../../components/oauth/OAuth';
 import { useNavigate } from 'react-router-dom';
 import './otp.css';
@@ -15,6 +16,23 @@ const Signup = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState('');
+    const otpInputs = useRef([]);
+
+    const checkPasswordStrength = (password) => {
+        const strongRegex = new RegExp(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+        );
+        const mediumRegex = new RegExp(
+            '^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{6,})'
+        );
+
+        if (strongRegex.test(password)) return 'strong';
+        if (mediumRegex.test(password)) return 'medium';
+        return 'weak';
+    };
 
     const validateForm = () => {
         const newErrors = {};
@@ -31,8 +49,16 @@ const Signup = () => {
 
         if (!formData.password) {
             newErrors.password = 'Password is required';
-        } else if (formData.password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters';
+        } else if (formData.password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters';
+        } else if (!/[A-Z]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one uppercase letter';
+        } else if (!/[a-z]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one lowercase letter';
+        } else if (!/[0-9]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one number';
+        } else if (!/[!@#$%^&*]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one special character';
         }
 
         if (formData.password !== formData.confirmPassword) {
@@ -87,7 +113,7 @@ const Signup = () => {
             setErrors(prev => ({
                 ...prev,
                 submit: error.message
-            }));
+            })); 
         } finally {
             setLoading(false);
         }
@@ -130,6 +156,25 @@ const Signup = () => {
         }
     };
 
+    const handleOtpChange = (index, value) => {
+        if (value.length > 1) return;
+        
+        const newOtp = otp.split('');
+        newOtp[index] = value;
+        setOtp(newOtp.join(''));
+
+        // Auto-focus next input
+        if (value && index < 5) {
+            otpInputs.current[index + 1].focus();
+        }
+    };
+
+    const handleKeyDown = (index, e) => {
+        if (e.key === 'Backspace' && !otp[index] && index > 0) {
+            otpInputs.current[index - 1].focus();
+        }
+    };
+
     return (
         <div className="login-maincon section container">
             <div className="login-con">
@@ -167,50 +212,88 @@ const Signup = () => {
 
                             <div className="input-component">
                                 <label>Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    placeholder="Enter your password"
-                                    disabled={loading}
-                                />
+                                <div className="password-input-wrapper">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            setPasswordStrength(checkPasswordStrength(e.target.value));
+                                        }}
+                                        placeholder="Enter your password"
+                                        disabled={loading}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="password-toggle"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        tabIndex="-1"
+                                    >
+                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    </button>
+                                </div>
+                                {passwordStrength && (
+                                    <div className={`password-strength ${passwordStrength}`}>
+                                        Password strength: {passwordStrength}
+                                    </div>
+                                )}
                                 {errors.password && <span className="error-text">{errors.password}</span>}
                             </div>
 
                             <div className="input-component">
                                 <label>Confirm Password</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    placeholder="Confirm your password"
-                                    disabled={loading}
-                                />
+                                <div className="password-input-wrapper">
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        placeholder="Confirm your password"
+                                        disabled={loading}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="password-toggle"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        tabIndex="-1"
+                                    >
+                                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                    </button>
+                                </div>
                                 {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
                             </div>
 
                             {errors.submit && <div className="error-text">{errors.submit}</div>}
 
                             <button className="btn btn-primary" type="submit" disabled={loading}>
-                                {loading ? 'Sending OTP...' : 'Sign up'}
+                                {loading ? (
+                                    <>
+                                        Sending OTP <i className="fa fa-spinner fa-spin"></i>
+                                    </>
+                                ) : (
+                                    'Sign up'
+                                )}
                             </button>
                         </form>
                     ) : (
                         <form className="otp-form" onSubmit={handleVerifyOtp}>
-                            <div className="input-component">
-                                <label>Enter OTP</label>
-                                <input
-                                    type="text"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    placeholder="Enter OTP sent to your email"
-                                    disabled={loading}
-                                />
-                                {errors.otp && <span className="error-text">{errors.otp}</span>}
+                            <div className="otp-input-group">
+                                {[0, 1, 2, 3, 4, 5].map((index) => (
+                                    <input
+                                        key={index}
+                                        ref={el => otpInputs.current[index] = el}
+                                        type="text"
+                                        className="otp-digit"
+                                        value={otp[index] || ''}
+                                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                                        onKeyDown={(e) => handleKeyDown(index, e)}
+                                        maxLength={1}
+                                        disabled={loading}
+                                    />
+                                ))}
                             </div>
-
+                            {errors.otp && <span className="error-text">{errors.otp}</span>}
                             <button className="btn btn-primary" type="submit" disabled={loading}>
                                 {loading ? 'Verifying...' : 'Verify OTP'}
                             </button>

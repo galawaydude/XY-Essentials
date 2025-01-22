@@ -944,7 +944,14 @@ const Checkout = () => {
               disabled={isPlacingOrder}
               className="place-order-button"
             >
-              {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+              {/* {isPlacingOrder ? 'Placing Order...' : 'Place Order'} */}
+              {isPlacingOrder ? (
+                                    <>
+                                        Placing Order <i className="fa fa-spinner fa-spin"></i>
+                                    </>
+                                ) : (
+                                    'Place Order'
+                                )}
             </button>
           )}
 
