@@ -11,180 +11,102 @@ const bcrypt = require('bcrypt');
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TIMEOUT = process.env.JWT_TIMEOUT;
 
+// Add a temporary storage for OTP verification (in production, use Redis or similar)
+const pendingRegistrations = new Map();
+
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     console.log('Received registration request:', { name, email });
 
     try {
-        console.log('Checking for existing user in the database...');
         const existingUser = await User.findOne({ email });
-        console.log('Existing user check result:', existingUser ? 'User found' : 'No user found');
-
         if (existingUser) {
-            console.warn('User already exists:', email);
             return res.status(400).json({ message: 'User already exists' });
         }
 
         // Generate OTP
-        console.log('Generating OTP...');
         const otp = generateOTP();
-        console.log('Generated OTP:', otp);
-
-        // Send OTP to user's email
-        console.log('Sending OTP to email:', email);
-        try {
-            await sendOTP(email, otp);
-            console.log('OTP sent successfully.');
-        } catch (err) {
-            console.error('Error sending OTP to email:', err);
-            return res.status(500).json({ message: 'Error sending OTP to email' });
-        }
-
-        // Create a temporary user with OTP
-        console.log('Creating new user with temporary OTP...');
-        const user = new User({
+        
+        // Store registration data temporarily
+        pendingRegistrations.set(email, {
             name,
             email,
-            password,  // Save hashed password (bcrypt, etc.)
-            otp,       // Store OTP
-            otpExpires: Date.now() + 15 * 60 * 1000, // OTP expires in 15 minutes
+            password,
+            otp,
+            expiresAt: Date.now() + 15 * 60 * 1000 // 15 minutes
         });
 
-        try {
-            const savedUser = await user.save();
-            console.log('User temporarily created:', savedUser);
-        } catch (error) {
-            console.error('Error saving temporary user:', error);
-            return res.status(500).json({ message: 'Error saving temporary user', error });
-        }
+        // Send OTP
+        await sendOTP(email, otp);
 
-        // Respond with OTP sent status
+        // Set cleanup timeout
+        setTimeout(() => {
+            pendingRegistrations.delete(email);
+        }, 15 * 60 * 1000);
+
         res.status(200).json({
-            message: 'OTP sent to email. Please verify to complete the registration.',
-            email,
+            message: 'OTP sent to email. Please verify to complete registration.',
+            email
         });
 
     } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Error registering user', error });
+        console.error('Error in registration process:', error);
+        res.status(500).json({ message: 'Error in registration process' });
     }
 };
-
 
 const verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
-    console.log('Received OTP verification request:', { email, otp });
 
     try {
-        console.log('Fetching user from the database...');
-        const user = await User.findOne({ email });
+        const pendingUser = pendingRegistrations.get(email);
 
-        if (!user) {
-            console.warn('User not found:', email);
-            return res.status(400).json({ message: 'User not found' });
+        if (!pendingUser) {
+            return res.status(400).json({ message: 'Registration session expired. Please try again.' });
         }
 
-        // Check if OTP is correct and not expired
-        console.log('Verifying OTP...');
-        if (user.otp !== otp) {
-            console.warn('Invalid OTP entered:', otp);
+        if (Date.now() > pendingUser.expiresAt) {
+            pendingRegistrations.delete(email);
+            return res.status(400).json({ message: 'OTP expired. Please request a new one.' });
+        }
+
+        if (pendingUser.otp !== otp) {
             return res.status(400).json({ message: 'Invalid OTP' });
         }
 
-        if (Date.now() > user.otpExpires) {
-            console.warn('OTP has expired for user:', email);
-            return res.status(400).json({ message: 'OTP has expired' });
-        }
-
-        console.log('OTP is valid, finalizing registration for user:', email);
-
-        // OTP is correct, now finalize the user registration
-        user.otp = null; // Clear OTP after verification
-        user.otpExpires = null; // Remove OTP expiry
-        user.isVerified = true; // Set user as verified (optional)
-
-        try {
-            await user.save();
-            console.log('User successfully verified and saved:', user);
-        } catch (error) {
-            console.error('Error saving user after OTP verification:', error);
-            return res.status(500).json({ message: 'Error saving user after OTP verification', error });
-        }
-
-        // Generate token (JWT or other)
-        console.log('Generating JWT token for user...');
-        const token = generateToken(user._id);
-        console.log('Generated JWT token:', token);
-
-        // Set token as a cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Set to true for production with HTTPS
-            sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiry (1 month)
+        // Create verified user
+        const user = await User.create({
+            name: pendingUser.name,
+            email: pendingUser.email,
+            password: pendingUser.password
         });
 
-        res.status(200).json({
-            message: 'OTP verified successfully, registration completed.',
-            token,
+        // Clean up
+        pendingRegistrations.delete(email);
+
+        // Generate token and set cookie
+        const token = generateToken(user._id);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        });
+
+        res.status(201).json({
+            message: 'Registration successful',
             user: {
                 _id: user._id,
                 name: user.name,
-                email: user.email,
-            },
+                email: user.email
+            }
         });
 
     } catch (error) {
-        console.error('Error verifying OTP:', error);
-        res.status(500).json({ message: 'Error verifying OTP', error });
+        console.error('Error in OTP verification:', error);
+        res.status(500).json({ message: 'Error in OTP verification' });
     }
 };
-
-
-// const registerUser = async (req, res) => {
-//     const { name, email, password } = req.body;
-//     console.log('Received registration request:', { name, email });
-
-//     try {
-//         const existingUser = await User.findOne({ email });
-//         console.log('Checking for existing user:', existingUser);
-
-//         if (existingUser) {
-//             console.warn('User already exists:', email);
-//             return res.status(400).json({ message: 'User already exists' });
-//         }
-
-//         // console.log('Raw password before hashing:', password);
-//         // const hashedPassword = await bcrypt.hash(password, 10);
-//         // console.log('Hashed password after hashing:', hashedPassword);
-
-//         const user = await User.create({ name, email, password: password });
-//         console.log('New user created:', user);
-
-//         // Generate token
-//         const token = generateToken(user._id);
-//         console.log('Token generated for user:', user._id, "is", token);
-
-//         // Set cookie
-//         res.cookie('token', token, {
-//             httpOnly: true,
-//             secure: process.env.NODE_ENV === 'production', // Set to true in production
-//             sameSite: 'lax',
-//             maxAge: 30 * 24 * 60 * 60 * 1000,
-//         });
-
-//         res.status(201).json({
-//             _id: user._id,
-//             name: user.name,
-//             email: user.email,
-//         });
-//     } catch (error) {
-//         console.error('Error registering user:', error);
-//         res.status(500).json({ message: 'Error registering user', error });
-//     }
-// };
-
-
 
 // Login user & get token
 const authUser = async (req, res) => {
