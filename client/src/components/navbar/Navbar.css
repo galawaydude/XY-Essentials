@@ -185,7 +185,6 @@
     .navbar {
         padding: 0 1rem; /* Match the padding from above */
         justify-content: center;
-        position: relative; /* Ensure proper positioning context */
     }
 
     .nav-links {
