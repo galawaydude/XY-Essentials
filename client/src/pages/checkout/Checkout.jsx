@@ -41,6 +41,9 @@ const Checkout = () => {
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
   const ITL_SECRET_KEY = import.meta.env.VITE_ITL_SECRET_KEY;
 
+  // Add new state for error message
+  const [addressError, setAddressError] = useState('');
+
   // console.log(selectedAddress)
 
   useEffect(() => {
@@ -102,11 +105,13 @@ const Checkout = () => {
       const updatedAddresses = [...addresses];
       updatedAddresses[editAddressIndex] = newAddress;
       setAddresses(updatedAddresses);
+      setSelectedAddress(newAddress); // Set as selected address
     } else {
-      setAddresses([...addresses, newAddress]);
+      setAddresses(prev => [...prev, newAddress]);
+      setSelectedAddress(newAddress); // Set as selected address
     }
     setIsModalOpen(false);
-    // setEditAddressIndex(null);
+    setAddressError('');
   };
 
   const openAddModal = () => {
@@ -141,12 +146,14 @@ const Checkout = () => {
       const data = await response.json();
       setAddresses(data);
 
-      const defaultAddress = data.find((address) => address.isDefault);
-      console.log("Default Address:", defaultAddress);
-      if (defaultAddress) {
-        setSelectedAddress(defaultAddress);
-      } else if (data.length > 0) {
-        setSelectedAddress(data[0]);
+      if (data.length === 0) {
+        setAddressError('Please add a delivery address to proceed with your order.');
+        setSelectedAddress(null);
+      } else {
+        setAddressError('');
+        // Set the default or first address as selected
+        const defaultAddress = data.find(address => address.isDefault);
+        setSelectedAddress(defaultAddress || data[0]);
       }
     };
 
@@ -168,17 +175,17 @@ const Checkout = () => {
     fetchAddresses();
   }, []);
 
-  useEffect(() => {
-    if (addresses.length === 0) {
-      setMessage("Please add a delivery address to proceed with your order.");
-      setAction("Address Required!");
-      setLink("/account");
-      setLinkName("Add Address");
-      setShowToast(true);
-    } else {
-      setShowToast(false);
-    }
-  }, [addresses]);
+  // useEffect(() => {
+  //   if (addresses.length === 0) {
+  //     setMessage("Please add a delivery address to proceed with your order.");
+  //     setAction("Address Required!");
+  //     setLink("/account");
+  //     setLinkName("Add Address");
+  //     setShowToast(true);
+  //   } else {
+  //     setShowToast(false);
+  //   }
+  // }, [addresses]);
 
   const addFreeSachets = () => {
     const uniqueSkinTypes = new Set();
@@ -872,27 +879,29 @@ const Checkout = () => {
           {/* Address Section */}
           <div className="address-section">
             <h3>Select Delivery Address</h3>
+            {addressError && (
+              <div className="address-error">
+                <i className="fas fa-exclamation-circle"></i>
+                {addressError}
+              </div>
+            )}
             <select
               onChange={(e) => setSelectedAddress(addresses[e.target.value])}
               className="address-selector"
-              disabled={isPlacingOrder}
+              disabled={isPlacingOrder || addresses.length === 0}
+              value={addresses.findIndex(addr => addr._id === selectedAddress?._id)}
             >
               {addresses.length > 0 ? (
                 addresses.map((addr, index) => (
                   <option
                     key={addr._id}
                     value={index}
-                    selected={addr.isDefault}
                   >
-                    {`${addr.fullName}, ${addr.addressLine1}, ${
-                      addr.addressLine2 ? `${addr.addressLine2}, ` : ""
-                    }${addr.landMark ? `${addr.landMark}, ` : ""}${
-                      addr.city
-                    }, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
+                    {`${addr.fullName}, ${addr.addressLine1}, ${addr.addressLine2 ? `${addr.addressLine2}, ` : ""}${addr.landMark ? `${addr.landMark}, ` : ""}${addr.city}, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
                   </option>
                 ))
               ) : (
-                <option disabled>No addresses available</option>
+                <option value="">No addresses available</option>
               )}
             </select>
             <button className="add-address-btn" onClick={openAddModal}>
@@ -1076,8 +1085,8 @@ const Checkout = () => {
           {checkoutItems.length > 0 && (
             <button
               onClick={handlePayment}
-              disabled={isPlacingOrder}
-              className="place-order-button"
+              disabled={isPlacingOrder || !selectedAddress || addresses.length === 0}
+              className={`place-order-button ${(!selectedAddress || addresses.length === 0) ? 'disabled' : ''}`}
             >
               {/* {isPlacingOrder ? 'Placing Order...' : 'Place Order'} */}
               {isPlacingOrder ? (
