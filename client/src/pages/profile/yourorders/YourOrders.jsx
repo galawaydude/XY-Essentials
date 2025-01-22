@@ -188,7 +188,7 @@ useEffect(() => {
                 </div>
                 <div className="ol-order-detail">
                   <span className="ol-order-detail-label">Delivery Date:</span>
-                  <p className="ol-order-detail-value">{order.createdAt}</p>
+                  <p className="ol-order-detail-value">{formatDate(order.createdAt)}</p>
                 </div>
                 <div className="ol-order-detail">
                   <span className="ol-order-detail-label">Total Price:</span>
