@@ -25,6 +25,7 @@ const Checkout = () => {
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [couponApplied, setCouponApplied] = useState(false);
+  const [couponMessage, setCouponMessage] = useState('');
 
   // Add state variables at the top with other states
   const [showToast, setShowToast] = useState(false);
@@ -32,6 +33,7 @@ const Checkout = () => {
   const [action, setAction] = useState('');
   const [link, setLink] = useState('');
   const [link_name, setLinkName] = useState('');
+  const [isCouponLoading, setIsCouponLoading] = useState(false);
 
 
 
@@ -278,50 +280,43 @@ const Checkout = () => {
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalItemsPrice = totalItems;
-  const totalAmount = Math.max(totalItems - discount - pmDiscount, 1);
+  const effectivePmDiscount = discount > 0 ? 0 : pmDiscount;
+  const totalAmount = Math.max(totalItems - discount - effectivePmDiscount, 1);
 
   const handleApplyCoupon = async () => {
+    setIsCouponLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/coupons/apply`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: couponCode, totalAmount }),
-      });
-
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/coupons/apply`, 
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: couponCode, totalAmount: totalItems }),
+        }
+      );
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-
       const { discountAmount } = await response.json();
       setDiscount(discountAmount);
       setCouponApplied(true);
-      setPmDiscount(0)
-      // alert(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
+      setCouponMessage(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
+      setLink('');
+      setAction('Coupon Applied');
+      setMessage(`You saved ₹${discountAmount.toFixed(2)}`);
+      setShowToast(true);
     } catch (error) {
-      // alert(error.message);
-      console.error('Error applying coupon:', error);
+      setCouponMessage(error.message || 'Failed to apply coupon');
+      setAction('Coupon Error');
+      setLink('');
+      setMessage(error.message || 'Failed to apply coupon');
+      setShowToast(true);
+    } finally {
+      setIsCouponLoading(false);
     }
   };
-  // useEffect(() => {
-  //   handleApplyCoupon();
-  // }, [couponCode]);
-
-
-  // useEffect(() => {
-  //   if (paymentMethod === 'razorpay') {
-  //     // Apply PREPAY50 coupon
-  //     const couponCode = 'PREPAY50';
-  //     handleApplyCoupon(couponCode);
-  //   } else {
-  //     // Remove coupon when switching back to COD
-  //     setCouponCode(null);
-  //     setDiscount(0);
-  //   }
-  // }, [paymentMethod, handleApplyCoupon]);
 
   const handlePayment = async () => {
     setIsPlacingOrder(true);
@@ -827,6 +822,8 @@ const Checkout = () => {
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(50);
+                    setDiscount(0);
+                    setCouponCode('');
                   }}
                 /> UPI/Cards/NetBanking
               </label>
@@ -839,6 +836,8 @@ const Checkout = () => {
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(0);
+                    setDiscount(0);
+                    setCouponCode('');
                   }}
                 /> Pay on Delivery
               </label>
@@ -855,23 +854,30 @@ const Checkout = () => {
                 onChange={(e) => {
                   setCouponCode(e.target.value);
                   setCouponApplied(false);
+                  setDiscount(0);
+                  if (paymentMethod === 'razorpay') {
+                    setPmDiscount(50);
+                  } else {
+                    setPmDiscount(0);
+                  }
                 }}
                 placeholder="Enter coupon code"
               />
             </div>
             <button
               onClick={handleApplyCoupon}
-              disabled={couponApplied}
+              disabled={couponApplied || isCouponLoading}
             >
-              {couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
+              {isCouponLoading ? 'Applying...' : couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
             </button>
+            {/* {couponMessage && <p>{couponMessage}</p>}
             <div className="coupon-status">
               {couponApplied ? (
                 <div className="coupon-applied">Coupon applied! You saved ₹{discount.toFixed(2)}</div>
               ) : (
                 <div className="coupon-not-applied"></div>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Order Items Section */}

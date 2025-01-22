@@ -151,6 +151,25 @@ const OrderDetails = () => {
         <div className="ord-status-section">
           {/* Info Sections */}
           <div className="ord-info-sections">
+            <div className="ord-payment-section">
+              <h2 className="ord-payment-heading">Payment Details</h2>
+              <div className="ord-payment-item">
+                <span className="ord-status-label">Total Amount:</span>
+                <span className="ord-status-value">₹{order.finalPrice}</span>
+              </div>
+              <div className="ord-payment-item">
+                <span className="ord-status-label">Payment Status:</span>
+                <span className="ord-status-value">{order.paymentStatus}</span>
+              </div>
+              <div className="ord-payment-info">
+                <div className="ord-payment-item">
+                  <div className="ord-payment-label">Payment Method: </div>
+                  <div className="ord-payment-value">
+                    {order.paymentMethod === 'cod' ? "Pay On Delivery" : "Razorpay"}
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Shipping Section */}
             <div className="ord-shipping-section">
               <h2 className="ord-shipping-heading">Shipping Information</h2>
@@ -180,25 +199,10 @@ const OrderDetails = () => {
               </div>
             </div>
             {/* Payment Section */}
-            <div className="ord-payment-section">
-              <h2 className="ord-payment-heading">Payment Information</h2>
-              <div className="ord-payment-item">
-                <span className="ord-status-label">Payment Status:</span>
-                <span className="ord-status-value">{order.paymentStatus}</span>
-              </div>
-              <div className="ord-payment-info">
-                <div className="ord-payment-item">
-                  <div className="ord-payment-label">Payment Method: </div>
-                  <div className="ord-payment-value">
-                    {order.paymentMethod === 'cod' ? "Pay On Delivery" : "Razorpay"}
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         {/* Pricing Breakdown */}
-        <div className="ord-pricing-breakdown">
+        {/* <div className="ord-pricing-breakdown">
           <h2 className="ord-pricing-heading">Price Breakdown</h2>
           <div className="ord-price-row">
             <span className="ord-price-label">Subtotal</span>
@@ -218,7 +222,7 @@ const OrderDetails = () => {
             <span className="ord-price-label">Total Amount</span>
             <span className="ord-price-value">₹{order.finalPrice.toFixed(2)}</span>
           </div>
-        </div>
+        </div> */}
         {/* Products Section */}
         <div className="ord-products-section">
           <h2 className="ord-products-heading">Products in this order</h2>
