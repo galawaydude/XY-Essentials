@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import './checkout.css';
-import AddressModal from '../../components/newaddress/AddressModal';
-import Toast from '../../components/toast/Toast';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./checkout.css";
+import AddressModal from "../../components/newaddress/AddressModal";
+import Toast from "../../components/toast/Toast";
 
 const Checkout = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -11,11 +11,13 @@ const Checkout = () => {
   const [profile, setProfile] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [newAddress, setNewAddress] = useState('');
+  const [newAddress, setNewAddress] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('razorpay');
-  const [checkoutItems, setCheckoutItems] = useState(location.state?.checkoutItems || []);
+  const [couponCode, setCouponCode] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
+  const [checkoutItems, setCheckoutItems] = useState(
+    location.state?.checkoutItems || []
+  );
   // const deliveryCharge = paymentMethod === 'razorpay' ? 0 : 5;
   const [discount, setDiscount] = useState(0);
   const [pmDiscount, setPmDiscount] = useState(50);
@@ -25,17 +27,15 @@ const Checkout = () => {
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [couponApplied, setCouponApplied] = useState(false);
-  const [couponMessage, setCouponMessage] = useState('');
+  const [couponMessage, setCouponMessage] = useState("");
 
   // Add state variables at the top with other states
   const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState('');
-  const [action, setAction] = useState('');
-  const [link, setLink] = useState('');
-  const [link_name, setLinkName] = useState('');
+  const [message, setMessage] = useState("");
+  const [action, setAction] = useState("");
+  const [link, setLink] = useState("");
+  const [link_name, setLinkName] = useState("");
   const [isCouponLoading, setIsCouponLoading] = useState(false);
-
-
 
   //ITL: ACCESS CODES
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;
@@ -45,7 +45,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (checkoutItems.length === 0) {
-      navigate('/cart');
+      navigate("/cart");
       return;
     }
   }, [checkoutItems, navigate]);
@@ -106,10 +106,8 @@ const Checkout = () => {
       setAddresses([...addresses, newAddress]);
     }
     setIsModalOpen(false);
-    // setEditAddressIndex(null); 
+    // setEditAddressIndex(null);
   };
-
-
 
   const openAddModal = () => {
     setIsModalOpen(true);
@@ -123,22 +121,28 @@ const Checkout = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/profile/`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       setProfile(data);
     };
 
     const fetchAddresses = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/addresses`, {
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/user/addresses`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       setAddresses(data);
 
-      const defaultAddress = data.find(address => address.isDefault);
-      console.log('Default Address:', defaultAddress);
+      const defaultAddress = data.find((address) => address.isDefault);
+      console.log("Default Address:", defaultAddress);
       if (defaultAddress) {
         setSelectedAddress(defaultAddress);
       } else if (data.length > 0) {
@@ -146,51 +150,47 @@ const Checkout = () => {
       }
     };
 
-
-
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/products/`
+        );
         const data = await response.json();
         setProducts(data);
-        // console.log('Fetched Products:', data); 
+        // console.log('Fetched Products:', data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
 
     fetchProducts();
     fetchProfile();
     fetchAddresses();
-
   }, []);
 
   useEffect(() => {
     if (addresses.length === 0) {
-      setMessage('Please add a delivery address to proceed with your order.');
-      setAction('Address Required!');
-      setLink('/account');
-      setLinkName('Add Address');
+      setMessage("Please add a delivery address to proceed with your order.");
+      setAction("Address Required!");
+      setLink("/account");
+      setLinkName("Add Address");
       setShowToast(true);
     } else {
       setShowToast(false);
     }
   }, [addresses]);
 
-
-
-
-
-
   const addFreeSachets = () => {
     const uniqueSkinTypes = new Set();
     const newItems = [...checkoutItems];
 
     // Collect unique skin types from all categories in the cart
-    checkoutItems.forEach(item => {
-      if (item.product.category === 'Cleanse' ||
-        item.product.category === 'Treat' ||
-        item.product.category === 'Protect') {
+    checkoutItems.forEach((item) => {
+      if (
+        item.product.category === "Cleanse" ||
+        item.product.category === "Treat" ||
+        item.product.category === "Protect"
+      ) {
         uniqueSkinTypes.add(item.product.skinType);
       }
     });
@@ -198,15 +198,21 @@ const Checkout = () => {
     // console.log("Unique skin types collected:", [...uniqueSkinTypes]);
 
     // Loop through each skin type and check for missing sachets
-    uniqueSkinTypes.forEach(skinType => {
-      const cleanserExists = newItems.some(item =>
-        item.product.category === 'Cleanse' && item.product.skinType === skinType
+    uniqueSkinTypes.forEach((skinType) => {
+      const cleanserExists = newItems.some(
+        (item) =>
+          item.product.category === "Cleanse" &&
+          item.product.skinType === skinType
       );
-      const treatExists = newItems.some(item =>
-        item.product.category === 'Treat' && item.product.skinType === skinType
+      const treatExists = newItems.some(
+        (item) =>
+          item.product.category === "Treat" &&
+          item.product.skinType === skinType
       );
-      const protectExists = newItems.some(item =>
-        item.product.category === 'Protect' && item.product.skinType === skinType
+      const protectExists = newItems.some(
+        (item) =>
+          item.product.category === "Protect" &&
+          item.product.skinType === skinType
       );
 
       // console.log(`Checking skin type: ${skinType}`);
@@ -214,45 +220,48 @@ const Checkout = () => {
 
       // Add Cleanser sachet if Treat and Protect exist
       if (!cleanserExists) {
-        const cleanserSachet = products.find(product =>
-          product.category === 'Cleanse' &&
-          product.skinType === skinType &&
-          product.packaging === 'Sachet'
+        const cleanserSachet = products.find(
+          (product) =>
+            product.category === "Cleanse" &&
+            product.skinType === skinType &&
+            product.packaging === "Sachet"
         );
         if (cleanserSachet) {
           newItems.push({
             product: { ...cleanserSachet, price: 0 }, // Set price to 0
-            quantity: 1
+            quantity: 1,
           });
         }
       }
 
       // Add Treat sachet if Cleanser exists and Protect does not
       if (!treatExists) {
-        const treatSachet = products.find(product =>
-          product.category === 'Treat' &&
-          product.skinType === skinType &&
-          product.packaging === 'Sachet'
+        const treatSachet = products.find(
+          (product) =>
+            product.category === "Treat" &&
+            product.skinType === skinType &&
+            product.packaging === "Sachet"
         );
         if (treatSachet) {
           newItems.push({
             product: { ...treatSachet, price: 0 }, // Set price to 0
-            quantity: 1
+            quantity: 1,
           });
         }
       }
 
       // Add Protect sachet if Cleanser exists and Treat does not
       if (!protectExists) {
-        const protectSachet = products.find(product =>
-          product.category === 'Protect' &&
-          product.skinType === skinType &&
-          product.packaging === 'Sachet'
+        const protectSachet = products.find(
+          (product) =>
+            product.category === "Protect" &&
+            product.skinType === skinType &&
+            product.packaging === "Sachet"
         );
         if (protectSachet) {
           newItems.push({
             product: { ...protectSachet, price: 0 }, // Set price to 0
-            quantity: 1
+            quantity: 1,
           });
         }
       }
@@ -269,7 +278,6 @@ const Checkout = () => {
     addFreeSachets();
   }, [checkoutItems, products]);
 
-
   // const handleAddAddress = () => {
   //   if (newAddress) {
   //     setAddresses([...addresses, { id: addresses.length + 1, address: newAddress }]);
@@ -278,45 +286,48 @@ const Checkout = () => {
   //   }
   // };
 
-  const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+  const totalItems = checkoutItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
   const totalItemsPrice = totalItems;
   let effectivePmDiscount = 0;
-  if (paymentMethod === 'razorpay') {
-    if (totalItems < 50 ) {
+  if (paymentMethod === "razorpay") {
+    if (totalItems < 50) {
       effectivePmDiscount = totalItems - 1;
     } else {
       effectivePmDiscount = 50;
     }
+    if (couponApplied) {
+      effectivePmDiscount = 0;
+    }
   }
-
-  const totalAmount = Math.max(totalItems - discount - effectivePmDiscount, 1);
 
   useEffect(() => {
     setPmDiscount(effectivePmDiscount);
   }, [effectivePmDiscount]);
 
   useEffect(() => {
-if (paymentMethod === 'razorpay') {
-  if (couponApplied) {
-    setPmDiscount(0);
-  } else if (!couponApplied) {
-    setPmDiscount(effectivePmDiscount);
-  }
-}
+    if (paymentMethod === "razorpay") {
+      if (couponApplied) {
+        setPmDiscount(0);
+      } else if (!couponApplied) {
+        setPmDiscount(effectivePmDiscount);
+      }
+    }
   }, [couponApplied, paymentMethod, effectivePmDiscount]);
 
-
-
+  const totalAmount = Math.max(totalItems - discount - effectivePmDiscount, 1);
 
   const handleApplyCoupon = async () => {
     setIsCouponLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/coupons/apply`, 
+        `${import.meta.env.VITE_API_URL}/api/coupons/apply`,
         {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code: couponCode, totalAmount: totalItems }),
         }
       );
@@ -327,16 +338,18 @@ if (paymentMethod === 'razorpay') {
       const { discountAmount } = await response.json();
       setDiscount(discountAmount);
       setCouponApplied(true);
-      setCouponMessage(`Coupon applied! You saved ₹${discountAmount.toFixed(2)}`);
-      setLink('');
-      setAction('Coupon Applied');
+      setCouponMessage(
+        `Coupon applied! You saved ₹${discountAmount.toFixed(2)}`
+      );
+      setLink("");
+      setAction("Coupon Applied");
       setMessage(`You saved ₹${discountAmount.toFixed(2)}`);
       setShowToast(true);
     } catch (error) {
-      setCouponMessage(error.message || 'Failed to apply coupon');
-      setAction('Coupon Error');
-      setLink('');
-      setMessage(error.message || 'Failed to apply coupon');
+      setCouponMessage(error.message || "Failed to apply coupon");
+      setAction("Coupon Error");
+      setLink("");
+      setMessage(error.message || "Failed to apply coupon");
       setShowToast(true);
     } finally {
       setIsCouponLoading(false);
@@ -348,12 +361,12 @@ if (paymentMethod === 'razorpay') {
     const amount = totalAmount;
     console.log("Total amount to be paid:", amount);
 
-    const orderItems = checkoutItems.map(item => ({
+    const orderItems = checkoutItems.map((item) => ({
       productId: item.product._id,
       productName: item.product.name,
       packaging: item.product.packaging,
       quantity: item.quantity,
-      price: item.product.price
+      price: item.product.price,
     }));
 
     const orderData = {
@@ -366,20 +379,23 @@ if (paymentMethod === 'razorpay') {
       finalPrice: totalAmount,
     };
 
-    if (paymentMethod === 'cod') {
+    if (paymentMethod === "cod") {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(orderData),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/orders/`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          }
+        );
 
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error('Failed to save order details: ' + errorText);
+          throw new Error("Failed to save order details: " + errorText);
         }
 
         const createdOrder = await response.json();
@@ -423,8 +439,8 @@ if (paymentMethod === 'razorpay') {
                   billing_alt_phone: "",
                   billing_email: profile.email,
                   products: createdOrder.orderItems
-                    .filter(item => item.packaging !== 'Sachet')
-                    .map(item => ({
+                    .filter((item) => item.packaging !== "Sachet")
+                    .map((item) => ({
                       product_name: item.productName,
                       product_sku: "",
                       product_quantity: item.quantity,
@@ -462,7 +478,6 @@ if (paymentMethod === 'razorpay') {
 
           console.log("Payload:", payload);
 
-
           const headers = {
             "Content-Type": "application/json",
           };
@@ -480,14 +495,19 @@ if (paymentMethod === 'razorpay') {
             const waybill = Object.values(result.data)[0]?.waybill || "";
             console.log("Waybill:", waybill);
 
-            const responsewb = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${createdOrder._id}/waybill`, {
-              method: "PUT",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ waybill }),
-            });
+            const responsewb = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/orders/${
+                createdOrder._id
+              }/waybill`,
+              {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ waybill }),
+              }
+            );
             const responsewbjson = await responsewb.json();
             console.log("Updated Order:", responsewbjson);
           } catch (error) {
@@ -496,37 +516,50 @@ if (paymentMethod === 'razorpay') {
           }
 
           // Save the ITL awb_number in the order schema as waybill
-
         };
 
         itlAddOrder();
         //ITL: CREATE ORDER END
 
         // Replace the sequential for-loops with Promise.all for stock update
-        await Promise.all(checkoutItems.map(async (item) => {
-          console.log(`Updating stock for product ${item.product.name} by ${item.quantity}`);
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              productId: item.product._id,
-              quantity: item.quantity,
-            }),
-          });
-          const data = await response.json();
-          console.log(`Updated stock for product ${item.product._id}: ${data.updatedStock}`);
-        }));
+        await Promise.all(
+          checkoutItems.map(async (item) => {
+            console.log(
+              `Updating stock for product ${item.product.name} by ${item.quantity}`
+            );
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/products/update-stock`,
+              {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  productId: item.product._id,
+                  quantity: item.quantity,
+                }),
+              }
+            );
+            const data = await response.json();
+            console.log(
+              `Updated stock for product ${item.product._id}: ${data.updatedStock}`
+            );
+          })
+        );
 
         // Replace the sequential for-loops with Promise.all for cart removal
-        await Promise.all(checkoutItems.map(async (item) => {
-          await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
-            method: 'DELETE',
-            credentials: 'include',
-          });
-        }));
+        await Promise.all(
+          checkoutItems.map(async (item) => {
+            await fetch(
+              `${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`,
+              {
+                method: "DELETE",
+                credentials: "include",
+              }
+            );
+          })
+        );
 
         // alert("Order placed successfully with Cash on Delivery!");
         navigate(`/orders/${createdOrder._id}`);
@@ -539,19 +572,22 @@ if (paymentMethod === 'razorpay') {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/razorpay`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/payments/razorpay`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ amount }),
+        }
+      );
       // Debugging: Log the response from Razorpay initialization
       console.log("Response from Razorpay initiation:", response);
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error('Failed to initiate Razorpay payment: ' + errorText);
+        throw new Error("Failed to initiate Razorpay payment: " + errorText);
       }
       const data = await response.json();
       // Debugging: Log the data received from Razorpay
@@ -569,22 +605,25 @@ if (paymentMethod === 'razorpay') {
             orderId: data.id,
             amount: totalAmount,
             transactionId: razorpayResponse.razorpay_payment_id,
-            signature: razorpayResponse.razorpay_signature
+            signature: razorpayResponse.razorpay_signature,
           };
           console.log("Payment data to verify:", paymentData);
           try {
-            const verifyResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/verify`, {
-              method: 'POST',
-              credentials: 'include',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(paymentData),
-            });
+            const verifyResponse = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/payments/verify`,
+              {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(paymentData),
+              }
+            );
             console.log("Response from payment verification:", verifyResponse);
             if (!verifyResponse.ok) {
               const errorText = await verifyResponse.text();
-              throw new Error('Failed to save payment details: ' + errorText);
+              throw new Error("Failed to save payment details: " + errorText);
             }
             // alert("Payment Successful!");
           } catch (error) {
@@ -592,24 +631,30 @@ if (paymentMethod === 'razorpay') {
           }
           const razorpayOrderData = {
             ...orderData,
-            paymentMethod: 'razorpay',
-            paymentStatus: 'Completed',
+            paymentMethod: "razorpay",
+            paymentStatus: "Completed",
             razorpayOrderId: data.id,
           };
-          console.log("Order data after successful razorpay payment:", razorpayOrderData);
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(razorpayOrderData),
-          });
+          console.log(
+            "Order data after successful razorpay payment:",
+            razorpayOrderData
+          );
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/orders/`,
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(razorpayOrderData),
+            }
+          );
           // Debugging: Log the response status
           console.log("Response from order save:", response);
           if (!response.ok) {
             const errorText = await response.text();
-            throw new Error('Failed to save order details: ' + errorText);
+            throw new Error("Failed to save order details: " + errorText);
           }
           const createdOrder = await response.json();
 
@@ -625,7 +670,9 @@ if (paymentMethod === 'razorpay') {
                     order: createdOrder._id,
                     sub_order: "",
                     order_date: createdOrder.createdAt,
-                    total_amount: parseFloat(createdOrder.finalPrice.toFixed(2)),
+                    total_amount: parseFloat(
+                      createdOrder.finalPrice.toFixed(2)
+                    ),
                     name: selectedAddress.fullName,
                     company_name: "XY Essentials",
                     add: selectedAddress.addressLine1,
@@ -652,8 +699,8 @@ if (paymentMethod === 'razorpay') {
                     billing_alt_phone: "",
                     billing_email: profile.email,
                     products: createdOrder.orderItems
-                      .filter(item => item.packaging !== 'Sachet')
-                      .map(item => ({
+                      .filter((item) => item.packaging !== "Sachet")
+                      .map((item) => ({
                         product_name: item.productName,
                         product_sku: "",
                         product_quantity: item.quantity,
@@ -691,7 +738,6 @@ if (paymentMethod === 'razorpay') {
 
             console.log("Payload:", payload);
 
-
             const headers = {
               "Content-Type": "application/json",
             };
@@ -709,14 +755,19 @@ if (paymentMethod === 'razorpay') {
               const waybill = Object.values(result.data)[0]?.waybill || "";
               console.log("Waybill:", waybill);
 
-              const responsewb = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${createdOrder._id}/waybill`, {
-                method: "PUT",
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ waybill }),
-              });
+              const responsewb = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/orders/${
+                  createdOrder._id
+                }/waybill`,
+                {
+                  method: "PUT",
+                  credentials: "include",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ waybill }),
+                }
+              );
               const responsewbjson = await responsewb.json();
               console.log("Updated Order:", responsewbjson);
             } catch (error) {
@@ -725,34 +776,43 @@ if (paymentMethod === 'razorpay') {
             }
 
             // Save the ITL awb_number in the order schema as waybill
-
           };
 
           itlAddOrder();
           //ITL: CREATE ORDER END
 
           // Replace the sequential for-loops with Promise.all for stock update
-          await Promise.all(checkoutItems.map(async (item) => {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
-              method: 'PUT',
-              credentials: 'include',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                productId: item.product._id,
-                quantity: item.quantity,
-              }),
-            });
-          }));
+          await Promise.all(
+            checkoutItems.map(async (item) => {
+              await fetch(
+                `${import.meta.env.VITE_API_URL}/api/products/update-stock`,
+                {
+                  method: "PUT",
+                  credentials: "include",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    productId: item.product._id,
+                    quantity: item.quantity,
+                  }),
+                }
+              );
+            })
+          );
 
           // Replace the sequential for-loops with Promise.all for cart removal
-          await Promise.all(checkoutItems.map(async (item) => {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
-              method: 'DELETE',
-              credentials: 'include',
-            });
-          }));
+          await Promise.all(
+            checkoutItems.map(async (item) => {
+              await fetch(
+                `${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+            })
+          );
 
           // alert("Order placed successfully with Razorpay!");
           navigate(`/orders/${createdOrder._id}`);
@@ -770,16 +830,14 @@ if (paymentMethod === 'razorpay') {
           netbanking: true,
           upi: true,
           wallet: false,
-          paylater: false
+          paylater: false,
         },
         config: {
           display: {
-            hide: [
-              { method: 'paylater' }
-            ],
-            preferences: { show_default_blocks: true }
-          }
-        }
+            hide: [{ method: "paylater" }],
+            preferences: { show_default_blocks: true },
+          },
+        },
       };
       const rzp = new window.Razorpay(options);
       rzp.open();
@@ -821,13 +879,20 @@ if (paymentMethod === 'razorpay') {
             >
               {addresses.length > 0 ? (
                 addresses.map((addr, index) => (
-                  <option key={addr._id} value={index} selected={addr.isDefault}>
-                    {`${addr.fullName}, ${addr.addressLine1}, ${addr.addressLine2 ? `${addr.addressLine2}, ` : ''}${addr.landMark ? `${addr.landMark}, ` : ''}${addr.city}, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
+                  <option
+                    key={addr._id}
+                    value={index}
+                    selected={addr.isDefault}
+                  >
+                    {`${addr.fullName}, ${addr.addressLine1}, ${
+                      addr.addressLine2 ? `${addr.addressLine2}, ` : ""
+                    }${addr.landMark ? `${addr.landMark}, ` : ""}${
+                      addr.city
+                    }, ${addr.state}, ${addr.postalCode}, ${addr.phoneNumber}`}
                   </option>
                 ))
               ) : (
                 <option disabled>No addresses available</option>
-
               )}
             </select>
             <button className="add-address-btn" onClick={openAddModal}>
@@ -844,32 +909,34 @@ if (paymentMethod === 'razorpay') {
                   type="radio"
                   name="payment"
                   value="razorpay"
-                  checked={paymentMethod === 'razorpay'}
+                  checked={paymentMethod === "razorpay"}
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(50);
                     setCouponApplied(false);
                     setDiscount(0);
-                    setCouponCode('');
+                    setCouponCode("");
                   }}
                   disabled={isPlacingOrder}
-                /> UPI/Cards/NetBanking
+                />{" "}
+                UPI/Cards/NetBanking
               </label>
               <label>
                 <input
                   type="radio"
                   name="payment"
                   value="cod"
-                  checked={paymentMethod === 'cod'}
+                  checked={paymentMethod === "cod"}
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(0);
                     setCouponApplied(false);
                     setDiscount(0);
-                    setCouponCode('');
+                    setCouponCode("");
                   }}
                   disabled={isPlacingOrder}
-                /> Pay on Delivery
+                />{" "}
+                Pay on Delivery
               </label>
             </div>
           </div>
@@ -885,7 +952,7 @@ if (paymentMethod === 'razorpay') {
                   setCouponCode(e.target.value);
                   setCouponApplied(false);
                   setDiscount(0);
-                  if (paymentMethod === 'razorpay') {
+                  if (paymentMethod === "razorpay") {
                     setPmDiscount(50);
                   } else {
                     setPmDiscount(0);
@@ -904,7 +971,11 @@ if (paymentMethod === 'razorpay') {
                   <i className="fa fa-spinner fa-spin"></i>
                   <span>Applying</span>
                 </>
-              ) : couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
+              ) : couponApplied ? (
+                "Coupon Applied"
+              ) : (
+                "Apply Coupon"
+              )}
             </button>
             {/* {couponMessage && <p>{couponMessage}</p>}
             <div className="coupon-status">
@@ -924,7 +995,8 @@ if (paymentMethod === 'razorpay') {
                 <li key={item.product._id} className="product-item">
                   <div className="item-info">
                     <div className="image-container">
-                      <img loading="lazy"
+                      <img
+                        loading="lazy"
                         src={item.product.images[0]}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-md"
@@ -946,33 +1018,60 @@ if (paymentMethod === 'razorpay') {
 
         <div className="checkout-right">
           <h3>Order Summary</h3>
-          <p>Delivery Address: {selectedAddress
-            ? `${selectedAddress.fullName}, ${selectedAddress.addressLine1}${selectedAddress.addressLine2 ? ', ' + selectedAddress.addressLine2 : ''}, ${selectedAddress.landMark ? `${selectedAddress.landMark}, ` : ''}${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.postalCode}, ${selectedAddress.phoneNumber}`
-            : 'Select an address'}
+          <p>
+            Delivery Address:{" "}
+            {selectedAddress
+              ? `${selectedAddress.fullName}, ${selectedAddress.addressLine1}${
+                  selectedAddress.addressLine2
+                    ? ", " + selectedAddress.addressLine2
+                    : ""
+                }, ${
+                  selectedAddress.landMark
+                    ? `${selectedAddress.landMark}, `
+                    : ""
+                }${selectedAddress.city}, ${selectedAddress.state}, ${
+                  selectedAddress.postalCode
+                }, ${selectedAddress.phoneNumber}`
+              : "Select an address"}
           </p>
           <hr />
           <div className="summary-row">
             <p>Total Items Cost:</p>
-            <p><span className="inr">₹</span><strong>{totalItems.toFixed(2)}</strong></p>
+            <p>
+              <span className="inr">₹</span>
+              <strong>{totalItems.toFixed(2)}</strong>
+            </p>
           </div>
           <div className="summary-row">
             <p>Shipping Fee:</p>
-            <p><span className="inr">₹</span><strong>0.00</strong></p>
+            <p>
+              <span className="inr">₹</span>
+              <strong>0.00</strong>
+            </p>
           </div>
-          {paymentMethod === 'razorpay' && (
+          {paymentMethod === "razorpay" && (
             <div className="summary-row">
               <p>Online Payment Savings:</p>
-              <p><span className="inr">₹</span><strong>{pmDiscount}</strong></p>
+              <p>
+                <span className="inr">₹</span>
+                <strong>{pmDiscount}</strong>
+              </p>
             </div>
           )}
           <div className="summary-row">
             <p>Coupon Applied:</p>
-            <p><span className="inr">₹</span><strong>{discount.toFixed(2)}</strong></p>
+            <p>
+              <span className="inr">₹</span>
+              <strong>{discount.toFixed(2)}</strong>
+            </p>
           </div>
           <hr />
           <div className="summary-row">
-            <p className='total-row'>Total Amount:</p>
-            <p><span className="inr">₹</span><strong>{totalAmount.toFixed(2)}</strong></p>
+            <p className="total-row">Total Amount:</p>
+            <p>
+              <span className="inr">₹</span>
+              <strong>{totalAmount.toFixed(2)}</strong>
+            </p>
           </div>
           {checkoutItems.length > 0 && (
             <button
@@ -982,15 +1081,14 @@ if (paymentMethod === 'razorpay') {
             >
               {/* {isPlacingOrder ? 'Placing Order...' : 'Place Order'} */}
               {isPlacingOrder ? (
-                                    <>
-                                        Placing Order <i className="fa fa-spinner fa-spin"></i>
-                                    </>
-                                ) : (
-                                    'Place Order'
-                                )}
+                <>
+                  Placing Order <i className="fa fa-spinner fa-spin"></i>
+                </>
+              ) : (
+                "Place Order"
+              )}
             </button>
           )}
-
         </div>
       </div>
 
@@ -1015,7 +1113,9 @@ if (paymentMethod === 'razorpay') {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleAddAddress}
-        initialAddress={editAddressIndex !== null ? addresses[editAddressIndex] : null}
+        initialAddress={
+          editAddressIndex !== null ? addresses[editAddressIndex] : null
+        }
       />
     </div>
   );
