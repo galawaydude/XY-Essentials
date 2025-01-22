@@ -29,9 +29,9 @@ const ProtectedRoutes = () => {
         checkAuth();
     }, []);
 
-    if (loading) {
-        return <PreLoader />;
-    }
+    // if (loading) {
+    //     return <PreLoader />;
+    // }
 
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };

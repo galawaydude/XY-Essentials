@@ -48,9 +48,9 @@ const AppRoutes = () => {
         }
     }, [isHomeRoute]); // Depend on `isHomeRoute` to trigger effect when route changes
 
-    if (loading && isHomeRoute) {
-        return <PreLoader />; // Only show PreLoader on Home route
-    }
+    // if (loading && isHomeRoute) {
+    //     return <PreLoader />; // Only show PreLoader on Home route
+    // }
 
     console.log(import.meta.env.VITE_REACT_CLIENT_URL);
 
@@ -68,7 +68,7 @@ const AppRoutes = () => {
                     <Route path="/disclaimer" element={<Disclaimer />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/coming-soon" element={<Comingsoon />} />
-                    <Route path="/loader" element={<PreLoader />} />
+                    {/* <Route path="/loader" element={<PreLoader />} /> */}
                     <Route path="*" element={<Error404 />} />
                     <Route path="/shop" element={<ProductListing />} />
                     <Route path="/products/:id" element={<ProductDetails />} />
