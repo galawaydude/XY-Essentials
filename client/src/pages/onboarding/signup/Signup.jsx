@@ -283,7 +283,7 @@ const Signup = () => {
                                     <input
                                         key={index}
                                         ref={el => otpInputs.current[index] = el}
-                                        type="text"
+                                        type="number"
                                         className="otp-digit"
                                         value={otp[index] || ''}
                                         onChange={(e) => handleOtpChange(index, e.target.value)}

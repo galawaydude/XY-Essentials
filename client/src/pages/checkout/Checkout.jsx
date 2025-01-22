@@ -280,8 +280,33 @@ const Checkout = () => {
 
   const totalItems = checkoutItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
   const totalItemsPrice = totalItems;
-  const effectivePmDiscount = discount > 0 ? 0 : pmDiscount;
+  let effectivePmDiscount = 0;
+  if (paymentMethod === 'razorpay') {
+    if (totalItems < 50 ) {
+      effectivePmDiscount = totalItems - 1;
+    } else {
+      effectivePmDiscount = 50;
+    }
+  }
+
   const totalAmount = Math.max(totalItems - discount - effectivePmDiscount, 1);
+
+  useEffect(() => {
+    setPmDiscount(effectivePmDiscount);
+  }, [effectivePmDiscount]);
+
+  useEffect(() => {
+if (paymentMethod === 'razorpay') {
+  if (couponApplied) {
+    setPmDiscount(0);
+  } else if (!couponApplied) {
+    setPmDiscount(effectivePmDiscount);
+  }
+}
+  }, [couponApplied, paymentMethod, effectivePmDiscount]);
+
+
+
 
   const handleApplyCoupon = async () => {
     setIsCouponLoading(true);
@@ -823,6 +848,7 @@ const Checkout = () => {
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(50);
+                    setCouponApplied(false);
                     setDiscount(0);
                     setCouponCode('');
                   }}
@@ -838,6 +864,7 @@ const Checkout = () => {
                   onChange={(e) => {
                     setPaymentMethod(e.target.value);
                     setPmDiscount(0);
+                    setCouponApplied(false);
                     setDiscount(0);
                     setCouponCode('');
                   }}
