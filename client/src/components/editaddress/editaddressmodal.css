@@ -131,14 +131,14 @@
 
 .address-modal-save {
     background: #0A4834;
-    
+
 }
 
 .address-modal-save:hover {
     background: #005f29;
 }
 
-.address-multi-labels{
+.address-multi-labels {
     display: flex;
     justify-content: space-between;
 }
@@ -146,21 +146,31 @@
 @media (max-width: 1000px) {
     .address-modal-main-con {
         width: 55vw;
-    }   
+    }
+}
+
+@media (max-width: 850px) {
+    .address-modal-main-con {
+        width: 65vw;
+    }
 }
 
 @media (max-width: 700px) {
     .address-modal-main-con {
         width: 70vw;
-    }   
+    }
 }
 
 @media (max-width: 530px) {
+    .address-modal-main-con {
+        width: 90vw;
+    }
+
     .address-modal-double-input {
         flex-direction: column;
     }
 
-    .address-label{
+    .address-label {
         display: none;
     }
 }
