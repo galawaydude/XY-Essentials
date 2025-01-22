@@ -157,6 +157,22 @@ const removeCartItem = asyncHandler(async (req, res) => {
     }
 });
 
+const removeCartItemByProductId = asyncHandler(async (req, res) => {
+    const { productId } = req.params;
+
+    const updatedCart = await Cart.findOneAndUpdate(
+        { user: req.user._id },
+        { $pull: { cartItems: { product: productId } } },
+        { new: true }
+    );
+
+    if (!updatedCart) {
+        return res.status(404).json({ message: 'Cart or product not found.' });
+    }
+
+    res.status(200).json({ message: 'Item removed successfully.', cart: updatedCart });
+});
+
 const updateCartItem = asyncHandler(async (req, res) => {
     const { itemId } = req.params;
     const { quantity } = req.body;
@@ -207,6 +223,7 @@ module.exports = {
     getCarts,
     addToCart,
     removeCartItem,
+    removeCartItemByProductId,
     updateCartItem,
     clearCart,
 };

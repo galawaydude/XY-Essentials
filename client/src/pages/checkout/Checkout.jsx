@@ -482,10 +482,8 @@ const Checkout = () => {
         itlAddOrder();
         //ITL: CREATE ORDER END
 
-
-
-
-        for (const item of checkoutItems) {
+        // Replace the sequential for-loops with Promise.all for stock update
+        await Promise.all(checkoutItems.map(async (item) => {
           console.log(`Updating stock for product ${item.product.name} by ${item.quantity}`);
           const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
             method: 'PUT',
@@ -500,14 +498,16 @@ const Checkout = () => {
           });
           const data = await response.json();
           console.log(`Updated stock for product ${item.product._id}: ${data.updatedStock}`);
-        }
+        }));
 
-        for (const item of checkoutItems) {
+        // Replace the sequential for-loops with Promise.all for cart removal
+        await Promise.all(checkoutItems.map(async (item) => {
           await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
             method: 'DELETE',
             credentials: 'include',
           });
-        }
+        }));
+
         // alert("Order placed successfully with Cash on Delivery!");
         navigate(`/orders/${createdOrder._id}`);
       } catch (error) {
@@ -711,7 +711,8 @@ const Checkout = () => {
           itlAddOrder();
           //ITL: CREATE ORDER END
 
-          for (const item of checkoutItems) {
+          // Replace the sequential for-loops with Promise.all for stock update
+          await Promise.all(checkoutItems.map(async (item) => {
             await fetch(`${import.meta.env.VITE_API_URL}/api/products/update-stock`, {
               method: 'PUT',
               credentials: 'include',
@@ -723,15 +724,15 @@ const Checkout = () => {
                 quantity: item.quantity,
               }),
             });
-          }
+          }));
 
-
-          for (const item of checkoutItems) {
+          // Replace the sequential for-loops with Promise.all for cart removal
+          await Promise.all(checkoutItems.map(async (item) => {
             await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${item.product._id}`, {
               method: 'DELETE',
               credentials: 'include',
             });
-          }
+          }));
 
           // alert("Order placed successfully with Razorpay!");
           navigate(`/orders/${createdOrder._id}`);
