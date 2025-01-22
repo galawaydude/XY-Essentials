@@ -792,6 +792,7 @@ const Checkout = () => {
             <select
               onChange={(e) => setSelectedAddress(addresses[e.target.value])}
               className="address-selector"
+              disabled={isPlacingOrder}
             >
               {addresses.length > 0 ? (
                 addresses.map((addr, index) => (
@@ -825,6 +826,7 @@ const Checkout = () => {
                     setDiscount(0);
                     setCouponCode('');
                   }}
+                  disabled={isPlacingOrder}
                 /> UPI/Cards/NetBanking
               </label>
               <label>
@@ -839,6 +841,7 @@ const Checkout = () => {
                     setDiscount(0);
                     setCouponCode('');
                   }}
+                  disabled={isPlacingOrder}
                 /> Pay on Delivery
               </label>
             </div>
@@ -862,17 +865,17 @@ const Checkout = () => {
                   }
                 }}
                 placeholder="Enter coupon code"
+                disabled={isPlacingOrder}
               />
             </div>
             <button
               onClick={handleApplyCoupon}
-              disabled={couponApplied || isCouponLoading}
+              disabled={couponApplied || isCouponLoading || isPlacingOrder}
             >
               {isCouponLoading ? (
                 <>
-
-                <i className="fa fa-spinner fa-spin"></i>
-                <span>Applying</span>
+                  <i className="fa fa-spinner fa-spin"></i>
+                  <span>Applying</span>
                 </>
               ) : couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
             </button>
