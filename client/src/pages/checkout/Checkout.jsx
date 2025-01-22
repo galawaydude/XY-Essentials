@@ -868,7 +868,13 @@ const Checkout = () => {
               onClick={handleApplyCoupon}
               disabled={couponApplied || isCouponLoading}
             >
-              {isCouponLoading ? 'Applying...' : couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
+              {isCouponLoading ? (
+                <>
+
+                <i className="fa fa-spinner fa-spin"></i>
+                <span>Applying</span>
+                </>
+              ) : couponApplied ? 'Coupon Applied' : 'Apply Coupon'}
             </button>
             {/* {couponMessage && <p>{couponMessage}</p>}
             <div className="coupon-status">
