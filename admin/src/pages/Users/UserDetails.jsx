@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaShoppingBag, FaClock, FaStar } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaShoppingBag, FaClock, FaStar, FaEdit } from 'react-icons/fa';
 import './UserDetails.css';
 
 const UserDetails = () => {
@@ -9,6 +9,7 @@ const UserDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('overview');
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         fetchUserDetails();
@@ -25,6 +26,27 @@ const UserDetails = () => {
             setError('Failed to fetch user details');
         }
         setLoading(false);
+    };
+
+    const handleRoleUpdate = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}/role`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ isAdmin: !user.isAdmin })
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                setUser(updatedUser);
+                setIsEditing(false);
+            }
+        } catch (error) {
+            setError('Failed to update user role');
+        }
     };
 
     if (loading) return <div className="loading-spinner">Loading user details...</div>;
@@ -99,7 +121,27 @@ const UserDetails = () => {
                                     </div> */}
                                     <div className="stat-item">
                                         <span className="stat-label">Role</span>
-                                        <span className="stat-value">{user.isAdmin ? 'Admin' : 'Customer'}</span>
+                                        <div className="stat-value-with-action">
+                                            {isEditing ? (
+                                                <>
+                                                    <select 
+                                                        value={user.isAdmin ? 'admin' : 'customer'}
+                                                        onChange={() => handleRoleUpdate()}
+                                                    >
+                                                        <option value="customer">Customer</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                    <button onClick={() => setIsEditing(false)}>Cancel</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>{user.isAdmin ? 'Admin' : 'Customer'}</span>
+                                                    <button className="edit-button" onClick={() => setIsEditing(true)}>
+                                                        <FaEdit />
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="stat-item">
                                         <span className="stat-label">Last Order</span>
