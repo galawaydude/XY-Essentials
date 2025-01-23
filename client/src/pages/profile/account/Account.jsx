@@ -89,6 +89,22 @@ const Account = () => {
         }
     };
 
+    const handleDeleteAddress = async (addressId) => {
+        try {
+            const response = await fetch(`${apiUrl}/api/users/user/addresses/${addressId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete address');
+            }
+            // Remove the address from the state
+            setAddresses(addresses.filter(addr => addr._id !== addressId));
+        } catch (error) {
+            console.error('Error deleting address:', error);
+        }
+    };
+
     const handleLogout = async () => {
         console.log('Logging out...');
         try {
@@ -203,6 +219,13 @@ const Account = () => {
                                             aria-label="Edit address"
                                         >
                                             <i className="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            className="acc-btn acc-btn-delete-address"
+                                            onClick={() => handleDeleteAddress(address._id)}
+                                            aria-label="Delete address"
+                                        >
+                                            <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>

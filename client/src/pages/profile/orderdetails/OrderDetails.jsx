@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './orderdetails.css';
 
 
@@ -11,6 +11,25 @@ const OrderDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [itlOrderDetails, setItlOrderDetails] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setProfile(data);
+
+      if (!response.ok) {
+        navigate('/login');
+        console.error('Failed to fetch profile');
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   //ITL: ACCESS CODES
   const ITL_ACCESS_TOKEN = import.meta.env.VITE_ITL_ACCESS_TOKEN;

@@ -14,6 +14,7 @@ router.get('/user/orders', protect, getUserOrders);
 router.get('/user/addresses', protect, getUserAddresses);
 router.get('/user/cart', protect, getCart);
 router.put('/profile', protect, updateUserProfile);
+router.delete('/user/addresses/:id', protect, deleteAddress);
 
 // Admin Routes
 router.get('/', protect, admin, getUsers);

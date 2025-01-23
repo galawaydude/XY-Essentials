@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './yourOrders.css';
 
 const YourOrders = () => {
@@ -14,6 +14,26 @@ const YourOrders = () => {
   const [itlOrderDetails, setItlOrderDetails] = useState(null);
   const [currentOrders, setCurrentOrders] = useState([]);
   const ordersPerPage = 5;
+
+    const [profile, setProfile] = useState(null);
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      const fetchProfile = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile/`, {
+          credentials: 'include',
+        });
+        const data = await response.json();
+        setProfile(data);
+  
+        if (!response.ok) {
+          navigate('/login');
+          console.error('Failed to fetch profile');
+        }
+      };
+  
+      fetchProfile();
+    }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {
