@@ -17,4 +17,40 @@
     font-size: 2rem;
     padding-bottom: 1rem;
   }
+
+.date-range-picker .react-datepicker-wrapper {
+  width: auto;
+}
+
+.date-range-picker input {
+  width: 130px;
+}
+
+.filters-section {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filters-section .form-control,
+.filters-section .form-select {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .filters-section .d-flex {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
   
+  .filters-section .form-control,
+  .filters-section .form-select {
+    width: 100% !important;
+  }
+  
+  .date-range-picker {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
