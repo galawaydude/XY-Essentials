@@ -726,7 +726,7 @@ const Checkout = () => {
                     total_discount: discount,
                     first_attemp_discount: "",
                     cod_amount: "",
-                    payment_mode: paymentMethod,
+                    payment_mode: paymentMethod === "razorpay" ? "prepaid" : paymentMethod,
                     reseller_name: "",
                     eway_bill_number: "",
                     gst_number: "",
