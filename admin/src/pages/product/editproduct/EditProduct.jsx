@@ -107,25 +107,29 @@ const EditProduct = () => {
         e.preventDefault();
         const formData = new FormData();
 
-        for (const key in product) {
-            if (Array.isArray(product[key])) {
-                product[key].forEach((item) => {
-                    if (typeof item === 'object') {
-                        formData.append(key, JSON.stringify(item));
-                    } else {
-                        formData.append(key, item);
-                    }
+        // Handle regular fields
+        Object.keys(product).forEach(key => {
+            if (key === 'keyIngredients') {
+                formData.append('keyIngredients', JSON.stringify(product.keyIngredients));
+            } else if (key === 'images') {
+                // Skip the images array here as we'll handle files separately
+                return;
+            } else if (Array.isArray(product[key])) {
+                product[key].forEach(item => {
+                    formData.append(key, item);
                 });
             } else {
                 formData.append(key, product[key]);
             }
-        }
-
-        product.images.forEach((image) => {
-            if (image instanceof File) {
-                formData.append('productImages', image);
-            }
         });
+
+        // Handle image files
+        const fileInput = document.querySelector('#images');
+        if (fileInput && fileInput.files.length > 0) {
+            Array.from(fileInput.files).forEach(file => {
+                formData.append('productImages', file);
+            });
+        }
 
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
@@ -133,11 +137,18 @@ const EditProduct = () => {
                 credentials: 'include',
                 body: formData,
             });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update product');
+            }
+            
             const data = await response.json();
             console.log('Product updated:', data);
             navigate('/admin/inventory');
         } catch (error) {
             console.error('Error updating product:', error);
+            alert('Failed to update product: ' + error.message);
         }
     };
 

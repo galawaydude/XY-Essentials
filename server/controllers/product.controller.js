@@ -59,48 +59,56 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // Update a product (Admin only)
 const updateProduct = asyncHandler(async (req, res) => {
-  try {
-      // Log the incoming request body for debugging
-      console.log('Incoming request body:', req.body);
+    try {
+        // Find the existing product
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-      // Retrieve the product by ID
-      const product = await Product.findById(req.params.id);
+        // Create update object
+        const updateData = { ...req.body };
 
-      if (!product) {
-          res.status(404);
-          throw new Error('Product not found');
-      }
+        // Handle keyIngredients
+        if (req.body.keyIngredients) {
+            try {
+                updateData.keyIngredients = JSON.parse(req.body.keyIngredients);
+            } catch (e) {
+                console.error('Error parsing keyIngredients:', e);
+                return res.status(400).json({ 
+                    message: 'Invalid keyIngredients format',
+                    error: e.message 
+                });
+            }
+        }
 
-      // Parse keyIngredients if it's a string
-      if (typeof req.body.keyIngredients === 'string') {
-          req.body.keyIngredients = JSON.parse(req.body.keyIngredients);
-      }
+        // Handle uploaded images
+        if (req.files && req.files.productImages) {
+            updateData.images = req.files.productImages.map(file => file.path);
+        }
 
-      // Use Object.assign to update the product with the request body
-      Object.assign(product, req.body);
+        // Update the product
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
 
-      // Handle image updates if new images are provided
-      const productImages = req.files['productImages'] ? req.files['productImages'].map(file => file.path) : [];
-      if (productImages.length > 0) {
-          product.images = productImages; // Update images if new ones are provided
-      }
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-      // Save the updated product
-      const updatedProduct = await product.save();
-      console.log('Product updated successfully:', updatedProduct); // Debugging
-
-      // Respond with the updated product
-      res.json(updatedProduct);
-  } catch (error) {
-      console.error('Error updating product:', error); // Debugging
-      res.status(500).json({ message: 'Server error', error: error.message });
-  }
+        res.json(updatedProduct);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ 
+            message: 'Server error', 
+            error: error.message 
+        });
+    }
 });
-
 
 const updateProductStock = asyncHandler(async (req, res) => {
   const { productId, quantity } = req.body;

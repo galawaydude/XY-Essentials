@@ -59,7 +59,7 @@ const AddressModal = ({ isOpen, onClose, onSave }) => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/api/addresses`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses`, {
         method: 'POST',
         credentials: 'include',
         headers: {

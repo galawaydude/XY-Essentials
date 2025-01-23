@@ -18,8 +18,12 @@ router.put('/:productId/reviews/:reviewId', protect, updateReview);
 router.delete('/:productId/reviews/:reviewId', protect, deleteReview);
 
 // Admin Routes
-router.post('/', protect, admin, upload.fields([{ name: 'productImages' }]), createProduct);
-router.put('/:id',protect, admin, upload.fields([{ name: 'productImages' }]), updateProduct);
+router.post('/', protect, admin, upload.fields([
+    { name: 'productImages', maxCount: 5 }
+]), createProduct);
+router.put('/:id', protect, admin, upload.fields([
+    { name: 'productImages', maxCount: 5 }
+]), updateProduct);
 router.delete('/:id', protect, admin, deleteProduct);
 
 module.exports = router;

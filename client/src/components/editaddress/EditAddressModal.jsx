@@ -76,7 +76,7 @@ const EditAddressModal = ({ isOpen, onClose, onSave, address }) => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/api/addresses/${address._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/addresses/${address._id}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {

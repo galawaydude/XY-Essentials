@@ -91,7 +91,7 @@ const Account = () => {
 
     const handleDeleteAddress = async (addressId) => {
         try {
-            const response = await fetch(`${apiUrl}/api/users/user/addresses/${addressId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/addresses/${addressId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

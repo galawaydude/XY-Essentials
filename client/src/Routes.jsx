@@ -71,6 +71,8 @@ const AppRoutes = () => {
                     {/* <Route path="/loader" element={<PreLoader />} /> */}
                     <Route path="*" element={<Error404 />} />
                     <Route path="/shop" element={<ProductListing />} />
+                    <Route path="/blogs" element={<BlogListing />} />
+                    <Route path="/blogs/:id" element={<BlogDetails />} />
                     <Route path="/products/:id" element={<ProductDetails />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/cart" element={<Cart />} />

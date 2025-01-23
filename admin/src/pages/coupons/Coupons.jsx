@@ -20,7 +20,7 @@ const Coupons = () => {
         expirationDate: '',
         minimumPurchaseAmount: '',
         maxDiscountAmount: '',
-        usageLimit: '',
+        // usageLimit: '',
         isActive: true,
     });
     const [searchTerm, setSearchTerm] = useState('');
@@ -93,7 +93,7 @@ const Coupons = () => {
                 expirationDate: '',
                 minimumPurchaseAmount: '',
                 maxDiscountAmount: '',
-                usageLimit: '',
+                // usageLimit: '',
                 isActive: true,
             });
         } catch (error) {
@@ -113,7 +113,7 @@ const Coupons = () => {
             expirationDate: coupon.expirationDate?.split('T')[0] || '',
             minimumPurchaseAmount: coupon.minimumPurchaseAmount || 0,
             maxDiscountAmount: coupon.maxDiscountAmount || 0,
-            usageLimit: coupon.usageLimit || 1,
+            // usageLimit: coupon.usageLimit || 1,
             isActive: coupon.isActive
         });
         setModalVisible(true);
@@ -144,7 +144,7 @@ const Coupons = () => {
                 expirationDate: '',
                 minimumPurchaseAmount: '',
                 maxDiscountAmount: '',
-                usageLimit: '',
+                // usageLimit: '',
                 isActive: true,
             });
         } catch (err) {
@@ -179,7 +179,7 @@ const Coupons = () => {
         
         if (!coupon.isActive) return 'inactive';
         if (expiryDate < now) return 'expired';
-        if (coupon.usageCount >= coupon.usageLimit) return 'exhausted';
+        // if (coupon.usageCount >= coupon.usageLimit) return 'exhausted';
         return 'active';
     };
 
@@ -245,7 +245,7 @@ const Coupons = () => {
                             <th>Code</th>
                             <th>Discount</th>
                             <th>Minimum Purchase</th>
-                            <th>Usage</th>
+                            {/* <th>Usage</th> */}
                             <th>Expiry Date</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -271,9 +271,9 @@ const Coupons = () => {
                                     }
                                 </td>
                                 <td>₹{coupon.minimumPurchaseAmount}</td>
-                                <td>
+                                {/* <td>
                                     {coupon.usageCount || 0}/{coupon.usageLimit || '∞'}
-                                </td>
+                                </td> */}
                                 <td>
                                     <span className={
                                         new Date(coupon.expirationDate) < new Date() ? 'expired-date' : ''
@@ -382,7 +382,7 @@ const Coupons = () => {
                                             onChange={handleInputChange}
                                         />
                                     </div>
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label>Usage Limit:</label>
                                         <input
                                             type="number"
@@ -390,7 +390,7 @@ const Coupons = () => {
                                             value={newCoupon.usageLimit}
                                             onChange={handleInputChange}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="form-group">
                                         <label>Is Active:</label>
                                         <input
