@@ -52,13 +52,22 @@ const Reviews = () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}`, {
                     method: 'DELETE',
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-                if (response.ok) {
-                    setReviews(reviews.filter(review => review._id !== reviewId));
+
+                if (!response.ok) {
+                    throw new Error(`Failed to delete review: ${response.statusText}`);
                 }
+
+                setReviews(reviews.filter(review => review._id !== reviewId));
+                // Optionally show success message
+                alert('Review deleted successfully');
             } catch (error) {
                 console.error('Error deleting review:', error);
+                alert('Failed to delete review: ' + error.message);
             }
         }
     };
@@ -66,18 +75,28 @@ const Reviews = () => {
     const handleBulkDelete = async () => {
         if (window.confirm(`Delete ${selectedReviews.length} reviews?`)) {
             try {
-                await Promise.all(
-                    selectedReviews.map(reviewId =>
-                        fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}`, {
-                            method: 'DELETE',
-                            credentials: 'include'
-                        })
-                    )
+                const deletePromises = selectedReviews.map(reviewId =>
+                    fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}`, {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
                 );
-                fetchReviews();
-                setSelectedReviews([]);
+
+                const results = await Promise.allSettled(deletePromises);
+                const failedDeletes = results.filter(r => r.status === 'rejected').length;
+
+                if (failedDeletes > 0) {
+                    alert(`${failedDeletes} reviews failed to delete`);
+                }
+
+                await fetchReviews(); // Refresh the reviews list
+                setSelectedReviews([]); // Clear selection
             } catch (error) {
                 console.error('Error in bulk delete:', error);
+                alert('Failed to delete some reviews');
             }
         }
     };

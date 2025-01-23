@@ -72,25 +72,26 @@ const updateReview = asyncHandler(async (req, res) => {
 
 // Delete a review
 const deleteReview = asyncHandler(async (req, res) => {
-  const { reviewId, productId } = req.params;
+  const { reviewId } = req.params;
 
   const review = await Review.findById(reviewId);
-
   if (!review) {
     res.status(404);
     throw new Error('Review not found');
   }
 
-  // Check if the user is the owner of the review
-  if (review.user.toString() !== req.user._id.toString()) {
+  // If user is not admin, check if they own the review
+  if (!req.user.isAdmin && review.user.toString() !== req.user._id.toString()) {
     res.status(403);
     throw new Error('Not authorized to delete this review');
   }
 
   // Remove review reference from product
-  await Product.findByIdAndUpdate(productId, {
-    $pull: { reviews: reviewId }
-  });
+  if (review.product) {
+    await Product.findByIdAndUpdate(review.product, {
+      $pull: { reviews: reviewId }
+    });
+  }
 
   await review.deleteOne();
   res.json({ message: 'Review removed' });
