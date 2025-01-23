@@ -144,6 +144,17 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      <div className="alert alert-success d-flex justify-content-between align-items-start" role="alert">
+        <div>
+          <h4 className="alert-heading">Welcome back, {profile?.name}!</h4>
+          <p>
+            You are logged in as {profile?.email}.
+          </p>
+        </div>
+        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <h2 style={{fontSize: '2rem'}}>Dashboard</h2>
+
       {/* Summary Stats */}
       <div className="stats-grid">
         <div className="stat-card primary">
